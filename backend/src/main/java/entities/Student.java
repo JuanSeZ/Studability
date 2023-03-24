@@ -55,4 +55,6 @@ public class Student {
     public String getCareer() {
         return career;
     }
+
+    public Long getId(){return id;}
 }
