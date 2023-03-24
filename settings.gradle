@@ -1,0 +1,3 @@
+rootProject.name = 'Studability'
+include 'backend'
+
