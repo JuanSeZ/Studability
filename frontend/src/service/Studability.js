@@ -1,24 +1,24 @@
-// const restApiEndpoint = "http://localhost:3001"
+const restApiEndpoint = "http://localhost:4321"
 
 const Studability = {
-    // login: (credentials, okCallback, errorCallback) => {
-    //     fetch(`${restApiEndpoint}/auth`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(credentials)
-    //     }).then(resp => {
-    //         if (resp.status === 201) {
-    //             resp.json().then(body => okCallback(body))
-    //         } else {
-    //             errorCallback("Incorrect mail or password")
-    //         }
-    //     }).catch(e => errorCallback("Unable to connect to Studability API"))
-    // },
+    login: (credentials, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/auth`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        }).then(resp => {
+            if (resp.status === 201) {
+                resp.json().then(body => okCallback(body))
+            } else {
+                errorCallback("Incorrect e-mail or password")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
 
     register: (user, okCallback, errorCallback) => {
-        fetch('http://localhost:3001/register', {
+        fetch(`${restApiEndpoint}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,7 +34,4 @@ const Studability = {
     },
 
 }
-
-const useStudability = () => Studability
-
-export {useStudability};
+export const useStudability = () => Studability
