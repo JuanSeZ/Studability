@@ -4,8 +4,7 @@ import {useState} from "react";
 import {useNavigate} from "react-router";
 import {useStudability} from "../service/Studability";
 
-
-export const RegisterPage = () => {
+export default function RegisterPage() {
     const [name, setName] = useState('')
     const [lastName, setLastname] = useState('')
     const [career, setCareer] = useState('')
@@ -13,7 +12,7 @@ export const RegisterPage = () => {
     const [password, setPassword] = useState('')
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate();
-    const myStudability = useStudability();
+    const studability = useStudability();
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -35,7 +34,7 @@ export const RegisterPage = () => {
     }
 
     const registerUser = (mail) => {
-        myStudability.register(
+        studability.register(
             mail,
             () => navigate("/login?ok=true"),
             () => {
@@ -66,29 +65,40 @@ export const RegisterPage = () => {
     }
 
     return (
-        <div>
+        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '80vh'}}>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
             <form onSubmit={handleSubmit}>
-                <h1>Register</h1>
-                <div>
-                    <input type="name"
-                           placeholder="Name"
-                           value={name}
-                           name="name"
-                           onChange={nameChange}/>
+                <div className="form-group">
+                    <div className="col-md-12 text-center">
+                        <h1>Register</h1>
+                    </div>
                 </div>
 
-                <div>
+                <div className="input-group">
+                    <span className="input-group-text">Full Name</span>
+                    <input type="name"
+                           aria-label="First name"
+                           className="form-control"
+                           placeholder="Firstname"
+                           value={name}
+                           name="name"
+                           onChange={nameChange}
+                    ></input>
                     <input type="lastname"
+                           aria-label="Last name"
+                           className="form-control"
                            placeholder="Lastname"
                            value={lastName}
                            name="lastname"
-                           onChange={lastnameChange}/>
+                           onChange={lastnameChange}
+                    ></input>
                 </div>
 
-                <div>
+                <div className="input-group mb-3">
+                    <span className="input-group-text" id="inputGroup-sizing-default">Career</span>
                     <input type="career"
-                           placeholder="Career"
+                           className="form-control"
+                           placeholder="Enter your career here"
                            value={career}
                            name="career"
                            onChange={careerChange}/>
