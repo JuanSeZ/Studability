@@ -14,12 +14,12 @@ public class Calendar {
     private Long id;
 
     @OneToOne
-    private Student student;
+    private User user;
 
     private ArrayList<CalendarEvent> events;
 
     public Calendar(){
-        this.id = student.getId(); // the calendar ID will be the same as the student ID
+        this.id = user.getId(); // the calendar ID will be the same as the student ID
         this.events = new ArrayList<>();
     }
 

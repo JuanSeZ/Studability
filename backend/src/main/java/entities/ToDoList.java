@@ -18,10 +18,10 @@ public class ToDoList {
     private ArrayList<ToDoListItem> toDoItems;
 
     @OneToOne
-    private Student student;
+    private User user;
 
     public ToDoList(){
-        this.id = student.getId();
+        this.id = user.getId();
     }
 
 

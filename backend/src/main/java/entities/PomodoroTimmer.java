@@ -13,17 +13,17 @@ public class PomodoroTimmer{
 
     @Column
     @OneToOne
-    private Student student;
+    private User user;
 
     public PomodoroTimmer(){
-        this.id = student.getId(); //the pomodorotimmer id will be the same as the student id
+        this.id = user.getId(); //the pomodorotimmer id will be the same as the student id
     }
 
     public Long getId() {
         return id;
     }
 
-    public Student getStudent() {
-        return student;
+    public User getUser() {
+        return user;
     }
 }
