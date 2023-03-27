@@ -12,12 +12,12 @@ public class File {
     private String ownerName;
 
     @ManyToOne
-    private Student student;
+    private User user;
 
 
     public File(Long id, String ownerName) {
         this.id = id;
-        this.ownerName = student.getName();
+        this.ownerName = user.getName();
     }
 
     public File() {
