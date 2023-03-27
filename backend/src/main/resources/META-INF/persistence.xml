@@ -6,7 +6,7 @@
     <persistence-unit name="Studability">
         <description>Hibernate Entity Manager Example</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>entities.Student</class>
+        <class>entities.User</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbc.JDBCDriver"/>
