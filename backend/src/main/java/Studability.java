@@ -10,16 +10,16 @@ import java.util.Optional;
 import java.util.function.Function;
 
 // TODO: Cambiar los nombres user y email :)
-public class MySystem {
+public class Studability {
 
     private final EntityManagerFactory factory;
-    private MySystem(EntityManagerFactory factory) {
+    private Studability(EntityManagerFactory factory) {
         this.factory = factory;
     }
 
-    public static MySystem create(String persistenceUnitName) {
+    public static Studability create(String persistenceUnitName) {
         final EntityManagerFactory factory = Persistence.createEntityManagerFactory(persistenceUnitName);
-        return new MySystem(factory);
+        return new Studability(factory);
     }
 
     public Optional<User> registerUser(RegistrationUserForm form) {
@@ -29,9 +29,9 @@ public class MySystem {
         });
     }
 
-    private <E> E runInTransaction(Function<MySystemRepository, E> closure) {
+    private <E> E runInTransaction(Function<StudabilityRepository, E> closure) {
         final EntityManager entityManager = factory.createEntityManager();
-        final MySystemRepository ds = MySystemRepository.create(entityManager);
+        final StudabilityRepository ds = StudabilityRepository.create(entityManager);
 
         try {
             entityManager.getTransaction().begin();

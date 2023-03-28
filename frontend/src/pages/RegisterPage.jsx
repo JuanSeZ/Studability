@@ -6,7 +6,7 @@ import {useStudability} from "../service/Studability";
 
 export default function RegisterPage() {
     const [name, setName] = useState('')
-    const [lastName, setLastname] = useState('')
+    const [surname, setSurname] = useState('')
     const [career, setCareer] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -18,7 +18,7 @@ export default function RegisterPage() {
         e.preventDefault();
         registerUser({
             name: name,
-            lastName: lastName,
+            surname: surname,
             career: career,
             email: email,
             password: password
@@ -27,7 +27,7 @@ export default function RegisterPage() {
 
     const resetForm = () => {
         setName('')
-        setLastname('')
+        setSurname('')
         setCareer('')
         setEmail('')
         setPassword('')
@@ -48,8 +48,8 @@ export default function RegisterPage() {
         setName(event.target.value)
     }
 
-    const lastnameChange = (event) => {
-        setLastname(event.target.value)
+    const surnameChange = (event) => {
+        setSurname(event.target.value)
     }
 
     const emailChange = (event) => {
@@ -65,70 +65,75 @@ export default function RegisterPage() {
     }
 
     return (
-        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '80vh'}}>
+        <div>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <div className="col-md-12 text-center">
-                        <h1>Register</h1>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh'}}>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <div className="col-md-12 text-center">
+                            <h1>Register</h1>
+                        </div>
                     </div>
-                </div>
 
-                <div className="input-group">
-                    <span className="input-group-text">Full Name</span>
-                    <input type="name"
-                           aria-label="First name"
-                           className="form-control"
-                           placeholder="Firstname"
-                           value={name}
-                           name="name"
-                           onChange={nameChange}
-                    ></input>
-                    <input type="lastname"
-                           aria-label="Last name"
-                           className="form-control"
-                           placeholder="Lastname"
-                           value={lastName}
-                           name="lastname"
-                           onChange={lastnameChange}
-                    ></input>
-                </div>
+                    <div className="input-group">
+                        <span className="input-group-text">Full Name</span>
+                        <input type="name"
+                               aria-label="First name"
+                               className="form-control"
+                               placeholder="Firstname"
+                               value={name}
+                               name="name"
+                               onChange={nameChange}
+                        ></input>
+                        <input type="surname"
+                               aria-label="Surname"
+                               className="form-control"
+                               placeholder="Surname"
+                               value={surname}
+                               name="surname"
+                               onChange={surnameChange}
+                        ></input>
+                    </div>
 
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="inputGroup-sizing-default">Career</span>
-                    <input type="career"
-                           className="form-control"
-                           placeholder="Enter your career here"
-                           value={career}
-                           name="career"
-                           onChange={careerChange}/>
-                </div>
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="inputGroup-sizing-default">Career</span>
+                        <input type="career"
+                               className="form-control"
+                               placeholder="Enter your career here"
+                               value={career}
+                               name="career"
+                               onChange={careerChange}/>
+                    </div>
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="inputGroup-sizing-default">e-mail</span>
+                        <input type="email"
+                               className="form-control"
+                               placeholder="name@example.com"
+                               value={email}
+                               name="email"
+                               onChange={emailChange}/>
+                    </div>
 
-                <div>
-                    <input type="email"
-                           placeholder="name@example.com"
-                           value={email}
-                           name="email"
-                           onChange={emailChange}/>
-                </div>
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="inputGroup-sizing-default">Password</span>
+                        <input type="password"
+                               className="form-control"
+                               id="floatingPassword"
+                               placeholder="Password"
+                               name="password"
+                               value={password}
+                               onChange={passwordChange}/>
+                    </div>
 
-                <div>
-                    <input type="password"
-                           id="floatingPassword"
-                           placeholder="Password"
-                           name="password"
-                           value={password}
-                           onChange={passwordChange}/>
-                </div>
+                    <div>
+                        <button type="submit">Register</button>
+                    </div>
 
-                <div>
-                    <button type="submit">Register</button>
-                </div>
-
-                <div>
-                    <Link to="/">Back</Link>
-                </div>
-            </form>
+                    <div>
+                        <Link to="/">Back</Link>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }

@@ -21,13 +21,10 @@ db
 
 # IntelliJ project files
 .idea
-*.iml
 out
 out/
 gen### Gradle template
-.gradle
 build/
-.DS_Store
 
 # Scala-IDE specific
 .scala_dependencies
@@ -37,24 +34,18 @@ build/
 *.war
 *.ear
 target
-*.iml
-.idea
 .classpath
 .project
 .settings
 *.ipr
 *.iws
-.DS_Store
 classes
 .cache
 .cache-main
 .cache-tests
-.gradle
-build/
 .tmp
 src_managed/
 !gradle/**/*.jar
-out
 
 # Project exclude paths
 /frontend/node_modules/

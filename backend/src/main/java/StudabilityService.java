@@ -3,7 +3,7 @@ import spark.Spark;
 import static spark.Spark.port;
 import static spark.Spark.staticFiles;
 
-public class MySystemService {
+public class StudabilityService {
 
     private final Routes routes = new Routes();
 
@@ -18,7 +18,7 @@ public class MySystemService {
     private void startWebServer() {
         staticFiles.location("public");
         port(4321);
-        final MySystem system = MySystem.create("Studability");
+        final Studability system = Studability.create("Studability");
         routes.create(system);
     }
 

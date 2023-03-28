@@ -1,3 +1,6 @@
 rootProject.name = 'Studability'
 include 'backend'
 include 'frontend'
+include 'frontend:Images'
+findProject(':frontend:Images')?.name = 'Images'
+

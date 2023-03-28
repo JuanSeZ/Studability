@@ -48,49 +48,57 @@ export default function LoginPage() {
     }
 
     return (
-        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '80vh'}}>
-            {isOk && <div className="alert alert-success" role="alert">User created</div>}
+        <div>
+            {isOk && <div className="alert alert-success" role="alert">User created successfully!</div>}
             {errorMsg && <div className="alert alert-warning" role="alert">{errorMsg}</div>}
-            <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <div className="col-md-12 text-center">
-                            <h1>Sign in</h1>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh'}}>
+                <form onSubmit={handleSubmit}>
+                    <div style={{height: 200}}>
+                        <div className="form-group">
+                            <div className="col-md-12 text-center">
+                                <h1>Log in</h1>
+                            </div>
+                            <label htmlFor="exampleInputEmail1">Email address</label>
+                            <input type="email"
+                                   value={email}
+                                   onChange={usernameChange}
+                                   className="form-control"
+                                   id="exampleInputEmail1"
+                                   aria-describedby="emailHelp"
+                                   placeholder="Enter email"/>
                         </div>
-                        <label htmlFor="exampleInputEmail1">Email address</label>
-                        <input type="email"
-                               value = {email}
-                               onChange={usernameChange}
-                               className="form-control"
-                               id="exampleInputEmail1"
-                               aria-describedby="emailHelp"
-                               placeholder="Enter email"/>
+
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Password</label>
+                            <input type="password"
+                                   value={password}
+                                   onChange={passwordChange}
+                                   className="form-control"
+                                   id="exampleInputPassword1"
+                                   placeholder="Password"/>
+                        </div>
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Password</label>
-                        <input type="password"
-                               value={password}
-                               onChange={passwordChange}
-                               className="form-control"
-                               id="exampleInputPassword1"
-                               placeholder="Password"/>
+                    <div className="col-md-12 text-center">
+                        <div style={{height: 60}}>
+                            <Link to="/">
+                                <button type="button" className="btn btn-outline-secondary">Back</button>
+                            </Link>
+                            <button type="submit" className="btn btn-outline-primary">Log In</button>
+                        </div>
                     </div>
 
-                <div className="col-md-12 text-center">
-                    <Link to="/"><button type="button" className="btn btn-outline-secondary">Back</button></Link>
-                    <button type="button" className="btn btn-outline-primary">Sign In</button>
-                </div>
+                    <div className="col-md-12 text-center">
+                        <h1 style={{fontSize: 14}}>
+                            Don't have an account yet?
+                        </h1>
+                        <Link to="/register">
+                            <button type="button" className="btn btn-outline-success">Register</button>
+                        </Link>
+                    </div>
 
-                <div className="col-md-12 text-center">
-                    <h1 style={{ fontSize: 14 }}>
-                        Don't have an account yet?
-                    </h1>
-                    <Link to="/register">
-                        <button type="button" className="btn btn-outline-success">Register</button>
-                    </Link>
-                </div>
-
-            </form>
+                </form>
+            </div>
         </div>
     )
 }

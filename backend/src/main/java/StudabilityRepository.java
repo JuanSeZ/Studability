@@ -2,16 +2,16 @@ import persistence.Users;
 
 import javax.persistence.EntityManager;
 
-    public class MySystemRepository {
+    public class StudabilityRepository {
 
         private final Users users;
 
-        public MySystemRepository(EntityManager entityManager) {
+        public StudabilityRepository(EntityManager entityManager) {
             this.users = new Users(entityManager);
         }
 
-        public static MySystemRepository create(EntityManager entityManager) {
-            return new MySystemRepository(entityManager);
+        public static StudabilityRepository create(EntityManager entityManager) {
+            return new StudabilityRepository(entityManager);
         }
 
         public Users users() {

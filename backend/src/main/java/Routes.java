@@ -23,9 +23,9 @@ public class Routes {
     public static final String USERS_ROUTE = "/users";
     public static final String USER_ROUTE = "/user";
 
-    private MySystem system;
+    private Studability system;
 
-    public void create(MySystem system) {
+    public void create(Studability system) {
         this.system = system;
         routes();
     }
@@ -49,11 +49,11 @@ public class Routes {
             system.registerUser(form).ifPresentOrElse(
                     (user) -> {
                         res.status(201);
-                        res.body("user created");
+                        res.body("User created");
                     },
                     () -> {
                         res.status(409);
-                        res.body("user already exists");
+                        res.body("User already exists");
                     }
             );
 
