@@ -3,6 +3,7 @@ import {useState} from 'react'
 import {Link, useSearchParams} from "react-router-dom";
 import {useNavigate} from "react-router";
 import {useStudability} from "../service/Studability";
+import StudabilityLogo from "../images/StudabilityLogo.png";
 
 function setToken(userToken) {
     sessionStorage.setItem('token', JSON.stringify(userToken));
@@ -51,13 +52,24 @@ export default function LoginPage() {
         <div>
             {isOk && <div className="alert alert-success" role="alert">User created successfully!</div>}
             {errorMsg && <div className="alert alert-warning" role="alert">{errorMsg}</div>}
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh'}}>
+
+            <br/>
+            <br/>
+
+            <div style={{display: 'flex', marginLeft: 525, height: '0vh'}}>
+                <img style={{width: 200, height: 200}} src={StudabilityLogo} className="logo" alt=""/>
+            </div>
+
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
                 <form onSubmit={handleSubmit}>
                     <div style={{height: 200}}>
                         <div className="form-group">
                             <div className="col-md-12 text-center">
                                 <h1>Log in</h1>
                             </div>
+
+                            <br/>
+
                             <label htmlFor="exampleInputEmail1">Email address</label>
                             <input type="email"
                                    value={email}
@@ -78,6 +90,8 @@ export default function LoginPage() {
                                    placeholder="Password"/>
                         </div>
                     </div>
+
+                    <br/>
 
                     <div className="col-md-12 text-center">
                         <div style={{height: 60}}>
