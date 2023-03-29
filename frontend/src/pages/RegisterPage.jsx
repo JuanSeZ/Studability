@@ -67,7 +67,7 @@ export default function RegisterPage() {
     return (
         <div>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh'}}>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '95vh'}}>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <div className="col-md-12 text-center">
@@ -75,25 +75,29 @@ export default function RegisterPage() {
                         </div>
                     </div>
 
-                    <div className="input-group">
-                        <span className="input-group-text">Full Name</span>
+                    <br/>
+
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="inputGroup-sizing-default">Name</span>
                         <input type="name"
-                               aria-label="First name"
                                className="form-control"
-                               placeholder="Firstname"
+                               placeholder="Enter your name here"
                                value={name}
                                name="name"
-                               onChange={nameChange}
-                        ></input>
+                               onChange={nameChange}/>
+                    </div>
+
+
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="inputGroup-sizing-default">Surname</span>
                         <input type="surname"
-                               aria-label="Surname"
                                className="form-control"
-                               placeholder="Surname"
+                               placeholder="Enter your surname here"
                                value={surname}
                                name="surname"
-                               onChange={surnameChange}
-                        ></input>
+                               onChange={surnameChange}/>
                     </div>
+
 
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="inputGroup-sizing-default">Career</span>
@@ -104,6 +108,8 @@ export default function RegisterPage() {
                                name="career"
                                onChange={careerChange}/>
                     </div>
+
+
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="inputGroup-sizing-default">e-mail</span>
                         <input type="email"
@@ -113,6 +119,7 @@ export default function RegisterPage() {
                                name="email"
                                onChange={emailChange}/>
                     </div>
+
 
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="inputGroup-sizing-default">Password</span>
@@ -125,13 +132,15 @@ export default function RegisterPage() {
                                onChange={passwordChange}/>
                     </div>
 
-                    <div>
-                        <button type="submit">Register</button>
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <div className="btn-group" role="group" aria-label="Basic outlined example">
+                            <Link to="/">
+                                <button type="button" className="btn btn-outline-secondary">Back</button>
+                            </Link>
+                            <button type="submit" className="btn btn-outline-success">Register</button>
+                        </div>
                     </div>
 
-                    <div>
-                        <Link to="/">Back</Link>
-                    </div>
                 </form>
             </div>
         </div>
