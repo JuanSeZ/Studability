@@ -5,6 +5,9 @@ import StudabilityLogo from "../images/StudabilityLogo.png"
 export default function MainPage() {
     return (
         <div>
+            <br/>
+            <br/>
+            <br/>
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh'}}>
                 <img style={{width: 400, height: 400}} src={StudabilityLogo} className="logo" alt=""/>
             </div>
