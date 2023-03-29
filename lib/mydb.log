@@ -1,9 +1,26 @@
-/*C7*/SET SCHEMA PUBLIC
+/*C3*/SET SCHEMA PUBLIC
 drop table if exists USER CASCADE 
 drop sequence userGen if exists
 create sequence userGen start with 1 increment by 50
 create table USER (id bigint not null, career varchar(255), email varchar(255) not null, name varchar(255), password varchar(255), surname varchar(255), primary key (id))
 alter table USER add constraint UK_oso07pudw19e66bs4yp8hwpux unique (email)
-INSERT INTO USER VALUES(1,'informatica flaco','anda_esta_verga@hotmail.com','Juan','hola','Zanelli')
+/*C4*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C5*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C3*/INSERT INTO USER VALUES(1,'inf','z@gmail.com','Juan','j','Z')
+ALTER SEQUENCE PUBLIC.USERGEN RESTART WITH 101
+COMMIT
+/*C6*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C7*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C8*/SET SCHEMA PUBLIC
+drop table if exists USER CASCADE 
+drop sequence userGen if exists
+create sequence userGen start with 1 increment by 50
+create table USER (id bigint not null, career varchar(255), email varchar(255) not null, name varchar(255), password varchar(255), surname varchar(255), primary key (id))
+alter table USER add constraint UK_oso07pudw19e66bs4yp8hwpux unique (email)
+INSERT INTO USER VALUES(1,'inf','z@gmail.com','j','j','z')
 ALTER SEQUENCE PUBLIC.USERGEN RESTART WITH 101
 COMMIT

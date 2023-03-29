@@ -78,7 +78,7 @@ public class Routes {
             getToken(req)
                     .ifPresentOrElse(token -> {
                         emailByToken.invalidate(token);
-                        res.status(204);
+                        res.status(200);
                     }, () -> {
                         res.status(404);
                     });

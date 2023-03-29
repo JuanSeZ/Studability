@@ -32,6 +32,21 @@ const Studability = {
             }
         })
     },
+    logout: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/auth`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization':'Bearer ' + token
+            },
+        }).then(resp => {
+            if (resp.status === 200) {
+                 okCallback()
+            } else {
+                errorCallback("Error Can't logout")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
 
 }
 export const useStudability = () => Studability
