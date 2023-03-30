@@ -6,6 +6,7 @@ import {BrowserRouter, Route} from "react-router-dom";
 import {Routes} from "react-router";
 import HomePage from "./pages/HomePage";
 import {RequireAuth} from "./components/RequireAuth";
+import CalendarPage from "./pages/CalendarPage";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
                     </RequireAuth>
                   }
               />
+              <Route path = "/home/calendar" element={<CalendarPage />} />
           </Routes></div>
       </BrowserRouter>
   );
