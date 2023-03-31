@@ -8,9 +8,17 @@ export default function CalendarPage() {
     const [value, onChange] = useState(new Date());
     return (
         <div className="Calendar">
-            <header><h1>My calendar</h1></header>
+
+        <br/>
+
+            <div style={{justifyContent: "center", alignItems: "center", display: "flex"}}>
+                <header><h1>My calendar</h1></header>
+            </div>
+
+            <br/>
+
             <div className="Calendar container">
-                <main className="Calendar container content">
+                <main className="Calendar container content" style={{justifyContent: "center", alignItems: "center", display: "flex"}}>
                     <Calendar onChange={onChange} value={value}/>
                 </main>
             </div>

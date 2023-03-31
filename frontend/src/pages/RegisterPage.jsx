@@ -64,6 +64,12 @@ export default function RegisterPage() {
         setCareer(event.target.value)
     }
 
+    function validateNotNull(value){
+        if (value == null){
+            return "All fields must be filled"
+        }
+    }
+
     return (
         <div>
             {errorMsg && <div className="alert alert-danger" role="alert">{errorMsg}</div>}
@@ -79,7 +85,7 @@ export default function RegisterPage() {
 
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="inputGroup-sizing-default">Name</span>
-                        <input type="name"
+                        <input type="name" required
                                className="form-control"
                                placeholder="Enter your name here"
                                value={name}
@@ -90,7 +96,7 @@ export default function RegisterPage() {
 
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="inputGroup-sizing-default">Surname</span>
-                        <input type="surname"
+                        <input type="surname" required
                                className="form-control"
                                placeholder="Enter your surname here"
                                value={surname}
@@ -98,10 +104,9 @@ export default function RegisterPage() {
                                onChange={surnameChange}/>
                     </div>
 
-
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="inputGroup-sizing-default">Career</span>
-                        <input type="career"
+                        <input type="career" required
                                className="form-control"
                                placeholder="Enter your career here"
                                value={career}
@@ -112,7 +117,7 @@ export default function RegisterPage() {
 
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="inputGroup-sizing-default">e-mail</span>
-                        <input type="email"
+                        <input type="email" required
                                className="form-control"
                                placeholder="name@example.com"
                                value={email}
@@ -123,7 +128,7 @@ export default function RegisterPage() {
 
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="inputGroup-sizing-default">Password</span>
-                        <input type="password"
+                        <input type="password" required
                                className="form-control"
                                id="floatingPassword"
                                placeholder="Password"
