@@ -56,7 +56,7 @@ export default function LoginPage() {
             <br/>
             <br/>
 
-            <div style={{display: 'flex', marginLeft: 525, height: '0vh'}}>
+            <div style={{display: 'flex', justifyContent:'center', alignContent:"center", height: '0vh'}}>
                 <img style={{width: 200, height: 200}} src={StudabilityLogo} className="logo" alt=""/>
             </div>
 

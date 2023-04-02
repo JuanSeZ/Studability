@@ -1,6 +1,7 @@
 const restApiEndpoint = "http://localhost:4321"
 
 const Studability = {
+
     login: (credentials, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/auth`, {
             method: 'POST',
@@ -47,6 +48,38 @@ const Studability = {
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
+
+    addEvent: (token, name, date) => {
+        fetch(`${restApiEndpoint}/auth`, {
+            method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(token)
+        // }).then(resp => {
+        //     if (resp.status === 200) {
+        //         okCallback()
+        //     } else {
+        //         errorCallback()
+        //     }
+        })
+    },
+
+    listEvents: () => {
+        fetch('http://localhost:4321/users', {
+            method: 'GET',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + token
+        //     }
+        // }).then(resp => {
+        //     if (resp.status === 200) {
+        //         resp.json().then(events => okCallback(events))
+        //     } else {
+        //         errorCallback()
+        //     }
+        })
+    }
 
 }
 export const useStudability = () => Studability
