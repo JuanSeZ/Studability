@@ -54,7 +54,6 @@ export default function LoginPage() {
             {errorMsg && <div className="alert alert-warning" role="alert">{errorMsg}</div>}
 
             <br/>
-            <br/>
 
             <div style={{display: 'flex', justifyContent:'center', alignContent:"center", height: '0vh'}}>
                 <img style={{width: 200, height: 200}} src={StudabilityLogo} className="logo" alt=""/>

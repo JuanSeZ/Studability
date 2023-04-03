@@ -30,22 +30,40 @@ export default function CalendarPage() {
 
     return (
         <div>
-            <button onClick={() => setPopup(true)}>Add Event</button>
-            {popup && (
-                <ClickAwayListener onClickAway={() => setPopup(false)}>
-                    <div className={'popup'}>
-                        <input className="nameEvent"
-                               placeholder="Event name"
-                               value={nameEvent}
-                               onChange={changeNameEvent}>
-                        </input>
-                        <div><DatePicker onChange={setDate} value={dateValue}/></div>
-                        <div>
-                            <button onClick={addEvent}>Save Event</button>
-                        </div>
-                    </div>
-                </ClickAwayListener>
-            )}
+            <br/>
+
+            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <h1>
+                    <header>My Calendar</header>
+                </h1>
+            </div>
+
+            <br/>
+            <br/>
+
+            <div>
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <button className="btn btn-primary" onClick={() => setPopup(true)}>+ Add Event</button>
+                </div>
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    {popup && (
+                        <ClickAwayListener onClickAway={() => setPopup(false)}>
+                            <div className={'popup'}>
+                                <input className="nameEvent"
+                                       placeholder="Event name"
+                                       value={nameEvent}
+                                       onChange={changeNameEvent}>
+                                </input>
+                                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <DatePicker onChange={setDate} value={dateValue}/></div>
+                                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <button className="btn btn-success" onClick={addEvent}>Save Event</button>
+                                </div>
+                            </div>
+                        </ClickAwayListener>
+                    )}
+                </div>
+            </div>
         </div>
     )
 };
