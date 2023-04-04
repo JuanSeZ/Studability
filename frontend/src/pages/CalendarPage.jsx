@@ -10,22 +10,30 @@ export default function CalendarPage() {
 
     const [dateValue, setDate] = useState(new Date());
     const [popup, setPopup] = useState(false)
-    const [nameEvent, setNameEvent] = useState('')
+    const [title, setTitle] = useState('')
     const studability = useStudability();
 
     const changeNameEvent = (event) => {
-        setNameEvent(event.target.value)
+        setTitle(event.target.value)
     }
 
 
     const resetForm = () => {
-        setNameEvent('')
+        setTitle('')
         setDate(null)
     }
 
     function addEvent(credentials) {
-        studability.addEvent(credentials, nameEvent, dateValue)
+        studability.addEvent(credentials, title, dateValue)
         resetForm()
+    }
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        await addEvent({
+            title: title,
+            dateValue: dateValue
+        })
     }
 
     return (
@@ -46,24 +54,33 @@ export default function CalendarPage() {
                     <button className="btn btn-primary" onClick={() => setPopup(true)}>+ Add Event</button>
                 </div>
                 <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    {popup && (
-                        <ClickAwayListener onClickAway={() => setPopup(false)}>
-                            <div className={'popup'}>
-                                <input className="nameEvent"
-                                       placeholder="Event name"
-                                       value={nameEvent}
-                                       onChange={changeNameEvent}>
-                                </input>
-                                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                    <DatePicker onChange={setDate} value={dateValue}/></div>
-                                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                    <button className="btn btn-success" onClick={addEvent}>Save Event</button>
+                    <form onSubmit={handleSubmit}>
+                        {popup && (
+                            <ClickAwayListener onClickAway={() => setPopup(false)}>
+                                <div className={'popup'}>
+                                    <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                        <DatePicker onChange={setDate} value={dateValue}/>
+                                    </div>
+                                    <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                        <input className="nameEvent"
+                                               placeholder="Event name"
+                                               value={title}
+                                               onChange={changeNameEvent}>
+                                        </input>
+                                    </div>
+                                    <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                        <button className="btn btn-success" type="submit">Save Event</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </ClickAwayListener>
-                    )}
+                            </ClickAwayListener>
+                        )}
+                    </form>
                 </div>
             </div>
+
+
+
+
         </div>
     )
 };

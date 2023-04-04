@@ -33,6 +33,7 @@ const Studability = {
             }
         })
     },
+
     logout: (token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/auth`, {
             method: 'DELETE',
@@ -49,35 +50,36 @@ const Studability = {
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
 
-    addEvent: (token, name, date) => {
+    addEvent: (token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/auth`, {
             method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(token)
-        // }).then(resp => {
-        //     if (resp.status === 200) {
-        //         okCallback()
-        //     } else {
-        //         errorCallback()
-        //     }
-        })
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization':'Bearer ' + token
+            },
+            body: JSON.stringify(token)
+        }).then(resp => {
+            if (resp.status === 200) {
+                okCallback("The event has been added successfully")
+            } else {
+                errorCallback("The event has not been added")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
 
-    listEvents: () => {
+    listEvents: (token, okCallback, errorCallback) => {
         fetch('http://localhost:4321/users', {
             method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': 'Bearer ' + token
-        //     }
-        // }).then(resp => {
-        //     if (resp.status === 200) {
-        //         resp.json().then(events => okCallback(events))
-        //     } else {
-        //         errorCallback()
-        //     }
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(events => okCallback(events))
+            } else {
+                errorCallback()
+            }
         })
     }
 
