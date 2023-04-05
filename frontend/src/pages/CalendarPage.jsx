@@ -17,7 +17,6 @@ export default function CalendarPage() {
         setTitle(event.target.value)
     }
 
-
     const resetForm = () => {
         setTitle('')
         setDate(null)
@@ -34,6 +33,11 @@ export default function CalendarPage() {
             title: title,
             dateValue: dateValue
         })
+    }
+
+/* TODO make this function show the events for that day */
+    function handleClickDate() {
+
     }
 
     return (
@@ -78,9 +82,11 @@ export default function CalendarPage() {
                 </div>
             </div>
 
+            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <Calendar onClickDay={handleClickDate} defaultView="year" value={new Date()}/>
+            </div>
 
-
-
+            <br/>
         </div>
     )
 };
