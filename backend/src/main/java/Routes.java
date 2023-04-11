@@ -1,5 +1,6 @@
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import entities.Event;
 import entities.User;
 import json.JsonParser;
 import model.Auth;
@@ -22,6 +23,7 @@ public class Routes {
     public static final String AUTH_ROUTE = "/auth";
     public static final String USERS_ROUTE = "/users";
     public static final String USER_ROUTE = "/user";
+    public static final String CALENDAR_ROUTE = "/home/calendar";
 
     private Studability system;
 
@@ -56,7 +58,6 @@ public class Routes {
                         res.body("User already exists");
                     }
             );
-
             return res.body();
         });
         post(AUTH_ROUTE, (req, res) -> {
@@ -83,12 +84,49 @@ public class Routes {
                         res.status(404);
                     });
 
-            return "";
+            return res.body();
         });
 
         authorizedGet(USERS_ROUTE, (req, res) -> {
             final List<User> users = system.listUsers();
             return JsonParser.toJson(users);
+        });
+
+        authorizedPost(CALENDAR_ROUTE, (req, res) -> {
+            final String body = req.body();
+            final User user = getUser(req).get();
+            system.addEvent(body, user).ifPresentOrElse(
+                    (event) -> {
+                        res.status(201);
+                        res.body("Event created");
+                    },
+                    () -> {
+                        res.status(409);
+                        res.body("Event already exists");
+                    }
+            );
+            return res.body();
+        });
+        authorizedGet(CALENDAR_ROUTE, (req, res) -> {
+            final User user = getUser(req).get();
+            final List<Event> events = system.listEventsofUser(user);
+            return JsonParser.toJson(events);
+        });
+
+        authorizedDelete(CALENDAR_ROUTE, (req, res) -> {
+            final String body = req.body();
+            final User user = getUser(req).get();
+            system.deleteEvent(body, user).ifPresentOrElse(
+                    (event) -> {
+                        res.status(201);
+                        res.body("Event deleted");
+                    },
+                    () -> {
+                        res.status(409);
+                        res.body("Event does not exist");
+                    }
+            );
+            return res.body();
         });
 
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
@@ -100,6 +138,10 @@ public class Routes {
 
     private void authorizedDelete(final String path, final Route route) {
         delete(path, (request, response) -> authorize(route, request, response));
+    }
+
+    private void authorizedPost(final String path, final Route route) {
+        post(path, (request, response) -> authorize(route, request, response));
     }
 
     private Object authorize(Route route, Request request, Response response) throws Exception {

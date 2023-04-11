@@ -1,5 +1,7 @@
+import entities.Event;
 import entities.User;
 import model.RegistrationUserForm;
+import persistence.Events;
 import persistence.Users;
 
 import javax.persistence.EntityManager;
@@ -9,7 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-// TODO: Cambiar los nombres user y email :)
+import static json.JsonParser.fromJson;
+
+// TODO: Crear un EventForm para no romper la inmutabilidad de Event
 public class Studability {
 
     private final EntityManagerFactory factory;
@@ -64,4 +68,26 @@ public class Studability {
         return foundUser.getPassword().equals(password);
     }
 
+    public Optional<Event> addEvent(String body, User user) {
+        return runInTransaction(datasource -> {
+            Events events = datasource.events();
+            final Event event = fromJson(body.replace('}',',').concat("\"userId\":\"" + user.getEmail() + "\"}"), Event.class);
+            return events.exists(event) ? Optional.empty() : Optional.of(events.addEvent(event));
+        });
+    }
+
+    public List<Event> listEventsofUser(User user) {
+        return runInTransaction(datasource -> {
+            Events events = datasource.events();
+            return events.findByUserId(user.getEmail());
+        });
+    }
+
+    public Optional<Object> deleteEvent(String body, User user) {
+        return runInTransaction(datasource -> {
+            Events events = datasource.events();
+            final Event event = fromJson(body.replace('}',',').concat("\"userId\":\"" + user.getEmail() + "\"}"), Event.class);
+            return events.exists(event) ? Optional.of(events.deleteEvent(event)) : Optional.empty();
+        });
+    }
 }

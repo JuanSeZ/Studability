@@ -13,6 +13,7 @@ public class User {
     @Column()
     private String surname;
 
+    @Id
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -21,10 +22,6 @@ public class User {
 
     @Column()
     private String career;
-
-    @Id
-    @GeneratedValue(generator = "userGen", strategy = GenerationType.SEQUENCE)
-    private Long id;
 
     public User(String name, String surname, String email, String password, String career) {
         this.name = name;
@@ -61,5 +58,4 @@ public class User {
         return career;
     }
 
-    public Long getId(){return id;}
 }
