@@ -1,5 +1,6 @@
 import entities.Event;
 import entities.User;
+import model.CreateEventForm;
 import model.RegistrationUserForm;
 import persistence.Events;
 import persistence.Users;
@@ -71,7 +72,9 @@ public class Studability {
     public Optional<Event> addEvent(String body, User user) {
         return runInTransaction(datasource -> {
             Events events = datasource.events();
-            final Event event = fromJson(body.replace('}',',').concat("\"userId\":\"" + user.getEmail() + "\"}"), Event.class);
+            final CreateEventForm createEventForm = fromJson(body, CreateEventForm.class);
+
+            Event event = new Event(createEventForm.dateValue, createEventForm.title, user.getEmail());
             return events.exists(event) ? Optional.empty() : Optional.of(events.addEvent(event));
         });
     }

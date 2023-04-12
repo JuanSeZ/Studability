@@ -98,7 +98,7 @@ public class Routes {
             system.addEvent(body, user).ifPresentOrElse(
                     (event) -> {
                         res.status(201);
-                        res.body("Event created");
+                        res.body(JsonParser.toJson(event));
                     },
                     () -> {
                         res.status(409);

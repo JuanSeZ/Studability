@@ -1,17 +1,28 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../calendarDesign.css';
 import ClickAwayListener from 'react-click-away-listener';
 import {useStudability} from "../service/Studability";
-import DatePicker from 'react-date-picker'
+import DatePicker from 'react-date-picker';
+import {useAuthProvider} from "../auth/auth";
+import {useSearchParams} from "react-router-dom";
+import * as events from "events";
 
 export default function CalendarPage() {
 
     const [dateValue, setDate] = useState(new Date());
     const [popup, setPopup] = useState(false)
     const [title, setTitle] = useState('')
+    const [setErrorMsg] = useState(undefined)
     const studability = useStudability();
+    const auth = useAuthProvider()
+    const token = auth.getToken();
+    const [events, setEvents] = useState([])
+
+    useEffect(() => {
+        studability.listEvents(token,(events) => setEvents(events), (msg) => console.log(msg));
+    }, [])
 
     const changeNameEvent = (event) => {
         setTitle(event.target.value)
@@ -22,22 +33,37 @@ export default function CalendarPage() {
         setDate(null)
     }
 
-    function addEvent(credentials) {
-        studability.addEvent(credentials, title, dateValue)
+    function addEvent(eventForm) {
+        addEventToBackEnd(eventForm)
         resetForm()
+    }
+
+    function addEventToBackEnd(addedEvent) {
+        studability.addEvent(addedEvent,
+            token,
+            () => addEventToCalendar(addedEvent),
+            () => {
+                setErrorMsg('Event already exists')
+                resetForm();
+            })
+    }
+
+    function addEventToCalendar(addedEvent) {
+        setEvents(events.concat(addedEvent));
     }
 
     const handleSubmit = async e => {
         e.preventDefault();
-        await addEvent({
+        addEvent({
             title: title,
-            dateValue: dateValue
-        })
+            dateValue: parseDateToString(dateValue)
+        });
     }
 
-/* TODO make this function show the events for that day */
-    function handleClickDate() {
-
+    function parseDateToString(date) {
+        const month = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+        //month is 0 based, January == 0, february == 1,, ...
+        return date.getDate() + "/" + month[date.getMonth()] + "/" + date.getFullYear()
     }
 
     return (
@@ -69,8 +95,8 @@ export default function CalendarPage() {
                                         <input className="nameEvent"
                                                placeholder="Event name"
                                                value={title}
-                                               onChange={changeNameEvent}>
-                                        </input>
+                                               name="event"
+                                               onChange={changeNameEvent}/>
                                     </div>
                                     <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                                         <button className="btn btn-success" type="submit">Save Event</button>
@@ -82,8 +108,16 @@ export default function CalendarPage() {
                 </div>
             </div>
 
-            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <Calendar onClickDay={handleClickDate} defaultView="year" value={new Date()}/>
+            <br/>
+            <br/>
+
+            <div className="container">
+                <h1 style={{justifyContent: "center", alignItems: "center", display: "flex"}}>Events scheduled</h1>
+                <ul>
+                    {events.map(event =>
+                        <li key={event.title}>{event.title}</li>
+                    )}
+                </ul>
             </div>
 
             <br/>

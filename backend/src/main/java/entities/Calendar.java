@@ -16,11 +16,11 @@ public class Calendar {
     @OneToOne
     private User user;
 
-    private ArrayList<CalendarEvent> events;
+//    private ArrayList<CalendarEvent> events;
 
     public Calendar(){
-        this.id = user.getId(); // the calendar ID will be the same as the student ID
-        this.events = new ArrayList<>();
+//        this.id = user.getId(); // the calendar ID will be the same as the student ID
+//        this.events = new ArrayList<>();
     }
 
     public Long getId() {

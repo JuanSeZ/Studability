@@ -50,17 +50,17 @@ const Studability = {
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
 
-    addEvent: (token, okCallback, errorCallback) => {
-        fetch(`${restApiEndpoint}/auth`, {
+    addEvent: (credentials, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/home/calendar`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization':'Bearer ' + token
             },
-            body: JSON.stringify(token)
+            body: JSON.stringify(credentials)
         }).then(resp => {
-            if (resp.status === 200) {
-                okCallback("The event has been added successfully")
+            if (resp.status === 201) {
+                resp.json().then(addedEvent => okCallback(addedEvent))
             } else {
                 errorCallback("The event has not been added")
             }
@@ -68,7 +68,7 @@ const Studability = {
     },
 
     listEvents: (token, okCallback, errorCallback) => {
-        fetch('http://localhost:4321/users', {
+        fetch('http://localhost:4321/home/calendar', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ const Studability = {
             if (resp.status === 200) {
                 resp.json().then(events => okCallback(events))
             } else {
-                errorCallback()
+                errorCallback("Events cannot be listed")
             }
         })
     }
