@@ -9,6 +9,7 @@ public class Event {
 @Id
 @GeneratedValue(generator = "userGen", strategy = GenerationType.SEQUENCE)
 private long id;
+
 // FORMAT: DD/MM/YYYY ---- Date when the event happens
 
 @Column
