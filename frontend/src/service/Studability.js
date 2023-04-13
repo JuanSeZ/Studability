@@ -39,11 +39,11 @@ const Studability = {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization':'Bearer ' + token
+                'Authorization': 'Bearer ' + token
             },
         }).then(resp => {
             if (resp.status === 200) {
-                 okCallback()
+                okCallback()
             } else {
                 errorCallback("Error Can't logout")
             }
@@ -55,7 +55,7 @@ const Studability = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization':'Bearer ' + token
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify(credentials)
         }).then(resp => {
@@ -81,6 +81,23 @@ const Studability = {
                 errorCallback("Events cannot be listed")
             }
         })
+    },
+
+    addToDoTask: (todo, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/home`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(todo)
+        }).then(resp => {
+            if (resp.status === 201) {
+                resp.json().then(addedTask => okCallback(addedTask))
+            } else {
+                errorCallback("The task has not been added")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
     }
 
 }
