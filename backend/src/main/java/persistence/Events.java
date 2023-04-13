@@ -29,20 +29,14 @@ private final EntityManager entityManager;
         return event;
     }
 
-    public Event deleteEvent(Event event) {
-       entityManager.createQuery("DELETE FROM Event e WHERE e.date = :date AND e.title = :title AND e.userId = :userId")
-               .setParameter("date", event.getDate())
-               .setParameter("title", event.getTitle())
-               .setParameter("userId", event.getUserId())
-               .executeUpdate();
-       return event;
+    public Event deleteEvent(long id) {
+        Event event = entityManager.find(Event.class, id);
+        entityManager.remove(event);
+        return event;
     }
 
-    public boolean exists(Event event) {
-        return entityManager.createQuery("SELECT e FROM Event e WHERE e.date = :date AND e.title = :title AND e.userId = :userId", Event.class)
-                .setParameter("date", event.getDate())
-                .setParameter("title", event.getTitle())
-                .setParameter("userId", event.getUserId())
-                .getResultList().size() > 0;
+    public boolean exists(long eventId) {
+        return entityManager.createQuery("SELECT e FROM Event e WHERE e.id = :id", Event.class)
+                .setParameter("id", eventId).getResultList().size() > 0;
     }
 }

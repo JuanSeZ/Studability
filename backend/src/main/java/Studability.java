@@ -75,7 +75,7 @@ public class Studability {
             final CreateEventForm createEventForm = fromJson(body, CreateEventForm.class);
 
             Event event = new Event(createEventForm.dateValue, createEventForm.title, user.getEmail());
-            return events.exists(event) ? Optional.empty() : Optional.of(events.addEvent(event));
+            return Optional.of(events.addEvent(event));
         });
     }
 
@@ -89,8 +89,8 @@ public class Studability {
     public Optional<Object> deleteEvent(String body, User user) {
         return runInTransaction(datasource -> {
             Events events = datasource.events();
-            final Event event = fromJson(body.replace('}',',').concat("\"userId\":\"" + user.getEmail() + "\"}"), Event.class);
-            return events.exists(event) ? Optional.of(events.deleteEvent(event)) : Optional.empty();
+            long id = fromJson(body, Long.class);
+            return events.exists(id) ? Optional.of(events.deleteEvent(id)) : Optional.empty();
         });
     }
 }

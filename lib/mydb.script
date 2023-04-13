@@ -47,4 +47,5 @@ GRANT DBA TO SA
 SET SCHEMA SYSTEM_LOBS
 INSERT INTO BLOCKS VALUES(0,2147483647,0)
 SET SCHEMA PUBLIC
+INSERT INTO EVENT VALUES(1,'9/12/2018','evento','email@gmail.com')
 INSERT INTO USER VALUES('email@gmail.com','informatica flaco','Pancho','hola','Cavallaro')
