@@ -24,6 +24,7 @@ public class Routes {
     public static final String USERS_ROUTE = "/users";
     public static final String USER_ROUTE = "/user";
     public static final String CALENDAR_ROUTE = "/home/calendar";
+    public static final String HOME_ROUTE = "/home";
 
     private Studability system;
 
@@ -131,6 +132,39 @@ public class Routes {
 
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
+
+
+        authorizedPost(HOME_ROUTE, (req, res) -> {
+            final String body = req.body();
+            final User user = getUser(req).get();
+            system.addToDoTask(body, user).ifPresentOrElse(
+                    (task) -> {
+                        res.status(201);
+                        res.body(JsonParser.toJson(task));
+                    },
+                    () -> {
+                        res.status(409);
+                        res.body("Task already exists");
+                    }
+            );
+            return res.body();
+        });
+
+        authorizedDelete(HOME_ROUTE, (req, res) -> {
+            final String body = req.body();
+            final User user = getUser(req).get();
+            system.deleteEvent(body, user).ifPresentOrElse(
+                    (event) -> {
+                        res.status(201);
+                        res.body("Task deleted");
+                    },
+                    () -> {
+                        res.status(409);
+                        res.body("Task does not exist");
+                    }
+            );
+            return res.body();
+        });
     }
     private void authorizedGet(final String path, final Route route) {
         get(path, (request, response) -> authorize(route, request, response));

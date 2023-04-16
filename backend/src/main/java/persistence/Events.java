@@ -4,7 +4,6 @@ import entities.Event;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 
 public class Events {
 private final EntityManager entityManager;

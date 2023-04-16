@@ -98,6 +98,23 @@ const Studability = {
                 errorCallback("The task has not been added")
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
+    deleteToDoTask: (todo, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/home`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(todo)
+        }).then(resp => {
+            if (resp.status === 201) {
+                resp.json().then(deletedTask => okCallback(deletedTask))
+            } else {
+                errorCallback("The task has not been deleted")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
     }
 
 }
