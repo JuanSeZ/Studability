@@ -106,6 +106,13 @@ public class Studability {
         });
     }
 
+    public List<Task> listTaskOfUser(User user) {
+        return runInTransaction(datasource -> {
+            Tasks tasks = datasource.tasks();
+            return tasks.findByUserId(user.getEmail());
+        });
+    }
+
     public Optional<Object> deleteToDoTask(String body, User user) {
         return runInTransaction(datasource -> {
             Tasks tasks = datasource.tasks();

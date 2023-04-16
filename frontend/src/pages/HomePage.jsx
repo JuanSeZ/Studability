@@ -1,8 +1,8 @@
 import {useStudability} from "../service/Studability";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth"
-import button from "bootstrap/js/src/button";
+// import button from "bootstrap/js/src/button";
 import Dropdown from 'react-bootstrap/Dropdown';
 import StudabilityLogo from "../images/StudabilityLogo.png";
 import * as React from "react";
@@ -28,6 +28,13 @@ export default function HomePage() {
         setList([...list, newTask]);
         setName("");
     }
+
+    useEffect(() => {
+        studability.listTasks(
+            token,
+            (list) => setList(list),
+            (msg) => console.log(msg));
+    }, [])
 
     const deleteTask = (id) => {
         const newList = list.filter((task) => task.id !== id);
@@ -108,7 +115,7 @@ export default function HomePage() {
                 <div>
                     <h4>To-Do List</h4>
                     <input type="text"
-                           value={name}
+                           value={name} required={true}
                            placeholder="Enter a To-Do Task"
                            onChange={(e) => setName(e.target.value)}/>
                     <button type="submit" className="btn btn-outline-primary">+ Add Task</button>

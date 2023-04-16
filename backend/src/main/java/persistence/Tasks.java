@@ -4,6 +4,7 @@ import entities.Event;
 import entities.Task;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public class Tasks {
     private final EntityManager entityManager;
@@ -24,5 +25,10 @@ public class Tasks {
     public boolean exists(long taskId) {
         return entityManager.createQuery("SELECT t FROM Task t WHERE t.id = :id", Task.class)
                 .setParameter("id", taskId).getResultList().size() > 0;
+    }
+
+    public List<Task> findByUserId(String userId) {
+        return entityManager.createQuery("SELECT t FROM Task t WHERE t.userId LIKE :userId", Task.class)
+                .setParameter("userId", userId).getResultList();
     }
 }

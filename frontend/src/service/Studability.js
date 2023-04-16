@@ -83,14 +83,14 @@ const Studability = {
         })
     },
 
-    addToDoTask: (todo, token, okCallback, errorCallback) => {
+    addToDoTask: (task, token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/home`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify(todo)
+            body: JSON.stringify(task)
         }).then(resp => {
             if (resp.status === 201) {
                 resp.json().then(addedTask => okCallback(addedTask))
@@ -100,14 +100,30 @@ const Studability = {
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
 
-    deleteToDoTask: (todo, token, okCallback, errorCallback) => {
+    listTasks: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/home`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(tasks => okCallback(tasks))
+            } else {
+                errorCallback("Tasks cannot be listed")
+            }
+        })
+    },
+
+    deleteToDoTask: (task, token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/home`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify(todo)
+            body: JSON.stringify(task)
         }).then(resp => {
             if (resp.status === 201) {
                 resp.json().then(deletedTask => okCallback(deletedTask))

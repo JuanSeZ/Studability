@@ -1,6 +1,7 @@
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import entities.Event;
+import entities.Task;
 import entities.User;
 import json.JsonParser;
 import model.Auth;
@@ -150,12 +151,18 @@ public class Routes {
             return res.body();
         });
 
+        authorizedGet(HOME_ROUTE, (req, res) -> {
+            final User user = getUser(req).get();
+            final List<Task> tasks = system.listTaskOfUser(user);
+            return JsonParser.toJson(tasks);
+        });
+
         authorizedDelete(HOME_ROUTE, (req, res) -> {
             final String body = req.body();
             final User user = getUser(req).get();
-            system.deleteEvent(body, user).ifPresentOrElse(
-                    (event) -> {
-                        res.status(201);
+            system.deleteToDoTask(body, user).ifPresentOrElse(
+                    (task) -> {
+                        res.status(200);
                         res.body("Task deleted");
                     },
                     () -> {

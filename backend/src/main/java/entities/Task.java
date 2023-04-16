@@ -12,29 +12,29 @@ public class Task {
     private String name;
 
     @Column()
-    private String userID;
+    private String userId;
 
     @Id
     @GeneratedValue(generator = "userGen", strategy = GenerationType.SEQUENCE)
     private long id;
 
-    public Task(String name, String userID){
+    public Task(String name, String userId){
         this.name = name;
-        this.userID = userID;
+        this.userId = userId;
     }
 
     public Task() {}
 
-    public static Task create(String name, String userID){
-        return new Task(name, userID);
+    public static Task create(String name, String userId){
+        return new Task(name, userId);
     }
 
     public String getName(){
         return name;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
     public long getId() {
