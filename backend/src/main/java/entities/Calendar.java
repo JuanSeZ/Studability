@@ -1,11 +1,8 @@
 package entities;
 
-import entitiesItems.CalendarEvent;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import java.util.ArrayList;
 
 @Entity
 public class Calendar {

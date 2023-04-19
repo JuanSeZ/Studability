@@ -1,6 +1,5 @@
 package model;
 
-import javax.persistence.Column;
 
 public class CreateEventForm {
 

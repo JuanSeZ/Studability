@@ -1,8 +1,11 @@
 import entities.Event;
 import entities.User;
+import entities.Task;
 import model.CreateEventForm;
+import model.CreateTaskForm;
 import model.RegistrationUserForm;
 import persistence.Events;
+import persistence.Tasks;
 import persistence.Users;
 
 import javax.persistence.EntityManager;
@@ -90,6 +93,30 @@ public class Studability {
         return runInTransaction(datasource -> {
             Events events = datasource.events();
             return events.exists(eventId) ? Optional.of(events.deleteEvent(eventId)) : Optional.empty();
+        });
+    }
+    public Optional<Task> addToDoTask(String body, User user) {
+        return runInTransaction(datasource -> {
+            Tasks tasks = datasource.tasks();
+            final CreateTaskForm createTaskForm = fromJson(body, CreateTaskForm.class);
+
+            Task task = new Task(createTaskForm.name, user.getEmail());
+            return Optional.of(tasks.addTask(task));
+        });
+    }
+
+    public List<Task> listTaskOfUser(User user) {
+        return runInTransaction(datasource -> {
+            Tasks tasks = datasource.tasks();
+            return tasks.findByUserId(user.getEmail());
+        });
+    }
+
+    public Optional<Object> deleteToDoTask(String body, User user) {
+        return runInTransaction(datasource -> {
+            Tasks tasks = datasource.tasks();
+            long id = fromJson(body, Long.class);
+            return tasks.exists(id) ? Optional.of(tasks.deleteToDoTask(id)) : Optional.empty();
         });
     }
 }
