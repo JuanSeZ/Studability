@@ -86,11 +86,10 @@ public class Studability {
         });
     }
 
-    public Optional<Object> deleteEvent(String body, User user) {
+    public Optional<Object> deleteEvent(Long eventId) {
         return runInTransaction(datasource -> {
             Events events = datasource.events();
-            long id = fromJson(body, Long.class);
-            return events.exists(id) ? Optional.of(events.deleteEvent(id)) : Optional.empty();
+            return events.exists(eventId) ? Optional.of(events.deleteEvent(eventId)) : Optional.empty();
         });
     }
 }

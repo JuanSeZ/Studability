@@ -81,6 +81,22 @@ const Studability = {
                 errorCallback("Events cannot be listed")
             }
         })
+    },
+
+    deleteEvent: (eventId, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/home/calendar/${eventId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization':'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                okCallback()
+            } else {
+                errorCallback("Error, can't delete")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
     }
 
 }

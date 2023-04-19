@@ -24,6 +24,7 @@ public class Routes {
     public static final String USERS_ROUTE = "/users";
     public static final String USER_ROUTE = "/user";
     public static final String CALENDAR_ROUTE = "/home/calendar";
+    public static final String CALENDAR_DELETE_ROUTE = "/home/calendar/:id";
 
     private Studability system;
 
@@ -113,17 +114,16 @@ public class Routes {
             return JsonParser.toJson(events);
         });
 
-        authorizedDelete(CALENDAR_ROUTE, (req, res) -> {
-            final String body = req.body();
-            final User user = getUser(req).get();
-            system.deleteEvent(body, user).ifPresentOrElse(
+        authorizedDelete(CALENDAR_DELETE_ROUTE, (req, res) -> {
+            final Long eventId =  Long.parseLong(req.params(":id"));
+            system.deleteEvent(eventId).ifPresentOrElse(
                     (event) -> {
-                        res.status(201);
+                        res.status(200);
                         res.body("Event deleted");
                     },
                     () -> {
                         res.status(409);
-                        res.body("Event does not exist");
+                        res.body("Could not delete event");
                     }
             );
             return res.body();
