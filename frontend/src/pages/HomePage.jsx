@@ -2,7 +2,6 @@ import {useStudability} from "../service/Studability";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth"
-// import button from "bootstrap/js/src/button";
 import Dropdown from 'react-bootstrap/Dropdown';
 import StudabilityLogo from "../images/StudabilityLogo.png";
 import * as React from "react";
@@ -13,13 +12,13 @@ export default function HomePage() {
     const [setErrorMsg] = useState(undefined)
     const navigate = useNavigate()
     const [list, setList] = useState([]);
-    const auth = useAuthProvider()
+    const auth = useAuthProvider();
     const token = auth.getToken();
-    const [name, setName] = useState("")
+    const [name, setName] = useState("");
 
     function addToDoTask(task) {
         const newTask = {
-            task: task.name
+            task: task.name,
         }
         studability.addToDoTask(task,
             token,
@@ -38,9 +37,9 @@ export default function HomePage() {
 
     const deleteTask = (id) => {
         const newList = list.filter((task) => task.id !== id);
-        setList(newList);
         const task = findTaskByID(id)
         handleDelete(task)
+        setList(newList);
     }
 
     function findTaskByID(id) {
@@ -52,7 +51,8 @@ export default function HomePage() {
     }
 
     function handleDelete(task) {
-        studability.deleteToDoTask(task,
+        let taskToDelete = task.id;
+        studability.deleteToDoTask(taskToDelete,
             token,
             () => setList(list.splice(task, 1)),
             (msg) => console.log(msg))
@@ -76,7 +76,6 @@ export default function HomePage() {
         e.preventDefault()
         addToDoTask({
             name: name,
-            id: Math.random()
         });
     }
 
@@ -121,9 +120,9 @@ export default function HomePage() {
                     <button type="submit" className="btn btn-outline-primary">+ Add Task</button>
                     <ul>
                         {list.map((task) => (
-                            <li key={task.id}>
+                            <li key={task.id}  id={task.id}>
                                 {task.name + " "}
-                                <button onClick={() => deleteTask(task.id)}>&times;</button>
+                                <button className="btn btn-outline-danger" onClick={() => deleteTask(task.id)}>&times;</button>
                             </li>
                         ))}
                     </ul>

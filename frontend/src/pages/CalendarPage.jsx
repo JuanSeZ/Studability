@@ -1,20 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../calendarDesign.css';
 import ClickAwayListener from 'react-click-away-listener';
 import {useStudability} from "../service/Studability";
 import DatePicker from 'react-date-picker';
 import {useAuthProvider} from "../auth/auth";
-import {useSearchParams} from "react-router-dom";
-import * as events from "events";
 
 export default function CalendarPage() {
 
     const [dateValue, setDate] = useState(new Date());
     const [popup, setPopup] = useState(false)
     const [title, setTitle] = useState('')
-    const [setErrorMsg] = useState(undefined)
+    const [msg, setErrorMsg] = useState(undefined)
     const studability = useStudability();
     const auth = useAuthProvider()
     const token = auth.getToken();
@@ -48,8 +45,12 @@ export default function CalendarPage() {
             })
     }
 
+    function sortByDate() {
+        events.sort((a, b) => a.dateValue - b.dateValue)
+    }
+
     function addEventToCalendar(addedEvent) {
-        setEvents(events.concat(addedEvent));
+        setEvents(events.concat(addedEvent))
     }
 
     const handleSubmit = async e => {
@@ -58,6 +59,7 @@ export default function CalendarPage() {
             title: title,
             dateValue: parseDateToString(dateValue)
         });
+        sortByDate()
     }
 
     function parseDateToString(date) {
@@ -66,17 +68,30 @@ export default function CalendarPage() {
         return date.getDate() + "/" + month[date.getMonth()] + "/" + date.getFullYear()
     }
 
+    const deleteEvent = (event) => {
+        let eventIdToDelete = event.target.getAttribute('id');
+        const newEvents = events.filter((event) => eventIdToDelete !== event.id)
+        handleDelete(event, eventIdToDelete, newEvents)
+    }
+
+    function handleDelete(event, eventIdToDelete, newEvents) {
+        studability.deleteEvent(eventIdToDelete,
+            token,
+            () => {
+                setEvents(newEvents);
+            },
+            () =>
+                setErrorMsg('Could not delete'))
+    }
+
     return (
         <div>
             <br/>
-
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <h1>
                     <header>My Calendar</header>
                 </h1>
             </div>
-
-            <br/>
             <br/>
 
             <div>
@@ -109,18 +124,25 @@ export default function CalendarPage() {
             </div>
 
             <br/>
-            <br/>
 
-            <div className="container">
-                <h1 style={{justifyContent: "center", alignItems: "center", display: "flex"}}>Events scheduled</h1>
-                <ul>
-                    {events.map(event =>
-                        <li key={event.title}>{event.title}</li>
-                    )}
-                </ul>
-            </div>
-
-            <br/>
+            <table className="table" name="table" class="center">
+                <thead>
+                    <tr>
+                        <th scope="row" class="text-center">Date</th>
+                        <th scope="row" class="text-center">Event</th>
+                        <th scope="row" class="text-center">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {events.map(event => (
+                    <tr key={event.dateValue}>
+                        <td>{event.date}</td>
+                        <td align="center">{event.title}</td>
+                        <td><button type="button" id={event.id} className="btn btn-danger" onClick={() => deleteEvent(event)}>X</button></td>
+                    </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 };

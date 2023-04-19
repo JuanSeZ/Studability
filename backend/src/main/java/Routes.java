@@ -1,6 +1,7 @@
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import entities.Event;
+import entities.Task;
 import entities.User;
 import json.JsonParser;
 import model.Auth;
@@ -25,6 +26,8 @@ public class Routes {
     public static final String USER_ROUTE = "/user";
     public static final String CALENDAR_ROUTE = "/home/calendar";
     public static final String CALENDAR_DELETE_ROUTE = "/home/calendar/:id";
+
+    public static final String HOME_ROUTE = "/home";
 
     private Studability system;
 
@@ -124,6 +127,43 @@ public class Routes {
                     () -> {
                         res.status(409);
                         res.body("Could not delete event");
+                    }
+            );
+            return res.body();
+        });
+
+        authorizedPost(HOME_ROUTE, (req, res) -> {
+            final String body = req.body();
+            final User user = getUser(req).get();
+            system.addToDoTask(body, user).ifPresentOrElse(
+                    (task) -> {
+                        res.status(201);
+                        res.body(JsonParser.toJson(task));
+                    },
+                    () -> {
+                        res.status(409);
+                        res.body("Task already exists");
+                    }
+            );
+            return res.body();
+        });
+
+        authorizedGet(HOME_ROUTE, (req, res) -> {
+            final User user = getUser(req).get();
+            final List<Task> tasks = system.listTaskOfUser(user);
+            return JsonParser.toJson(tasks);
+        });
+
+        authorizedDelete("/tasks/:id", (req, res) -> {
+            final Long taskId = Long.parseLong(req.params(":id"));
+            system.deleteToDoTask(taskId).ifPresentOrElse(
+                    (task) -> {
+                        res.status(200);
+                        res.body("Task deleted");
+                    },
+                    () -> {
+                        res.status(409);
+                        res.body("Task does not exist");
                     }
             );
             return res.body();

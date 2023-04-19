@@ -112,11 +112,10 @@ public class Studability {
         });
     }
 
-    public Optional<Object> deleteToDoTask(String body, User user) {
+    public Optional<Object> deleteToDoTask(Long taskId) {
         return runInTransaction(datasource -> {
             Tasks tasks = datasource.tasks();
-            long id = fromJson(body, Long.class);
-            return tasks.exists(id) ? Optional.of(tasks.deleteToDoTask(id)) : Optional.empty();
+            return tasks.exists(taskId) ? Optional.of(tasks.deleteToDoTask(taskId)) : Optional.empty();
         });
     }
 }
