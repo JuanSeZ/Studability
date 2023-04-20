@@ -6,6 +6,10 @@ import {useStudability} from "../service/Studability";
 import DatePicker from 'react-date-picker';
 import {useAuthProvider} from "../auth/auth";
 
+/* TODO fix date bug
+and make array of events ordered
+ */
+
 export default function CalendarPage() {
 
     const [dateValue, setDate] = useState(new Date());
@@ -19,7 +23,7 @@ export default function CalendarPage() {
 
     useEffect(() => {
         studability.listEvents(token,(events) => setEvents(events), (msg) => console.log(msg));
-    }, [])
+    }, [events])
 
     const changeNameEvent = (event) => {
         setTitle(event.target.value)
@@ -68,13 +72,9 @@ export default function CalendarPage() {
         return date.getDate() + "/" + month[date.getMonth()] + "/" + date.getFullYear()
     }
 
-    const deleteEvent = (event) => {
+    function deleteEvent(event) {
         let eventIdToDelete = event.target.getAttribute('id');
         const newEvents = events.filter((event) => eventIdToDelete !== event.id)
-        handleDelete(event, eventIdToDelete, newEvents)
-    }
-
-    function handleDelete(event, eventIdToDelete, newEvents) {
         studability.deleteEvent(eventIdToDelete,
             token,
             () => {
@@ -138,7 +138,7 @@ export default function CalendarPage() {
                     <tr key={event.dateValue}>
                         <td>{event.date}</td>
                         <td align="center">{event.title}</td>
-                        <td><button type="button" id={event.id} className="btn btn-danger" onClick={() => deleteEvent(event)}>X</button></td>
+                        <td><button type="button" id={event.id} className="btn btn-danger" onClick={deleteEvent}>X</button></td>
                     </tr>
                     ))}
                 </tbody>
