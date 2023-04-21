@@ -9,11 +9,11 @@ import * as React from "react";
 
 export default function HomePage() {
     const studability = useStudability()
-    const [setErrorMsg] = useState(undefined)
+    const [msg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate()
     const [list, setList] = useState([]);
     const auth = useAuthProvider();
-    const token = auth.getToken();
+    let token = auth.getToken();
     const [name, setName] = useState("");
 
     function addToDoTask(task) {
@@ -33,7 +33,7 @@ export default function HomePage() {
             token,
             (list) => setList(list),
             (msg) => console.log(msg));
-    }, [])
+    }, [list])
 
     const deleteTask = (id) => {
         const newList = list.filter((task) => task.id !== id);
@@ -66,9 +66,7 @@ export default function HomePage() {
                 auth.removeToken(userToken)
                 navigate("/", {replace: true});
             },
-            (msg) => {
-                setErrorMsg(msg)
-            })
+            (msg) => console.log(msg))
     }
 
 
@@ -77,6 +75,10 @@ export default function HomePage() {
         addToDoTask({
             name: name,
         });
+    }
+
+    function calendar (){
+        navigate("/home/calendar")
     }
 
     return (
@@ -120,7 +122,7 @@ export default function HomePage() {
                     <button type="submit" className="btn btn-outline-primary">+ Add Task</button>
                     <ul>
                         {list.map((task) => (
-                            <li key={task.id}  id={task.id}>
+                            <li id={task.id}>
                                 {task.name + " "}
                                 <button className="btn btn-outline-danger" onClick={() => deleteTask(task.id)}>&times;</button>
                             </li>
@@ -132,6 +134,10 @@ export default function HomePage() {
             <div style={{display: "flex", justifyContent: "center"}}>
                 <button type="button" onClick={logout} className="btn btn-outline-danger">Log Out</button>
             </div>
+
+            <button type="button" onClick={calendar}>
+                go to calendar
+            </button>
         </div>
 
     )

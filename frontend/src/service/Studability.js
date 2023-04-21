@@ -100,7 +100,7 @@ const Studability = {
     },
 
     addToDoTask: (task, token, okCallback, errorCallback) => {
-        fetch(`${restApiEndpoint}/home`, {
+        fetch(`${restApiEndpoint}/tasks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ const Studability = {
     },
 
     listTasks: (token, okCallback, errorCallback) => {
-        fetch(`${restApiEndpoint}/home`, {
+        fetch(`${restApiEndpoint}/tasks`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

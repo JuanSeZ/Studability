@@ -26,7 +26,6 @@ public class Routes {
     public static final String USER_ROUTE = "/user";
     public static final String CALENDAR_ROUTE = "/home/calendar";
     public static final String CALENDAR_DELETE_ROUTE = "/home/calendar/:id";
-
     public static final String HOME_ROUTE = "/home";
 
     private Studability system;
@@ -132,7 +131,7 @@ public class Routes {
             return res.body();
         });
 
-        authorizedPost(HOME_ROUTE, (req, res) -> {
+        authorizedPost("/tasks", (req, res) -> {
             final String body = req.body();
             final User user = getUser(req).get();
             system.addToDoTask(body, user).ifPresentOrElse(
@@ -148,7 +147,7 @@ public class Routes {
             return res.body();
         });
 
-        authorizedGet(HOME_ROUTE, (req, res) -> {
+        authorizedGet("/tasks", (req, res) -> {
             final User user = getUser(req).get();
             final List<Task> tasks = system.listTaskOfUser(user);
             return JsonParser.toJson(tasks);
