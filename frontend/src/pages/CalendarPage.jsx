@@ -22,7 +22,7 @@ export default function CalendarPage() {
     const [events, setEvents] = useState([])
 
     useEffect(() => {
-        studability.listEvents(token,(events) => setEvents(events), (msg) => console.log(msg));
+        studability.listEvents(token,(events) => setEvents(events.sort(compareDates)), (msg) => console.log(msg));
     }, [events])
 
     const changeNameEvent = (event) => {
@@ -49,9 +49,16 @@ export default function CalendarPage() {
             })
     }
 
-    function sortByDate() {
-        events.sort((a, b) => a.dateValue - b.dateValue)
+    const parseDate = (dateString) => {
+        const [day, month, year] = dateString.split("/");
+        return new Date(year, month - 1, day);
     }
+
+    const compareDates = (a, b) => {
+        const dateA = parseDate(a.date);
+        const dateB = parseDate(b.date);
+        return dateA - dateB;
+    };
 
     function addEventToCalendar(addedEvent) {
         setEvents(events.concat(addedEvent))
@@ -63,7 +70,6 @@ export default function CalendarPage() {
             title: title,
             dateValue: parseDateToString(dateValue)
         });
-        sortByDate()
     }
 
     function parseDateToString(date) {

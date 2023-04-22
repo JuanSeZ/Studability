@@ -147,6 +147,6 @@ const Studability = {
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     }
-
+    
 }
 export const useStudability = () => Studability
