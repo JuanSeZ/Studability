@@ -5,6 +5,7 @@ import ClickAwayListener from 'react-click-away-listener';
 import {useStudability} from "../service/Studability";
 import DatePicker from 'react-date-picker';
 import {useAuthProvider} from "../auth/auth";
+import MyNavbar from "../components/MyNavbar";
 
 /* TODO fix date bug
 and make array of events ordered
@@ -92,6 +93,7 @@ export default function CalendarPage() {
 
     return (
         <div>
+            <MyNavbar/>
             <br/>
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <h1>
