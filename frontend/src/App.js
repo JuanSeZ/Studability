@@ -9,22 +9,29 @@ import {RequireAuth} from "./components/RequireAuth";
 import CalendarPage from "./pages/CalendarPage";
 
 export default function App() {
-  return (
-      <BrowserRouter>
-          <div><Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route path="/login" element={<LoginPage/>} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route
-                  path="/home"
-                  element={
-                    <RequireAuth>
-                      <HomePage/>
-                    </RequireAuth>
-                  }
-              />
-              <Route path = "/home/calendar" element={<CalendarPage />} />
-          </Routes></div>
-      </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <div><Routes>
+                <Route path="/" element={<MainPage />} />
+                <Route path="/login" element={<LoginPage/>} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route
+                    path="/home"
+                    element={
+                        <RequireAuth>
+                            <HomePage/>
+                        </RequireAuth>
+                    }
+                />
+
+                <Route path = "/home/calendar"
+                       element={
+                           <RequireAuth>
+                               <CalendarPage/>
+                           </RequireAuth>
+                       }
+                />
+            </Routes></div>
+        </BrowserRouter>
+    );
 }

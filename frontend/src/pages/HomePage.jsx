@@ -12,7 +12,7 @@ export default function HomePage() {
                 <MyNavbar/>
             </row>
             <column class="text-center" style ={{width:'150px'}}>
-            <ToDoList/>
+                <ToDoList/>
             </column>
         </div>
 
