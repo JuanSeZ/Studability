@@ -15,7 +15,7 @@ export default function LoginPage() {
     const [errorMsg, setErrorMsg] = useState(undefined)
     const navigate = useNavigate()
     const studability = useStudability()
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const isOk = searchParams.get("ok")
 
     function loginUser(credentials) {

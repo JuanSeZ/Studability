@@ -10,6 +10,13 @@ export default function ToDoList() {
     const [name, setName] = useState("");
     let token = useAuthProvider().getToken();
 
+    useEffect(() => {
+        studability.listTasks(
+            token,
+            (list) => setList(list),
+            (msg) => console.log(msg));
+    }, [list])
+
     const handleSubmit = async e => {
         e.preventDefault()
         addToDoTask({
@@ -17,23 +24,12 @@ export default function ToDoList() {
         });
     }
     function addToDoTask(task) {
-        const newTask = {
-            task: task.name,
-        }
         studability.addToDoTask(task,
             token,
             () => setList(list.concat(task)),
             (msg) => console.log(msg));
-        setList([...list, newTask]);
         setName("");
     }
-
-    useEffect(() => {
-        studability.listTasks(
-            token,
-            (list) => setList(list),
-            (msg) => console.log(msg));
-    }, [list])
 
     const deleteTask = (id) => {
         const newList = list.filter((task) => task.id !== id);
@@ -72,7 +68,7 @@ export default function ToDoList() {
                            placeholder="Enter a To-Do Task"
                            onChange={(e) => setName(e.target.value)}/>
                     <button type="submit" className="btn btn-outline-primary">+ Add Task</button>
-                    <ul>
+                    <ul style={{listStyle:"none"}}>
                         {list.map((task) => (
                             <li id={task.id}>
                                 {task.name + " "}

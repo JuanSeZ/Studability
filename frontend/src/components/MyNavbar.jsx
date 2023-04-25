@@ -1,5 +1,5 @@
 import { Navbar, Button, Offcanvas } from 'react-bootstrap';
-import { Calendar, People, Folder, Clock, BoxArrowRight } from 'react-bootstrap-icons';
+import {Calendar, People, Folder, Clock, BoxArrowRight, List} from 'react-bootstrap-icons';
 import logo from '../images/StudabilityLogo.png';
 import {useState} from "react";
 import {useNavigate} from "react-router";
@@ -32,14 +32,14 @@ export default function MyNavbar() {
                     Studability
                 </Navbar.Brand>
                 <Button variant="outline-primary" onClick={() => setShowOffcanvas(true)} className="ms-auto">
-                    <People />
+                    <List />
                 </Button>
             </Navbar>
 
             <Offcanvas placement="end" show={showOffcanvas} onHide={() => setShowOffcanvas(false)}>
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>
-                        <People />
+                        <List />
                     </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
