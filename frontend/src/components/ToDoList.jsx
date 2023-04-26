@@ -15,7 +15,7 @@ export default function ToDoList() {
             token,
             (list) => setList(list),
             (msg) => console.log(msg));
-    }, [list])
+    }, [])
 
     const handleSubmit = async e => {
         e.preventDefault()
@@ -26,7 +26,7 @@ export default function ToDoList() {
     function addToDoTask(task) {
         studability.addToDoTask(task,
             token,
-            () => setList(list.concat(task)),
+            (addedTask) => setList(list.concat(addedTask)),
             (msg) => console.log(msg));
         setName("");
     }
