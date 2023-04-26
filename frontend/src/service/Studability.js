@@ -92,7 +92,7 @@ const Studability = {
             }
         }).then(resp => {
             if (resp.status === 200) {
-                okCallback()
+                resp.json().then(deletedEvent => okCallback(deletedEvent))
             } else {
                 errorCallback("Error, can't delete")
             }

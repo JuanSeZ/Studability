@@ -121,7 +121,7 @@ public class Routes {
             system.deleteEvent(eventId).ifPresentOrElse(
                     (event) -> {
                         res.status(200);
-                        res.body("Event deleted");
+                        res.body(JsonParser.toJson(event));
                     },
                     () -> {
                         res.status(409);
