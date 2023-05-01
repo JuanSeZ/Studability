@@ -2,6 +2,7 @@ import * as React from "react";
 import {useStudability} from "../service/Studability";
 import {useEffect, useState} from "react";
 import {useAuthProvider} from "../auth/auth";
+import '../styles/toDoListStyle.css';
 
 export default function ToDoList() {
 
@@ -56,20 +57,25 @@ export default function ToDoList() {
 
     return (
 
-        <div>
+        <div class="container">
             <form onSubmit={handleSubmit}>
-                <div>
+                <div class="header">
                     <h4>To-Do List</h4>
                     <input type="text"
                            value={name} required={true}
                            placeholder="Enter a To-Do Task"
                            onChange={(e) => setName(e.target.value)}/>
-                    <button type="submit" className="btn btn-outline-primary">+ Add Task</button>
-                    <ul style={{listStyle:"none"}}>
+                    <button type="submit" className="btn btn-outline-primary">Add Task</button>
+                    <ul className='to-do-list'>
                         {list.map((task) => (
                             <li id={task.id}>
-                                {task.name + " "}
-                                <button className="btn btn-outline-danger" onClick={() => deleteTask(task.id)}>&times;</button>
+                                <div>
+                                    <input className="form-check-input" type="checkbox" style={{marginTop:"10px"}}/>
+                                    <label className="form-check-label" style={{marginLeft: "10px"}}>
+                                        {task.name + " "}
+                                    </label>
+                                    <button className="btn btn-outline-danger" onClick={() => deleteTask(task.id)} style={{marginLeft: "10px", marginTop:"5px"}}>&times;</button>
+                                </div>
                             </li>
                         ))}
                     </ul>

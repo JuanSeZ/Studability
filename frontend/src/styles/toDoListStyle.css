@@ -1,0 +1,35 @@
+.container{
+    margin-left: 0px;
+    margin-top: 10px;
+    width: 400px
+}
+.to-do-list{
+    position: relative;
+    padding: 30px 8px 30px;
+    list-style-type: none;
+    font-size: 20px;
+    transition: 0.2s;
+
+    /* make the list items unselectable */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Style the header */
+.header {
+    background-color: lightskyblue;
+    padding: 30px;
+    color: white;
+    text-align: center;
+}
+
+/* Style the input */
+input {
+    margin-right: 5px;
+    border: none;
+    border-radius: 0;
+    width: 70%;
+    font-size: 16px;
+}
