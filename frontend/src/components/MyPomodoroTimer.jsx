@@ -7,9 +7,9 @@ class MyPomodoroTimer extends Component {
         super(props);
 
         this.state = {
-            workDuration: 1,
-            breakDuration: 1,
-            currentTime: 1 * 60,
+            workDuration: 25,
+            breakDuration: 5,
+            currentTime: 25 * 60,
             isRunning: false,
             isWorkPhase: true
         };
