@@ -70,7 +70,7 @@ export default function ToDoList() {
                         {list.map((task) => (
                             <li id={task.id}>
                                 <div>
-                                    <input className="form-check-input" type="checkbox" style={{marginTop:"10px"}}/>
+                                    <input className="form-check-input" type="checkbox" style={{marginTop:"12px"}}/>
                                     <label className="form-check-label" style={{marginLeft: "10px"}}>
                                         {task.name + " "}
                                     </label>

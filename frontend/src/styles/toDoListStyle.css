@@ -1,7 +1,7 @@
 .container{
     margin-left: 0px;
     margin-top: 10px;
-    width: 400px
+    width: 400px;
 }
 .to-do-list{
     position: relative;
@@ -23,6 +23,7 @@
     padding: 30px;
     color: white;
     text-align: center;
+    border-radius: 15px;
 }
 
 /* Style the input */
