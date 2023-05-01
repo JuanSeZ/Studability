@@ -10,10 +10,14 @@ export default function PomodoroTimerPage() {
             <row>
                 <MyNavbar/>
             </row>
-            <column>
-                <ToDoList/>
-            </column>
-            <MyPomodoroTimer/>
+            <row>
+                <div class="column">
+                    <ToDoList/>
+                </div>
+                <div class="column">
+                    <MyPomodoroTimer/>
+                </div>
+            </row>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 .PomodoroTimer{
-    padding: 125px 0;
+    margin-left: 350px;
 }
 
 .timer-controls {
@@ -26,4 +26,9 @@
 
 .phase {
     text-align: center;
+}
+
+.column {
+    padding: 1px;
+    height: 200px;
 }
