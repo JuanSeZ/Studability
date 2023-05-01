@@ -1,14 +1,15 @@
 import {Component} from 'react';
 import '../styles/PomodoroTimerStyle.css'
+import sound from '../sounds/TimerPhase.mp3'
 
 class MyPomodoroTimer extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            workDuration: 25,
-            breakDuration: 5,
-            currentTime: 25 * 60,
+            workDuration: 1,
+            breakDuration: 1,
+            currentTime: 1 * 60,
             isRunning: false,
             isWorkPhase: true
         };
@@ -36,8 +37,13 @@ class MyPomodoroTimer extends Component {
         });
     }
 
+    play(){
+        new Audio(sound).play();
+    }
+
     tick() {
         if (this.state.currentTime === 0) {
+            this.play()
             if (this.state.isWorkPhase) {
                 this.setState({
                     currentTime: this.state.breakDuration * 60,
