@@ -26,7 +26,6 @@ public class Routes {
     public static final String USER_ROUTE = "/user";
     public static final String CALENDAR_ROUTE = "/home/calendar";
     public static final String CALENDAR_DELETE_ROUTE = "/home/calendar/:id";
-    public static final String HOME_ROUTE = "/home";
 
     private Studability system;
 

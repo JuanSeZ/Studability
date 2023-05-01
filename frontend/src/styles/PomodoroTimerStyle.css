@@ -1,0 +1,27 @@
+.PomodoroTimer{
+    padding: 125px 0;
+}
+
+.timer-controls {
+    text-align: center;
+    padding: 15px;
+}
+
+.timer-display {
+    font-size: 75px;
+    text-align: center;
+}
+
+.relaxTime {
+    font-size: 30px;
+    color: green;
+}
+
+.workTime {
+    font-size: 30px;
+    color: orangered;
+}
+
+.phase {
+    text-align: center;
+}

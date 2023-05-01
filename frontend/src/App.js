@@ -7,14 +7,15 @@ import {Routes} from "react-router";
 import HomePage from "./pages/HomePage";
 import {RequireAuth} from "./components/RequireAuth";
 import CalendarPage from "./pages/CalendarPage";
+import PomodoroTimerPage from "./pages/PomodoroTimerPage";
 
 export default function App() {
     return (
         <BrowserRouter>
             <div><Routes>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/login" element={<LoginPage/>} />
-                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/" element={<MainPage/>}/>
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/register" element={<RegisterPage/>}/>
                 <Route
                     path="/home"
                     element={
@@ -24,10 +25,17 @@ export default function App() {
                     }
                 />
 
-                <Route path = "/home/calendar"
+                <Route path="/home/calendar"
                        element={
                            <RequireAuth>
                                <CalendarPage/>
+                           </RequireAuth>
+                       }
+                />
+                <Route path="/home/study-time"
+                       element={
+                           <RequireAuth>
+                               <PomodoroTimerPage/>
                            </RequireAuth>
                        }
                 />

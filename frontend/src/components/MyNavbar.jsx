@@ -59,8 +59,8 @@ export default function MyNavbar() {
                                 <Folder /> Files
                             </a>
                         </li>
-                        <li className="#">
-                            <a href="/study-time" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                        <li className="nav-item">
+                            <a href="home/study-time" className="nav-link" onClick={() => setShowOffcanvas(false)}>
                                 <Clock /> Study Time
                             </a>
                         </li>
