@@ -50,7 +50,7 @@ export default function MyNavbar() {
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a href="#" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                            <a href="home/friends" className="nav-link" onClick={() => setShowOffcanvas(false)}>
                                 <People /> Friends
                             </a>
                         </li>
