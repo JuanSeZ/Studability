@@ -51,3 +51,55 @@ body {
 .Sample__container__content .react-calendar {
     margin: 0 auto;
 }
+
+.placeholder {
+    padding: 3%;
+    background: white;
+}
+
+.nameEvent {
+    border-style: solid;
+    border-color: black;
+    border-radius: 5px;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+.date {
+    margin-top: 10px;
+}
+
+.dateText {
+    margin-right: 5px;
+    margin-bottom: 10px;
+    font-family: Helvetica, sans-serif;
+    font-size: 17px;
+}
+
+.datePicker {
+    margin-bottom: 10px;
+}
+
+.saveButton {
+    margin-top: 10px;
+}
+
+.description {
+    border-style: solid;
+    border-color: black;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+.addEventButton {
+    margin-left: 50px;
+}
+
+.header {
+    font-family: Helvetica, sans-serif;;
+    font-size: 35px;
+}

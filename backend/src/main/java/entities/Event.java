@@ -1,5 +1,7 @@
 package entities;
 
+import org.checkerframework.checker.units.qual.C;
+
 import javax.persistence.*;
 
 @Entity
@@ -21,18 +23,22 @@ private String date;
 @Column
 private String title;
 
+@Column
+private String description;
 
-    public Event(String date, String title, String userId) {
+
+    public Event(String date, String title, String userId, String description) {
         this.date = date;
         this.title = title;
         this.userId = userId;
+        this.description = description;
     }
 
     public Event() {
 
     }
-    public static Event create(String date, String title, String userId){
-        return new Event(date, title, userId);
+    public static Event create(String date, String title, String userId, String description){
+        return new Event(date, title, userId, description);
     }
 
     public String getDate() {
@@ -50,4 +56,6 @@ private String title;
     public long getId() {
         return id;
     }
+
+    public String getDescription(){return description;}
 }

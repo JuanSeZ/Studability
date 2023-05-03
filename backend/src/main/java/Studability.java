@@ -77,7 +77,7 @@ public class Studability {
             Events events = datasource.events();
             final CreateEventForm createEventForm = fromJson(body, CreateEventForm.class);
 
-            Event event = new Event(createEventForm.dateValue, createEventForm.title, user.getEmail());
+            Event event = new Event(createEventForm.dateValue, createEventForm.title, user.getEmail(), createEventForm.description);
             return Optional.of(events.addEvent(event));
         });
     }
