@@ -1,10 +1,11 @@
-import { Navbar, Button, Offcanvas } from 'react-bootstrap';
+import {Navbar, Button, Offcanvas, NavLink} from 'react-bootstrap';
 import {Calendar, People, Folder, Clock, BoxArrowRight, List} from 'react-bootstrap-icons';
 import logo from '../images/StudabilityLogo.png';
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {useStudability} from "../service/Studability";
+import {Link} from "react-router-dom";
 
 
 export default function MyNavbar() {
@@ -45,14 +46,14 @@ export default function MyNavbar() {
                 <Offcanvas.Body>
                     <ul className="nav flex-column">
                         <li className="nav-item">
-                            <a href="home/calendar" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                            <Link to="/home/calendar" className="nav-link" onClick={() => setShowOffcanvas(false)}>
                                 <Calendar /> Calendar
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a href="home/friends" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                            <Link to="/home/friends" className="nav-link" onClick={() => setShowOffcanvas(false)}>
                                 <People /> Friends
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
                             <a href="#" className="nav-link" onClick={() => setShowOffcanvas(false)}>
@@ -60,18 +61,18 @@ export default function MyNavbar() {
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a href="home/study-time" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                            <Link to="/home/study-time" className="nav-link" onClick={() => setShowOffcanvas(false)}>
                                 <Clock /> Study Time
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a href="/login" className="nav-link text-danger"  onClick={() => {
+                            <Link to="/login" className="nav-link text-danger"  onClick={() => {
                                 setShowOffcanvas(false);
                                 logout()
                             }
                             }>
                                 <BoxArrowRight /> Logout
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </Offcanvas.Body>
