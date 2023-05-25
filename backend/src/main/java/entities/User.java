@@ -1,6 +1,13 @@
 package entities;
 
+import net.bytebuddy.utility.nullability.MaybeNull;
+
+import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER")
@@ -8,7 +15,6 @@ public class User {
 
     @Column()
     private String name;
-
 
     @Column()
     private String surname;
@@ -23,19 +29,45 @@ public class User {
     @Column()
     private String career;
 
-    public User(String name, String surname, String email, String password, String career) {
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<User> friendsRequests = new HashSet<>(); // instead of a list, this eliminates duplicate values
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Friendship> friendships = new ArrayList<>();
+
+
+    public List<User> getFriends() {
+        return friendships.stream().map(Friendship::getFriend2).toList();
+    }
+
+    public void addFriend(User friend) {
+        addFriendship(this, friend, friendships);
+
+        addFriendship(friend, this, friend.friendships);
+    }
+
+    private void addFriendship(User friend1, User friend, List<Friendship> friendships) {
+        final Friendship friendship = new Friendship();
+        friendship.setFriend1(friend1);
+        friendship.setFriend2(friend);
+
+        friendships.add(friendship);
+    }
+
+    public User(String name, String surname, String email, String password, String career, Set<User> friendsRequests, List<User> mutualFriends) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.career = career;
+        this.friendsRequests = friendsRequests;
     }
 
     public User() {
 
     }
-    public static User create(String name, String surname, String email, String password, String career){
-        return new User(name, surname, email, password, career);
+    public static User create(String name, String surname, String email, String password, String career, Set<User> friendsRequests, List<User> mutualFriends){
+        return new User(name, surname, email, password, career, friendsRequests, mutualFriends);
     }
 
     public String getName() {
@@ -58,4 +90,7 @@ public class User {
         return career;
     }
 
+    public Set<User> getFriendsRequests() {
+        return friendsRequests;
+    }
 }

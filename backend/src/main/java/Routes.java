@@ -7,6 +7,8 @@ import json.JsonParser;
 import model.Auth;
 import model.AuthRequest;
 import model.RegistrationUserForm;
+import model.RequestForm;
+import model.ui.UserDTO;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -34,7 +36,7 @@ public class Routes {
         routes();
     }
 
-    private void routes(){
+    private void routes() {
 
         before((req, resp) -> {
             resp.header("Access-Control-Allow-Origin", "*");
@@ -89,10 +91,42 @@ public class Routes {
             return res.body();
         });
 
-        authorizedGet(USERS_ROUTE, (req, res) -> {
-            final List<User> users = system.listUsers();
+        authorizedGet("/listUser", (req, res) -> {
+            String search = req.queryParams("search");
+            final List<UserDTO> users;
+            if (search == null) {
+                users = system.listUsers().stream().map(UserDTO::fromModel).toList();
+            } else {
+                final User me = getUser(req).get();
+                users = system.listUserByName(search, me.getName()).stream().map(UserDTO::fromModel).toList();
+            }
             return JsonParser.toJson(users);
         });
+
+        authorizedPost("/sendRequest", (req, res) -> {
+            final User requester = getUser(req).get();
+            final RequestForm requestForm = JsonParser.fromJson(req.body(), RequestForm.class);
+            system.addFriendRequest(requester, requestForm).ifPresent(
+                    (user) -> res.status(201)
+            );
+            return "OK";
+        });
+
+        authorizedGet("/requests", (req, res) -> {
+            final User user = getUser(req).get();
+            system.listFriendsRequestsFromUser(user).ifPresentOrElse(
+                    (requests) -> {
+                        res.status(200);
+                        res.body(JsonParser.toJson(user.getFriendsRequests()));
+                    }, () -> {res.status(404);}
+            );
+            return res.body();
+        });
+
+//        authorizedPost("/acceptRequest", (req, res) -> {
+//            final User user = getUser(req).get();
+//            system.
+//        });
 
         authorizedPost(CALENDAR_ROUTE, (req, res) -> {
             final String body = req.body();
@@ -109,6 +143,7 @@ public class Routes {
             );
             return res.body();
         });
+
         authorizedGet(CALENDAR_ROUTE, (req, res) -> {
             final User user = getUser(req).get();
             final List<Event> events = system.listEventsofUser(user);
@@ -116,7 +151,7 @@ public class Routes {
         });
 
         authorizedDelete(CALENDAR_DELETE_ROUTE, (req, res) -> {
-            final Long eventId =  Long.parseLong(req.params(":id"));
+            final Long eventId = Long.parseLong(req.params(":id"));
             system.deleteEvent(eventId).ifPresentOrElse(
                     (event) -> {
                         res.status(200);
@@ -169,7 +204,9 @@ public class Routes {
 
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
+        authorizedGet("/listUser", (req, res) -> getToken(req).map(JsonParser::toJson));
     }
+
     private void authorizedGet(final String path, final Route route) {
         get(path, (request, response) -> authorize(route, request, response));
     }

@@ -4,6 +4,7 @@ import entities.Task;
 import model.CreateEventForm;
 import model.CreateTaskForm;
 import model.RegistrationUserForm;
+import model.RequestForm;
 import persistence.Events;
 import persistence.Tasks;
 import persistence.Users;
@@ -13,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 import static json.JsonParser.fromJson;
@@ -118,4 +120,31 @@ public class Studability {
             return tasks.exists(taskId) ? Optional.of(tasks.deleteToDoTask(taskId)) : Optional.empty();
         });
     }
+
+    public List<User> listUserByName(String name, String me) {
+        return runInTransaction(datasource -> {
+            Users users = datasource.users();
+            return users.listByName(name, me);
+        });
+    }
+
+    public Optional<User> addFriendRequest(User requester, RequestForm requestedForm){
+        return Optional.ofNullable(runInTransaction(datasource -> {
+            Users users = datasource.users();
+            User requested = users.findByEmail(requestedForm.getEmailRequested()).get();
+            return users.addRequestToList(requester, requested);
+        }));
+    }
+
+    public Optional<Set<User>> listFriendsRequestsFromUser(User user){
+        return Optional.ofNullable(runInTransaction(datasource -> user.getFriendsRequests()));
+    }
+
+
+//    public Optional<User> acceptRequest (User user){
+//        return runInTransaction(datasource -> {
+//            Users users = datasource.users();
+//            return users.
+//        })
+//    }
 }

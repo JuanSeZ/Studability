@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 public class StudabilityRepository {
 
         private final Users users;
-
         private final Events events;
         private final Tasks tasks;
 

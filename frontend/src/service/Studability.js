@@ -39,11 +39,11 @@ const Studability = {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization':'Bearer ' + token
+                'Authorization': 'Bearer ' + token
             },
         }).then(resp => {
             if (resp.status === 200) {
-                 okCallback()
+                okCallback()
             } else {
                 errorCallback("Error Can't logout")
             }
@@ -55,7 +55,7 @@ const Studability = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization':'Bearer ' + token
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify(credentials)
         }).then(resp => {
@@ -88,7 +88,7 @@ const Studability = {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization':'Bearer ' + token
+                'Authorization': 'Bearer ' + token
             }
         }).then(resp => {
             if (resp.status === 200) {
@@ -146,7 +146,103 @@ const Studability = {
                 errorCallback("The task has not been deleted")
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
-    }
-    
+    },
+
+    listUserByFullName: (fullName, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/listUser?search=${fullName}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(users => okCallback(users))
+            } else {
+                errorCallback("Users with that name cannot be listed.")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
+    listRequests: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/requests`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(requests => okCallback(requests))
+            } else {
+                errorCallback("The requests cannot be listed")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
+    listFriends: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/friends`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(friends => okCallback(friends))
+            } else {
+                errorCallback("The requests cannot be listed")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
+    sendRequest: (emailForm, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/sendRequest`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(emailForm)
+        }).then(resp => {
+            if (resp.status === 201) {
+                resp.json().then(friendsRequests => okCallback(friendsRequests))
+            } else {
+                errorCallback("The request cannot be sent")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
+    acceptRequest: (email, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/acceptRequest`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(mutualFriends => okCallback(mutualFriends))
+            } else {
+                errorCallback("Mutual friends cannot be listed.")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
+    rejectRequest: (email, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/rejectRequest`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(requests => okCallback(requests))
+            } else {
+                errorCallback("Requests cannot be listed.")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
 }
 export const useStudability = () => Studability

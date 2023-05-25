@@ -31,7 +31,7 @@ export default function MyCalendarPage(){
 
     const resetForm = () => {
         setTitle('')
-        setDate(null)
+        setDate(new Date())
         setDescription('')
     }
 
