@@ -3,6 +3,7 @@ import * as React from "react";
 import button from "bootstrap/js/src/button";
 import {useStudability} from "../service/Studability";
 import {useAuthProvider} from "../auth/auth";
+import SendRequestButton from "./SendRequestButton";
 
 export default function MyFriendsPage() {
 
@@ -13,6 +14,7 @@ export default function MyFriendsPage() {
     const [searchResult, setSearchResult] = useState([])
     let token = useAuthProvider().getToken();
     const currentUser = token.id;
+    const [buttonChange, setButtonChange] = useState('Send Request')
 
     useEffect(() => {
         studability.listRequests(
@@ -21,12 +23,12 @@ export default function MyFriendsPage() {
             (msg) => console.log(msg));
     }, [])
 
-    useEffect(() => {
-        studability.listFriends(
-            token,
-            (friends) => setFriends(friends),
-            (msg) => console.log(msg));
-    }, [])
+    // useEffect(() => {
+    //     studability.listFriends(
+    //         token,
+    //         (friends) => setFriends(friends),
+    //         (msg) => console.log(msg));
+    // }, [])
 
     function searchUser() {
         studability.listUserByFullName(searchedFriend,
@@ -39,14 +41,13 @@ export default function MyFriendsPage() {
     }
 
     function sendRequest(requested) {
-        studability.sendRequest({
+        return studability.sendRequest({
                 emailRequester: currentUser,
                 emailRequested: requested
             },
             token,
-            (friendsRequests) => {
-                setRequests(friendsRequests)
-                setSearchResult([])
+            () => {
+                setButtonChange("Request Sent")
             },
             (msg) => console.log(msg))
     }
@@ -60,7 +61,7 @@ export default function MyFriendsPage() {
     }
 
     function rejectRequest(email) {
-        studability.rejectRequest(email,
+        studability.rejectRequest({email: email},
             token,
             (requests) => setRequests(requests),
             (msg) => console.log(msg))
@@ -92,7 +93,7 @@ export default function MyFriendsPage() {
                                        value={searchedFriend}
                                        aria-label="Search"
                                        onChange={changeSearchedFullName}/>
-                                <button className="btn btn-outline-success" onClick={searchUser}>Search</button>
+                                <button className="btn btn-outline-info" onClick={searchUser}>Search</button>
                             </div>
                         </div>
                     </nav>
@@ -101,12 +102,13 @@ export default function MyFriendsPage() {
                             <ul id={user.email} key={user.email}>
                                 <div className="results-names">
                                     {user.name} {user.surname}
-                                    <button
-                                        className="btn btn-outline-primary"
-                                        style={{marginLeft: 5, marginTop: 5}}
-                                        onClick={() => sendRequest(user.email)}>
-                                        Send Request
-                                    </button>
+                                    <SendRequestButton sendRequest={sendRequest} email={user.email} />
+                                    {/*<button*/}
+                                    {/*    className={buttonChange === 'Request Sent' ? "btn btn-outline-success" : "btn btn-outline-primary"}*/}
+                                    {/*    style={{marginLeft: 5, marginTop: 5}}*/}
+                                    {/*    onClick={() => sendRequest(user.email)}>*/}
+                                    {/*    {buttonChange}*/}
+                                    {/*</button>*/}
                                 </div>
                             </ul>
                         ))}
@@ -114,30 +116,30 @@ export default function MyFriendsPage() {
                     <div>
                         <text className="requests-header">Friends Requests</text>
                         {requests.map((request) => (
-                            <ul key={request.id} className="requests">
+                            <ul key={request.email} id = {request.email} className="requests">
                                 <div>
                                     {request.name + " " + request.surname + " "}
                                     <button className="btn btn-outline-success"
                                             onClick={() => acceptRequest(request)}>✔
                                     </button>
-                                    <button className="btn btn-outline-danger" onClick={() => rejectRequest}>X</button>
+                                    <button className="btn btn-outline-danger" onClick={() => rejectRequest(request.email)}>X</button>
                                 </div>
                             </ul>
                         ))}
                     </div>
                 </div>
 
-                <div class="column1">
-                    <br/>
-                    <text className="mutualFriends">Mutual Friends</text>
-                    {friends.map((friend) => (
-                        <li key={friend.email}>
-                            <div>
-                                {friend.name + " "}
-                            </div>
-                        </li>
-                    ))}
-                </div>
+                {/*<div class="column1">*/}
+                {/*    <br/>*/}
+                {/*    <text className="mutualFriends">Mutual Friends</text>*/}
+                {/*    {friends.map((friend) => (*/}
+                {/*        <li key={friend.email}>*/}
+                {/*            <div>*/}
+                {/*                {friend.name + " "}*/}
+                {/*            </div>*/}
+                {/*        </li>*/}
+                {/*    ))}*/}
+                {/*</div>*/}
             </div>
 
         </div>

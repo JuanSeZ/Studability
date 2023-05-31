@@ -24,7 +24,9 @@
 }
 
 .searcher {
-    margin-left: 220px;
+    margin-left: 270px;
+    display: flex;
+    align-items: center;
 }
 
 .mutualFriends {
