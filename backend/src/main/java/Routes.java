@@ -15,6 +15,7 @@ import spark.Route;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
@@ -106,10 +107,13 @@ public class Routes {
         authorizedPost("/sendRequest", (req, res) -> {
             final User requester = getUser(req).get();
             final RequestForm requestForm = JsonParser.fromJson(req.body(), RequestForm.class);
-            system.addFriendRequest(requester, requestForm).ifPresent(
-                    (user) -> res.status(201)
+            system.addFriendRequest(requester, requestForm).ifPresentOrElse(
+                    (user) -> {
+                        res.status(201);
+                    },
+                    () -> {res.status(404);}
             );
-            return "OK";
+            return res.status();
         });
 
         authorizedGet("/requests", (req, res) -> {
@@ -118,15 +122,20 @@ public class Routes {
                     (requests) -> {
                         res.status(200);
                         res.body(JsonParser.toJson(user.getFriendsRequests()));
-                    }, () -> {res.status(404);}
+                    }, () -> {
+                        res.status(404);
+                    }
             );
             return res.body();
         });
 
-//        authorizedPost("/acceptRequest", (req, res) -> {
-//            final User user = getUser(req).get();
-//            system.
-//        });
+        authorizedDelete("/requests", (req, res) -> {
+            final User user = getUser(req).get();
+            final RequestForm requestForm = JsonParser.fromJson(req.body(), RequestForm.class);
+            system.rejectRequest(user, requestForm);
+            res.status(200);
+            return res.status();
+        });
 
         authorizedPost(CALENDAR_ROUTE, (req, res) -> {
             final String body = req.body();
@@ -146,7 +155,7 @@ public class Routes {
 
         authorizedGet(CALENDAR_ROUTE, (req, res) -> {
             final User user = getUser(req).get();
-            final List<Event> events = system.listEventsofUser(user);
+            final List<Event> events = system.listEventsOfUser(user);
             return JsonParser.toJson(events);
         });
 

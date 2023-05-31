@@ -197,7 +197,7 @@ const Studability = {
     },
 
     sendRequest: (emailForm, token, okCallback, errorCallback) => {
-        fetch(`${restApiEndpoint}/sendRequest`, {
+        return fetch(`${restApiEndpoint}/sendRequest`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ const Studability = {
             body: JSON.stringify(emailForm)
         }).then(resp => {
             if (resp.status === 201) {
-                resp.json().then(friendsRequests => okCallback(friendsRequests))
+                okCallback(() => "User Requested")
             } else {
                 errorCallback("The request cannot be sent")
             }
@@ -229,13 +229,14 @@ const Studability = {
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
 
-    rejectRequest: (email, token, okCallback, errorCallback) => {
-        fetch(`${restApiEndpoint}/rejectRequest`, {
-            method: 'POST',
+    rejectRequest: (emailForm, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/requests`, {
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
-            }
+            },
+            body: JSON.stringify(emailForm)
         }).then(resp => {
             if (resp.status === 200) {
                 resp.json().then(requests => okCallback(requests))

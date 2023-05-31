@@ -52,10 +52,10 @@ public class Users {
         return requested;
     }
 
-    public User deleteRequestFromList(long id) {
-        User user = entityManager.find(User.class, id);
-        entityManager.remove(user);
-        return user;
+    public Set<User> rejectRequest(User user, User toBeRejected) {
+        user.removeFriendRequest(toBeRejected);
+        entityManager.merge(user);
+        return user.getFriendsRequests();
     }
 
     public List<User> acceptRequest(String email) {

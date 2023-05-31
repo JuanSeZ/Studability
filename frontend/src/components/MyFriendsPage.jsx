@@ -61,7 +61,7 @@ export default function MyFriendsPage() {
     }
 
     function rejectRequest(email) {
-        studability.rejectRequest({email: email},
+        studability.rejectRequest({emailRequested: email},
             token,
             (requests) => setRequests(requests),
             (msg) => console.log(msg))
@@ -102,7 +102,7 @@ export default function MyFriendsPage() {
                             <ul id={user.email} key={user.email}>
                                 <div className="results-names">
                                     {user.name} {user.surname}
-                                    <SendRequestButton sendRequest={sendRequest} email={user.email} />
+                                    <SendRequestButton sendRequest={sendRequest} email={user.email}/>
                                     {/*<button*/}
                                     {/*    className={buttonChange === 'Request Sent' ? "btn btn-outline-success" : "btn btn-outline-primary"}*/}
                                     {/*    style={{marginLeft: 5, marginTop: 5}}*/}
@@ -116,13 +116,18 @@ export default function MyFriendsPage() {
                     <div>
                         <text className="requests-header">Friends Requests</text>
                         {requests.map((request) => (
-                            <ul key={request.email} id = {request.email} className="requests">
+                            <ul key={request.email} id={request.email} className="requests">
                                 <div>
                                     {request.name + " " + request.surname + " "}
-                                    <button className="btn btn-outline-success"
-                                            onClick={() => acceptRequest(request)}>✔
+                                    <button
+                                        className="btn btn-outline-success"
+                                        onClick={() => acceptRequest(request.email)}>✔
                                     </button>
-                                    <button className="btn btn-outline-danger" onClick={() => rejectRequest(request.email)}>X</button>
+                                    {" "}
+                                    <button
+                                        className="btn btn-outline-danger"
+                                        onClick={() => rejectRequest(request.email)}>X
+                                    </button>
                                 </div>
                             </ul>
                         ))}

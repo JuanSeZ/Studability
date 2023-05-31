@@ -1,13 +1,8 @@
 package entities;
 
-import net.bytebuddy.utility.nullability.MaybeNull;
 
-import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "USER")
@@ -92,5 +87,18 @@ public class User {
 
     public Set<User> getFriendsRequests() {
         return friendsRequests;
+    }
+
+    private boolean equals(User user1, User user2){
+        return (Objects.equals(user1.getEmail(), user2.getEmail()));
+    }
+
+    public void removeFriendRequest(User friend){
+        User[] friendRequests = friendsRequests.toArray(new User[friendsRequests.size()]);
+        for (User friendRequest : friendRequests) {
+            if (friend.equals(friend, friendRequest)) {
+                friendsRequests.remove(friendRequest);
+            }
+        }
     }
 }

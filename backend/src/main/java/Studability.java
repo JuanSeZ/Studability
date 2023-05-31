@@ -84,7 +84,7 @@ public class Studability {
         });
     }
 
-    public List<Event> listEventsofUser(User user) {
+    public List<Event> listEventsOfUser(User user) {
         return runInTransaction(datasource -> {
             Events events = datasource.events();
             return events.findByUserId(user.getEmail());
@@ -147,4 +147,13 @@ public class Studability {
 //            return users.
 //        })
 //    }
+
+    public Optional<Set<User>> rejectRequest(User user, RequestForm email) {
+        return Optional.ofNullable(runInTransaction(datasource -> {
+            Users users = datasource.users();
+            Optional<User> toBeRejected =  findUserByEmail(email.getEmailRequested());
+            User toBeRejectedUser = toBeRejected.get();
+            return users.rejectRequest(user, toBeRejectedUser);
+        }));
+    }
 }
