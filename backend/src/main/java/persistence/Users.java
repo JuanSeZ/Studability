@@ -14,7 +14,7 @@ public class Users {
     }
 
     public User createUser(RegistrationUserForm signUpValues) {
-        final User newUser = User.create(signUpValues.getName(), signUpValues.getSurname(),
+        final User newUser = User.create(signUpValues.getName().toLowerCase(), signUpValues.getSurname().toLowerCase(),
                 signUpValues.getEmail(), signUpValues.getPassword(), signUpValues.getCareer(), new HashSet<>(), new ArrayList<>());
 
         if (exists(newUser.getEmail())) throw new IllegalStateException("User already exists.");
@@ -39,12 +39,23 @@ public class Users {
                 .getResultList();
     }
 
-    public List<User> listByName(String name, String me){
-        return entityManager.createQuery("SELECT u FROM User u WHERE u.name LIKE :name AND u.name <> :me", User.class)
+    public List<User> listByName(String name, User me) {
+        String sqlQuery = "SELECT u.* FROM User u " +
+                "WHERE u.name LIKE :name " +
+                "AND u.name <> :meName " +
+                "AND NOT EXISTS (" +
+                "   SELECT * FROM FRIENDSHIP f WHERE f.User_email = :meEmail " +
+                "   AND f.friends_email = u.email" +
+                ")";
+
+        return entityManager.createNativeQuery(sqlQuery, User.class)
                 .setParameter("name", "%" + name + "%")
-                .setParameter("me", me)
+                .setParameter("meName", me.getName())
+                .setParameter("meEmail", me.getEmail())
                 .getResultList();
     }
+
+
 
     public User addRequestToList(User requester, User requested) {
         requested.getFriendsRequests().add(requester);
@@ -58,10 +69,12 @@ public class Users {
         return user.getFriendsRequests();
     }
 
-    public List<User> acceptRequest(String email) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE u.email LIKE :email", User.class)
-                .setParameter("email", email)
-                .getResultList();
+    public void acceptRequest(User user, User user2) {
+        user.addFriend(user2);
+        user.removeFriendRequest(user2);
+        entityManager.merge(user);
+        user2.addFriend(user);
+        entityManager.merge(user2);
     }
 
 }

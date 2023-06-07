@@ -15,7 +15,6 @@ import spark.Route;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
@@ -99,7 +98,8 @@ public class Routes {
                 users = system.listUsers().stream().map(UserDTO::fromModel).toList();
             } else {
                 final User me = getUser(req).get();
-                users = system.listUserByName(search, me.getName()).stream().map(UserDTO::fromModel).toList();
+//                users = system.listUserByName(search, me.getName()).stream().map(UserDTO::fromModel).toList();
+                users = system.listUserByName(search, me).stream().map(UserDTO::fromModel).toList();
             }
             return JsonParser.toJson(users);
         });
@@ -110,7 +110,7 @@ public class Routes {
             system.addFriendRequest(requester, requestForm).ifPresentOrElse(
                     (user) -> {
                         res.status(201);
-                    },
+                        },
                     () -> {res.status(404);}
             );
             return res.status();
@@ -121,8 +121,23 @@ public class Routes {
             system.listFriendsRequestsFromUser(user).ifPresentOrElse(
                     (requests) -> {
                         res.status(200);
-                        res.body(JsonParser.toJson(user.getFriendsRequests()));
+                        res.body(JsonParser.toJson(requests));
                     }, () -> {
+                        res.status(404);
+                    }
+            );
+            return res.body();
+        });
+
+        authorizedPost("/acceptRequest", (req, res) -> {
+            final User user = getUser(req).get();
+            RequestForm requestForm = JsonParser.fromJson(req.body(), RequestForm.class);
+            system.addFriend(user, requestForm.getEmailRequested()).ifPresentOrElse(
+                    (requests) -> {
+                        res.status(200);
+                        res.body(JsonParser.toJson(requests));
+                    },
+                    () -> {
                         res.status(404);
                     }
             );
@@ -134,7 +149,20 @@ public class Routes {
             final RequestForm requestForm = JsonParser.fromJson(req.body(), RequestForm.class);
             system.rejectRequest(user, requestForm);
             res.status(200);
-            return res.status();
+            return user.getFriendsRequests();
+        });
+
+        authorizedGet("/friends", (req, res) -> {
+            final User user = getUser(req).get();
+            system.listFriendsFromUser(user).ifPresentOrElse(
+                    (friends) -> {
+                        res.status(200);
+                        res.body(JsonParser.toJson(friends));
+                    }, () -> {
+                        res.status(404);
+                    }
+            );
+            return res.body();
         });
 
         authorizedPost(CALENDAR_ROUTE, (req, res) -> {
@@ -155,7 +183,7 @@ public class Routes {
 
         authorizedGet(CALENDAR_ROUTE, (req, res) -> {
             final User user = getUser(req).get();
-            final List<Event> events = system.listEventsOfUser(user);
+            final List<Event> events = system.listEventsofUser(user);
             return JsonParser.toJson(events);
         });
 

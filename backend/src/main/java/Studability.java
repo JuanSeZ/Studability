@@ -5,6 +5,7 @@ import model.CreateEventForm;
 import model.CreateTaskForm;
 import model.RegistrationUserForm;
 import model.RequestForm;
+import model.ui.UserDTO;
 import persistence.Events;
 import persistence.Tasks;
 import persistence.Users;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static json.JsonParser.fromJson;
 
@@ -84,7 +86,7 @@ public class Studability {
         });
     }
 
-    public List<Event> listEventsOfUser(User user) {
+    public List<Event> listEventsofUser(User user) {
         return runInTransaction(datasource -> {
             Events events = datasource.events();
             return events.findByUserId(user.getEmail());
@@ -121,7 +123,7 @@ public class Studability {
         });
     }
 
-    public List<User> listUserByName(String name, String me) {
+    public List<User> listUserByName(String name, User me) {
         return runInTransaction(datasource -> {
             Users users = datasource.users();
             return users.listByName(name, me);
@@ -136,18 +138,26 @@ public class Studability {
         }));
     }
 
-    public Optional<Set<User>> listFriendsRequestsFromUser(User user){
-        return Optional.ofNullable(runInTransaction(datasource -> user.getFriendsRequests()));
+    public Optional<Set<UserDTO>> listFriendsRequestsFromUser(User user){
+        Set<User> users = runInTransaction(datasource -> user.getFriendsRequests());
+        return Optional.of(users.stream().map(UserDTO::fromModel).collect(Collectors.toSet()));
     }
 
+    public Optional<List<UserDTO>> listFriendsFromUser(User user){
+        List<User> friends = runInTransaction(datasource -> user.getFriends());
+        return Optional.of(friends.stream().map(UserDTO::fromModel).collect(Collectors.toList()));
+    }
 
-//    public Optional<User> acceptRequest (User user){
-//        return runInTransaction(datasource -> {
-//            Users users = datasource.users();
-//            return users.
-//        })
-//    }
-
+    public Optional<Set<UserDTO>> addFriend(User user, String email){
+        return runInTransaction(datasource -> {
+            Users users = datasource.users();
+            User newFriend = users.findByEmail(email).get();
+            User me = users.findByEmail(user.getEmail()).get();
+            users.acceptRequest(me, newFriend);
+            Set<User> requests = me.getFriendsRequests();
+            return Optional.of(requests.stream().map(UserDTO::fromModel).collect(Collectors.toSet()));
+        }); //returns new set of requests
+    }
     public Optional<Set<User>> rejectRequest(User user, RequestForm email) {
         return Optional.ofNullable(runInTransaction(datasource -> {
             Users users = datasource.users();

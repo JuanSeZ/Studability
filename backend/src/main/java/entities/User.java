@@ -1,6 +1,8 @@
 package entities;
 
+import net.bytebuddy.utility.nullability.MaybeNull;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.*;
 
@@ -27,26 +29,16 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> friendsRequests = new HashSet<>(); // instead of a list, this eliminates duplicate values
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Friendship> friendships = new ArrayList<>();
-
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "FRIENDSHIP")
+    private List<User> friends = new ArrayList<>();
 
     public List<User> getFriends() {
-        return friendships.stream().map(Friendship::getFriend2).toList();
+        return friends;
     }
 
     public void addFriend(User friend) {
-        addFriendship(this, friend, friendships);
-
-        addFriendship(friend, this, friend.friendships);
-    }
-
-    private void addFriendship(User friend1, User friend, List<Friendship> friendships) {
-        final Friendship friendship = new Friendship();
-        friendship.setFriend1(friend1);
-        friendship.setFriend2(friend);
-
-        friendships.add(friendship);
+        friends.add(friend);
     }
 
     public User(String name, String surname, String email, String password, String career, Set<User> friendsRequests, List<User> mutualFriends) {
@@ -61,7 +53,7 @@ public class User {
     public User() {
 
     }
-    public static User create(String name, String surname, String email, String password, String career, Set<User> friendsRequests, List<User> mutualFriends){
+    public static User create(String name, String surname, String email, String password, String career, Set<User> friendsRequests, List<User> mutualFriends) {
         return new User(name, surname, email, password, career, friendsRequests, mutualFriends);
     }
 
@@ -89,16 +81,27 @@ public class User {
         return friendsRequests;
     }
 
-    private boolean equals(User user1, User user2){
-        return (Objects.equals(user1.getEmail(), user2.getEmail()));
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email);
     }
 
-    public void removeFriendRequest(User friend){
-        User[] friendRequests = friendsRequests.toArray(new User[friendsRequests.size()]);
-        for (User friendRequest : friendRequests) {
-            if (friend.equals(friend, friendRequest)) {
-                friendsRequests.remove(friendRequest);
-            }
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
+
+
+    public void removeFriendRequest(User friend) {
+        friendsRequests.remove(friend);
+//        User[] friendRequests = friendsRequests.toArray(new User[friendsRequests.size()]);
+//        for (User friendRequest : friendRequests) {
+//            if (friend.equals(friend, friendRequest)) {
+//                friendsRequests.remove(friendRequest);
+//            }
+//        }
     }
 }

@@ -23,15 +23,15 @@ export default function MyFriendsPage() {
             (msg) => console.log(msg));
     }, [])
 
-    // useEffect(() => {
-    //     studability.listFriends(
-    //         token,
-    //         (friends) => setFriends(friends),
-    //         (msg) => console.log(msg));
-    // }, [])
+    useEffect(() => {
+        studability.listFriends(
+            token,
+            (friends) => setFriends(friends),
+            (msg) => console.log(msg));
+    }, [requests])
 
     function searchUser() {
-        studability.listUserByFullName(searchedFriend,
+        studability.listUserByFullName(searchedFriend.toLowerCase(),
             token,
             (users) => {
                 setSearchResult(users)
@@ -53,15 +53,18 @@ export default function MyFriendsPage() {
     }
 
     function acceptRequest(email) {
-        studability.acceptRequest(email,
+        studability.acceptRequest({
+                emailRequested: email
+            },
             token,
-            (friends) => setFriends(friends),
+            (requests) => setRequests(requests),
             (msg) => console.log(msg))
-        setRequests(requests.splice(email, 1))
     }
 
     function rejectRequest(email) {
-        studability.rejectRequest({emailRequested: email},
+        studability.rejectRequest({
+                emailRequested: email
+            },
             token,
             (requests) => setRequests(requests),
             (msg) => console.log(msg))
@@ -103,12 +106,6 @@ export default function MyFriendsPage() {
                                 <div className="results-names">
                                     {user.name} {user.surname}
                                     <SendRequestButton sendRequest={sendRequest} email={user.email}/>
-                                    {/*<button*/}
-                                    {/*    className={buttonChange === 'Request Sent' ? "btn btn-outline-success" : "btn btn-outline-primary"}*/}
-                                    {/*    style={{marginLeft: 5, marginTop: 5}}*/}
-                                    {/*    onClick={() => sendRequest(user.email)}>*/}
-                                    {/*    {buttonChange}*/}
-                                    {/*</button>*/}
                                 </div>
                             </ul>
                         ))}
@@ -134,17 +131,17 @@ export default function MyFriendsPage() {
                     </div>
                 </div>
 
-                {/*<div class="column1">*/}
-                {/*    <br/>*/}
-                {/*    <text className="mutualFriends">Mutual Friends</text>*/}
-                {/*    {friends.map((friend) => (*/}
-                {/*        <li key={friend.email}>*/}
-                {/*            <div>*/}
-                {/*                {friend.name + " "}*/}
-                {/*            </div>*/}
-                {/*        </li>*/}
-                {/*    ))}*/}
-                {/*</div>*/}
+                <div class="column1">
+                    <br/>
+                    <text className="mutualFriends">Mutual Friends</text>
+                    {friends.map((friend) => (
+                        <li key={friend.email}>
+                            <div>
+                                {friend.name + " " + friend.surname}
+                            </div>
+                        </li>
+                    ))}
+                </div>
             </div>
 
         </div>

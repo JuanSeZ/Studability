@@ -206,7 +206,7 @@ const Studability = {
             body: JSON.stringify(emailForm)
         }).then(resp => {
             if (resp.status === 201) {
-                okCallback(() => "User Requested")
+                okCallback(() => "User requested")
             } else {
                 errorCallback("The request cannot be sent")
             }
@@ -219,12 +219,13 @@ const Studability = {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
-            }
+            },
+            body: JSON.stringify(email)
         }).then(resp => {
             if (resp.status === 200) {
-                resp.json().then(mutualFriends => okCallback(mutualFriends))
+                resp.json().then(requests => okCallback(requests))
             } else {
-                errorCallback("Mutual friends cannot be listed.")
+                errorCallback("Friends could not be listed.")
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
