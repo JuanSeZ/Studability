@@ -148,6 +148,24 @@ const Studability = {
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
 
+    changeTaskName: (taskId, name, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/changeTaskName/${taskId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(name)
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(newList => okCallback(newList))
+            } else {
+                errorCallback("Task has not been changed")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
+
     listUserByFullName: (fullName, token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/listUser?search=${fullName}`, {
             method: 'GET',

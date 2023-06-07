@@ -22,6 +22,13 @@ public class Tasks {
         return task;
     }
 
+    public Task changeTaskName(long id, String newName) {
+        Task task = entityManager.find(Task.class, id);
+        task.changeName(newName);
+        entityManager.merge(task);
+        return task;
+    }
+
     public boolean exists(long taskId) {
         return entityManager.createQuery("SELECT t FROM Task t WHERE t.id = :id", Task.class)
                 .setParameter("id", taskId).getResultList().size() > 0;

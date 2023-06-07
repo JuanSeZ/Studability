@@ -15,6 +15,7 @@ import spark.Route;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
@@ -110,7 +111,7 @@ public class Routes {
             system.addFriendRequest(requester, requestForm).ifPresentOrElse(
                     (user) -> {
                         res.status(201);
-                        },
+                    },
                     () -> {res.status(404);}
             );
             return res.status();
@@ -183,7 +184,7 @@ public class Routes {
 
         authorizedGet(CALENDAR_ROUTE, (req, res) -> {
             final User user = getUser(req).get();
-            final List<Event> events = system.listEventsofUser(user);
+            final List<Event> events = system.listEventsOfUser(user);
             return JsonParser.toJson(events);
         });
 
@@ -234,6 +235,18 @@ public class Routes {
                     () -> {
                         res.status(409);
                         res.body("Task does not exist");
+                    }
+            );
+            return res.body();
+        });
+
+        authorizedPost("/changeTaskName/:id", (req, res) -> {
+            final Long taskId = Long.parseLong(req.params(":id"));
+            final String newName = req.body();
+            system.changeTaskName(taskId, newName).ifPresent(
+                    (task) -> {
+                        res.status(200);
+                        res.body("Task modified");
                     }
             );
             return res.body();

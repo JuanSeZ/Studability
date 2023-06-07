@@ -33,6 +33,10 @@ public class Task {
         return name;
     }
 
+    public void changeName(String newName) {
+        this.name = newName;
+    }
+
     public String getUserId() {
         return userId;
     }

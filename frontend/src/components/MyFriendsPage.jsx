@@ -87,9 +87,8 @@ export default function MyFriendsPage() {
             <div class="row">
                 <div class="column1">
                     <br/>
-                    <nav className="searcher">
-                        <div className="container-fluid"
-                             style={{justifyContent: "flex-start", alignContent: "flex-start", display: "flex"}}>
+                    <nav>
+                        <div className="searcher">
                             <div className="d-flex">
                                 <input className="form-control border-1 border-dark" type="search"
                                        placeholder="Search new friends..."
@@ -133,14 +132,16 @@ export default function MyFriendsPage() {
 
                 <div class="column1">
                     <br/>
-                    <text className="mutualFriends">Mutual Friends</text>
-                    {friends.map((friend) => (
-                        <li key={friend.email}>
-                            <div>
-                                {friend.name + " " + friend.surname}
-                            </div>
-                        </li>
-                    ))}
+                    <text className="mutualFriendsHeader">Mutual Friends</text>
+                    <ul className="mutualFriends">
+                        {friends.map((friend) => (
+                            <ul key={friend.email}>
+                                <div>
+                                    {friend.name + " " + friend.surname}
+                                </div>
+                            </ul>
+                        ))}
+                    </ul>
                 </div>
             </div>
 

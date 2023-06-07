@@ -86,7 +86,7 @@ public class Studability {
         });
     }
 
-    public List<Event> listEventsofUser(User user) {
+    public List<Event> listEventsOfUser(User user) {
         return runInTransaction(datasource -> {
             Events events = datasource.events();
             return events.findByUserId(user.getEmail());
@@ -129,6 +129,15 @@ public class Studability {
             return users.listByName(name, me);
         });
     }
+
+    public Optional<Task> changeTaskName(Long taskId, String newName) {
+        return (runInTransaction(datasource -> {
+            Tasks tasks = datasource.tasks();
+            CreateTaskForm createTaskForm = fromJson(newName, CreateTaskForm.class);
+            return tasks.exists(taskId) ? Optional.of(tasks.changeTaskName(taskId, createTaskForm.name)) : Optional.empty();
+        }));
+    }
+
 
     public Optional<User> addFriendRequest(User requester, RequestForm requestedForm){
         return Optional.ofNullable(runInTransaction(datasource -> {
