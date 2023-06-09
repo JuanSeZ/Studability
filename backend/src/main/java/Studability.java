@@ -99,6 +99,16 @@ public class Studability {
             return events.exists(eventId) ? Optional.of(events.deleteEvent(eventId)) : Optional.empty();
         });
     }
+
+    public Optional<Event> modifyEvent(Long eventId, String eventForm){
+        return (runInTransaction(datasource -> {
+            Events events = datasource.events();
+            CreateEventForm createEventForm = fromJson(eventForm, CreateEventForm.class);
+
+            return events.exists(eventId) ? Optional.of(events.modifyEvent(eventId, createEventForm)) : Optional.empty();
+        }));
+    }
+
     public Optional<Task> addToDoTask(String body, User user) {
         return runInTransaction(datasource -> {
             Tasks tasks = datasource.tasks();

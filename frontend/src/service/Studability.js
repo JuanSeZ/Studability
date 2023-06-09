@@ -83,6 +83,23 @@ const Studability = {
         })
     },
 
+    modifyEvent: (eventId, eventForm, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/modifyEvent/${eventId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(eventForm)
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(eventModified => okCallback(eventModified))
+            } else {
+                errorCallback("The event has not been modified")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
     deleteEvent: (eventId, token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/home/calendar/${eventId}`, {
             method: 'DELETE',

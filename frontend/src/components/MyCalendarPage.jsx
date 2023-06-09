@@ -3,9 +3,10 @@ import DatePicker from "react-date-picker";
 import React, {useEffect, useState} from "react";
 import {useStudability} from "../service/Studability";
 import {useAuthProvider} from "../auth/auth";
+import CalendarEvent from "./CalendarEvent";
 
 
-export default function MyCalendarPage(){
+export default function MyCalendarPage() {
 
     const [dateValue, setDate] = useState(new Date());
     const [popup, setPopup] = useState(false)
@@ -46,8 +47,8 @@ export default function MyCalendarPage(){
             (addedEvent) => addEventToCalendar(addedEvent),
             () => {
                 setErrorMsg('Event already exists')
-                resetForm();
-            })
+                resetForm();}
+        )
     }
 
     const parseDate = (dateString) => {
@@ -93,7 +94,17 @@ export default function MyCalendarPage(){
         console.log(events)
     }
 
-    function handleDelete(eventDeleted){
+    function modifyEvent(event, newName, newDateValue, newDescription) {
+        studability.modifyEvent(event.id,
+            {dateValue: parseDateToString(newDateValue),
+            title: newName,
+            description: newDescription},
+            token,
+            (events) => setEvents(events),
+            (msg) => setErrorMsg(msg))
+    }
+
+    function handleDelete(eventDeleted) {
         const newEvents = events.filter((event) => eventDeleted.id !== event.id)
         setEvents(newEvents)
     }
@@ -124,20 +135,21 @@ export default function MyCalendarPage(){
                                         <DatePicker className="datePicker" onChange={setDate} value={dateValue}/>
                                     </div>
                                     <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                        <input className="nameEvent"
+                                        <input className="nameEvent border border-2 border-dark"
                                                placeholder="Event's name" required={true}
                                                value={title}
                                                name="event"
                                                onChange={changeNameEvent}/>
                                     </div>
                                     <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                        <input className="description"
+                                        <input className="description border border-2 border-dark"
                                                placeholder="Event's description" required={true}
                                                value={description}
                                                name="description"
                                                onChange={changeDescriptionEvent}/>
                                     </div>
-                                    <div className="saveButton" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                    <div className="saveButton"
+                                         style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                                         <button className="btn btn-success" type="submit">Save Event</button>
                                     </div>
                                 </div>
@@ -152,21 +164,20 @@ export default function MyCalendarPage(){
             <table className="table" name="table" class="center">
                 <thead>
                 <tr>
-                    <th scope="row" class="text-center">Date</th>
+                    <th scope="row" className="text-center">Date</th>
                     <th scope="row" class="text-center">Event</th>
                     <th scope="row" class="text-center">Description</th>
+                    <th scope="row" class="text-center">Modify</th>
                     <th scope="row" className="text-center">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
                 {events.map(event => (
-                    <tr key={event.dateValue}>
-                        <td align="center">{event.date}</td>
-                        <td align="center">{event.title}</td>
-                        <td align="center">{event.description}</td>
-                        <td><button type="button" id={event.id} className="btn btn-danger" onClick={deleteEvent}>X</button></td>
-                    </tr>
-                ))}
+                    <CalendarEvent modifyEvent={modifyEvent}
+                                   event={event}
+                                   parser={parseDate}
+                                   deleteEvent={deleteEvent}>
+                    </CalendarEvent>))}
                 </tbody>
             </table>
         </div>

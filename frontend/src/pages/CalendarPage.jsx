@@ -3,6 +3,7 @@ import 'react-calendar/dist/Calendar.css';
 import '../styles/CalendarStyle.css';
 import MyNavbar from "../components/MyNavbar";
 import MyCalendarPage from "../components/MyCalendarPage";
+import '../styles/CalendarEventStyle.css'
 
 
 export default function CalendarPage() {

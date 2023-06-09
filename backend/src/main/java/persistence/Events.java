@@ -1,6 +1,7 @@
 package persistence;
 
 import entities.Event;
+import model.CreateEventForm;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -31,6 +32,15 @@ private final EntityManager entityManager;
     public Event deleteEvent(long id) {
         Event event = entityManager.find(Event.class, id);
         entityManager.remove(event);
+        return event;
+    }
+
+    public Event modifyEvent(Long eventId, CreateEventForm eventForm){
+        Event event = entityManager.find(Event.class, eventId);
+        event.modifyEventsName(eventForm.title);
+        event.modifyEventsDescription(eventForm.description);
+        event.modifyEventsDate(eventForm.dateValue);
+        entityManager.merge(event);
         return event;
     }
 

@@ -99,6 +99,11 @@ body {
     margin-left: 50px;
 }
 
+.modifyButton {
+    border: none;
+    background: none;
+}
+
 .header {
     font-family: Helvetica, sans-serif;;
     font-size: 35px;

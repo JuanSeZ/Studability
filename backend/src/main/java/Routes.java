@@ -203,6 +203,21 @@ public class Routes {
             return res.body();
         });
 
+        authorizedPost("/modifyEvent/:id", (req, res) -> {
+            final Long eventId  = Long.parseLong(req.params(":id"));
+            system.modifyEvent(eventId, req.body()).ifPresentOrElse(
+                    event -> {
+                        res.status(200);
+                        res.body(JsonParser.toJson(event));
+                    },
+                    () -> {
+                        res.status(409);
+                        res.body("Could not modify event");
+                    }
+            );
+            return res.body();
+        });
+
         authorizedPost("/tasks", (req, res) -> {
             final String body = req.body();
             final User user = getUser(req).get();

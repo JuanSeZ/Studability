@@ -58,4 +58,14 @@ private String description;
     }
 
     public String getDescription(){return description;}
+
+    public void modifyEventsName(String newEventsName){
+        title = newEventsName;
+    }
+    public void modifyEventsDate(String newEventsDate){
+        date = newEventsDate;
+    }
+    public void modifyEventsDescription(String newEventsDescription){
+        description = newEventsDescription;
+    }
 }
