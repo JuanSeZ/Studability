@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {useStudability} from "../service/Studability";
+import "../styles/RegisterStyle.css"
 
 export default function RegisterPage() {
     const [name, setName] = useState('')
@@ -64,8 +65,8 @@ export default function RegisterPage() {
         setCareer(event.target.value)
     }
 
-    function validateNotNull(value){
-        if (value == null){
+    function validateNotNull(value) {
+        if (value == null) {
             return "All fields must be filled"
         }
     }
@@ -92,7 +93,6 @@ export default function RegisterPage() {
                                name="name"
                                onChange={nameChange}/>
                     </div>
-
 
                     <div className="input-group mb-3">
                         <span className="input-group-text" id="inputGroup-sizing-default">Surname</span>
@@ -138,12 +138,11 @@ export default function RegisterPage() {
                     </div>
 
                     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                        <div className="btn-group" role="group" aria-label="Basic outlined example">
-                            <Link to="/">
-                                <button type="button" className="btn btn-outline-secondary">Back</button>
-                            </Link>
-                            <button type="submit" className="btn btn-outline-success">Register</button>
-                        </div>
+                        <Link to="/">
+                            <button type="button" className="btn btn-outline-secondary backButton">Back</button>
+                        </Link>
+                        <button type="submit" className="btn btn-outline-success registerButton">Register</button>
+
                     </div>
 
                 </form>

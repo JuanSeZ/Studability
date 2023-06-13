@@ -76,26 +76,31 @@ export default function MyFriendsPage() {
 
     return (
         <div>
-            <br/>
+            <br />
 
-            <div style={{display: "flex", justifyContent: "center"}}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
                 <h1 className="header">
                     <header>My Friends</header>
                 </h1>
             </div>
 
-            <div class="row">
-                <div class="column1">
-                    <br/>
+            <div className="row">
+                <div className="column1">
+                    <br />
                     <nav>
                         <div className="searcher">
                             <div className="d-flex">
-                                <input className="form-control border-1 border-dark" type="search"
-                                       placeholder="Search new friends..."
-                                       value={searchedFriend}
-                                       aria-label="Search"
-                                       onChange={changeSearchedFullName}/>
-                                <button className="btn btn-outline-info" onClick={searchUser}>Search</button>
+                                <input
+                                    className="form-control border-1 border-dark"
+                                    type="search"
+                                    placeholder="Search new friends..."
+                                    value={searchedFriend}
+                                    aria-label="Search"
+                                    onChange={changeSearchedFullName}
+                                />
+                                <button className="btn btn-outline-info" onClick={searchUser}>
+                                    Search
+                                </button>
                             </div>
                         </div>
                     </nav>
@@ -110,41 +115,52 @@ export default function MyFriendsPage() {
                         ))}
                     </ul>
                     <div>
-                        <text className="requests-header">Friends Requests</text>
-                        {requests.map((request) => (
-                            <ul key={request.email} id={request.email} className="requests">
-                                <div>
-                                    {request.name + " " + request.surname + " "}
-                                    <button
-                                        className="btn btn-outline-success"
-                                        onClick={() => acceptRequest(request.email)}>✔
-                                    </button>
-                                    {" "}
-                                    <button
-                                        className="btn btn-outline-danger"
-                                        onClick={() => rejectRequest(request.email)}>X
-                                    </button>
-                                </div>
-                            </ul>
-                        ))}
+                        <h3 className="requests-header">Friends Requests</h3>
+                        {requests.length === 0 ? (
+                            <div className="no-requests" style={{justifyContent: "center", textAlign:"center", fontSize:20, fontFamily: "sans-serif", marginTop:10, color:"gray"}}>No new friend requests</div>
+                        ) : (
+                            requests.map((request) => (
+                                <ul key={request.email} id={request.email} className="requests">
+                                    <div>
+                                        {request.name + " " + request.surname + " "}
+                                        <button
+                                            className="btn btn-outline-success"
+                                            onClick={() => acceptRequest(request.email)}
+                                        >
+                                            ✔
+                                        </button>{" "}
+                                        <button
+                                            className="btn btn-outline-danger"
+                                            onClick={() => rejectRequest(request.email)}
+                                        >
+                                            X
+                                        </button>
+                                    </div>
+                                </ul>
+                            ))
+                        )}
                     </div>
                 </div>
 
-                <div class="column1">
-                    <br/>
-                    <text className="mutualFriendsHeader">Mutual Friends</text>
-                    <ul className="mutualFriends">
-                        {friends.map((friend) => (
-                            <ul key={friend.email}>
-                                <div>
-                                    {friend.name + " " + friend.surname}
-                                </div>
-                            </ul>
-                        ))}
-                    </ul>
+                <div className="column1">
+                    <br />
+                    <h3 className="mutualFriendsHeader">Mutual Friends</h3>
+                    {friends.length === 0 ? (
+                        <div className="no-friends" style={{justifyContent: "center", textAlign:"center", fontSize:20, fontFamily: "sans-serif", marginTop:10, color:"gray"}}>No mutual friends</div>
+                    ) : (
+                        <ul className="mutualFriends">
+                            {friends.map((friend) => (
+                                <li key={friend.email}>
+                                    <div>
+                                        {friend.name} {friend.surname}
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
             </div>
-
         </div>
+
     )
 }

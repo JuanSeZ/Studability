@@ -74,6 +74,7 @@ public class Users {
         user.removeFriendRequest(user2);
         entityManager.merge(user);
         user2.addFriend(user);
+        user2.removeFriendRequest(user);
         entityManager.merge(user2);
     }
 

@@ -13,13 +13,26 @@ export default function Feed (){
     const token = auth.getToken();
 
     useEffect(() => {
-        studability.listFriendsFiles(token,(files) => setFiles(files.map(file => <FileCard title={file[1]} author={file[0]}/> )), (msg) => console.log(msg));
-    }, [])
+        studability.listFriendsFiles(
+            token,
+            (files) =>
+                setFiles(
+                    files.length === 0 ? (
+                        <p style={{justifyContent: "center", textAlign:"center", fontSize:20, fontFamily: "sans-serif", marginTop:10, color:"gray"}}>No files uploaded by friends</p>
+                    ) : (
+                        files.map((file) => (
+                            <FileCard title={file[1]} author={file[0]} />
+                        ))
+                    )
+                ),
+            (msg) => console.log(msg)
+        );
+    }, []);
 
-    return(
-                <Row>
-                    {files}
-                </Row>
+    return (
+        <Row>
+            {files}
+        </Row>
+    );
 
-    )
 }

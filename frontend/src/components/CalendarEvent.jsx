@@ -28,6 +28,13 @@ export default function CalendarEvent(props) {
         modifyEvent(event, eventsNewName, eventsNewDate, eventsNewDescription)
     }
 
+    const handleSaveChanges = () => {
+        if (!eventsNewName.trim()) {
+            return;
+        }
+        modifyEventFn();
+    };
+
     return (
         <tr key={event.dateValue}>
             <td align="center">{event.date}</td>
@@ -43,6 +50,7 @@ export default function CalendarEvent(props) {
                                     <text>New Name: </text>
                                     <input className="mt-1 border rounded border-2 border-dark text-center"
                                            placeholder={"Event New Name"}
+                                           required
                                            value={eventsNewName}
                                            onChange={(event) => setEventsNewName(event.target.value)}
                                     />
@@ -62,7 +70,7 @@ export default function CalendarEvent(props) {
                                                 value={eventsNewDate}/>
                                 </div>
                                 <button className="btn btn-outline-success mt-2"
-                                        onClick={modifyEventFn}>Save Changes</button>
+                                        onClick={handleSaveChanges}>Save Changes</button>
                             </div>
                         </ClickAwayListener>
                     )}

@@ -1,0 +1,15 @@
+.row {
+    display: flex;
+}
+
+.todoListColumn {
+    width: 30%;
+    float: left;
+}
+
+.feedColumn {
+    width: 65%;
+    float: right;
+    margin-top: 10px;
+    margin-right: 65px;
+}
