@@ -150,11 +150,11 @@ export default function MyFriendsPage() {
                     ) : (
                         <ul className="mutualFriends">
                             {friends.map((friend) => (
-                                <li key={friend.email}>
+                                <ul key={friend.email}>
                                     <div>
                                         {friend.name} {friend.surname}
                                     </div>
-                                </li>
+                                </ul>
                             ))}
                         </ul>
                     )}

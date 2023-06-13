@@ -29,7 +29,7 @@ export default function CalendarEvent(props) {
     }
 
     const handleSaveChanges = () => {
-        if (!eventsNewName.trim()) {
+        if (!eventsNewName.trim() || !eventsNewDate) {
             return;
         }
         modifyEventFn();
@@ -66,6 +66,7 @@ export default function CalendarEvent(props) {
                                 <div className="text-center mt-4">
                                     <text>New Date: </text>
                                     <DatePicker className="datePicker"
+                                                required
                                                 onChange={setEventNewDate}
                                                 value={eventsNewDate}/>
                                 </div>

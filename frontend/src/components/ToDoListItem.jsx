@@ -25,12 +25,12 @@ export default function ToDoListItem(props) {
                 {task.name + " "}
             </label>
             {" "}
-            <button className="btn btn-outline-primary" onClick={() => setPopup(true)}>
+            <button className="btn btn-outline-primary modifyTaskButton" onClick={() => setPopup(true)}>
                 <PencilSquare></PencilSquare>
             </button>
             <button className="btn btn-outline-danger deleteButton"
                     onClick={() => deleteTaskFn(task.id)}
-                    style={{marginLeft: "10px", marginTop: "2px"}}>X
+                    style={{marginLeft: "4px", marginTop: "2px"}}>X
             </button>
 
             <form onSubmit={() => changeTaskName(task.id, newName)}>

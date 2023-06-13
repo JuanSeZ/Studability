@@ -70,33 +70,35 @@ export default function ToDoList() {
         <div class="container">
             <div>
                 <div class="header">
-                    <h4>To-Do List</h4>
-                    <form onSubmit={handleSubmit}>
-                        <div className="taskAdder">
-                            <input
-                                type="text"
-                                value={name}
-                                required={true}
-                                placeholder="Enter a To-Do Task"
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                            <button type="submit" className="btn btn-outline-primary" disabled={name.length === 0}>
-                                Add Task
-                            </button>
-                        </div>
-                    </form>
+                    <div className="todoList">
+                        <h4>To-Do List</h4>
+                        <form onSubmit={handleSubmit}>
+                            <div className="taskAdder">
+                                <input
+                                    type="text"
+                                    value={name}
+                                    required={true}
+                                    placeholder="Enter a To-Do Task"
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                                <button type="submit" className="btn btn-outline-primary" disabled={name.length === 0}>
+                                    Add Task
+                                </button>
+                            </div>
+                        </form>
 
-                    <div className="to-do-list-container">
-                        <ul className='to-do-list'>
-                            {list.map((task) => (
-                                <li id={task.id}>
-                                    <div>
-                                        <ToDoListItem deleteTask={deleteTask} changeName={changeTaskName}
-                                                      task={task}></ToDoListItem>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
+                        <div className="to-do-list-container">
+                            <ul className='to-do-list'>
+                                {list.map((task) => (
+                                    <li id={task.id}>
+                                        <div>
+                                            <ToDoListItem deleteTask={deleteTask} changeName={changeTaskName}
+                                                          task={task}></ToDoListItem>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
