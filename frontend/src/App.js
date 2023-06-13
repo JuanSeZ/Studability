@@ -9,6 +9,7 @@ import {RequireAuth} from "./components/RequireAuth";
 import CalendarPage from "./pages/CalendarPage";
 import PomodoroTimerPage from "./pages/PomodoroTimerPage";
 import FriendsPage from "./pages/FriendsPage";
+import FilesPage from "./pages/FilesPage";
 
 export default function App() {
     return (
@@ -47,6 +48,15 @@ export default function App() {
                            </RequireAuth>
                        }
                 />
+
+                <Route path="/home/files"
+                          element={
+                                <RequireAuth>
+                                    <FilesPage/>
+                                </RequireAuth>
+                            }
+                />
+
             </Routes></div>
         </BrowserRouter>
     );

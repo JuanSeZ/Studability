@@ -9,10 +9,13 @@ import model.AuthRequest;
 import model.RegistrationUserForm;
 import model.RequestForm;
 import model.ui.UserDTO;
+import persistence.FilesRepository;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import javax.servlet.MultipartConfigElement;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -265,6 +268,39 @@ public class Routes {
                     }
             );
             return res.body();
+        });
+
+        authorizedPost("/files/upload", (request, response) -> {
+
+            request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
+            InputStream input = request.raw().getPart("file").getInputStream();
+            String fileName = request.raw().getPart("file").getSubmittedFileName();
+            String userEmail = emailByToken.getIfPresent(getToken(request).get());
+            try {
+                system.uploadFile(fileName, userEmail, input);
+                response.status(201);
+                return "File uploaded";
+            }
+            catch (Exception e) {
+                response.status(409);
+                return "File already exists";
+            }
+
+        });
+
+        get("file/:email/:name", (request, response) -> {
+            String fileName = request.params(":name");
+            String email = request.params(":email");
+            String fileType = fileName.substring(fileName.indexOf('.') + 1);
+            if(fileType.equals("pdf")) fileType = "application/"+ fileType;
+            response.type(fileType);
+            return FilesRepository.load(fileName,email);
+        });
+
+        authorizedGet("/files", (req, res) -> {
+            final User user = getUser(req).get();
+            final List<String[]> files = system.listFilesOfUser(user);
+            return JsonParser.toJson(files);
         });
 
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));

@@ -56,7 +56,7 @@ export default function MyNavbar() {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <a href="#" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                            <a href="/home/files" className="nav-link" onClick={() => setShowOffcanvas(false)}>
                                 <Folder /> Files
                             </a>
                         </li>

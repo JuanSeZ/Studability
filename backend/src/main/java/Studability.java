@@ -7,12 +7,15 @@ import model.RegistrationUserForm;
 import model.RequestForm;
 import model.ui.UserDTO;
 import persistence.Events;
+import persistence.FilesRepository;
 import persistence.Tasks;
 import persistence.Users;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,7 +24,7 @@ import java.util.stream.Collectors;
 
 import static json.JsonParser.fromJson;
 
-// TODO: Crear un EventForm para no romper la inmutabilidad de Event
+
 public class Studability {
 
     private final EntityManagerFactory factory;
@@ -184,5 +187,14 @@ public class Studability {
             User toBeRejectedUser = toBeRejected.get();
             return users.rejectRequest(user, toBeRejectedUser);
         }));
+    }
+    public void uploadFile(String filename , String userEmail, InputStream fileInputStream) throws IOException {
+        FilesRepository.store(filename, userEmail, fileInputStream);
+    }
+
+    public List<String[]> listFilesOfUser(User user) {
+        String[] userEmail = {user.getEmail()};
+        List<String[]> files = FilesRepository.list(userEmail);
+        return files;
     }
 }

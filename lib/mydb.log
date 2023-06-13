@@ -1,0 +1,17 @@
+/*C2*/SET SCHEMA PUBLIC
+alter table EVENT add column description varchar(255)
+create table FRIENDSHIP (User_email varchar(255) not null, friends_email varchar(255) not null)
+create table USER_USER (User_email varchar(255) not null, friendsRequests_email varchar(255) not null, primary key (User_email, friendsRequests_email))
+alter table FRIENDSHIP add constraint FK576qg9nflo1kl7yy76k7gxkn7 foreign key (friends_email) references USER
+alter table FRIENDSHIP add constraint FKp8vcs38pqr525uuamlyfbkphf foreign key (User_email) references USER
+alter table USER_USER add constraint FKd4j0m3mqyustxbsk7l2jmgghl foreign key (friendsRequests_email) references USER
+alter table USER_USER add constraint FKmt9udm3hkseck6eb857q1f50p foreign key (User_email) references USER
+/*C3*/SET SCHEMA PUBLIC
+INSERT INTO TODOLIST VALUES(502,'Tarea','juanse@gmail.com')
+ALTER SEQUENCE PUBLIC.USERGEN RESTART WITH 601
+COMMIT
+/*C2*/DELETE FROM TODOLIST WHERE ID=502
+COMMIT
+/*C3*/INSERT INTO EVENT VALUES(552,'13/06/2023','Prueba','juanse@gmail.com','Prueba de matematica')
+ALTER SEQUENCE PUBLIC.USERGEN RESTART WITH 651
+COMMIT
