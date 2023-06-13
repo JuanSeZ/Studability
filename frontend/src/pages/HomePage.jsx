@@ -1,6 +1,7 @@
 import * as React from "react";
 import ToDoList from "../components/ToDoList";
 import MyNavbar from "../components/MyNavbar";
+import Feed from "../components/Feed";
 
 
 
@@ -11,9 +12,8 @@ export default function HomePage() {
             <row>
                 <MyNavbar/>
             </row>
-            <column>
                 <ToDoList/>
-            </column>
+                <Feed/>
         </div>
     )
 }

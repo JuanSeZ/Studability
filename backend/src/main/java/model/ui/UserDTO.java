@@ -26,7 +26,10 @@ public class UserDTO {
         return userDTO;
     }
 
-//    public static UserDTO fromModel(Optional<User> userOptional) {
+    public String getEmail() {
+        return email;
+    }
+    //    public static UserDTO fromModel(Optional<User> userOptional) {
 //        if(userOptional.isPresent()) {
 //            User user = userOptional.get();
 //            UserDTO userDTO = new UserDTO();

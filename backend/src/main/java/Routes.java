@@ -302,6 +302,11 @@ public class Routes {
             final List<String[]> files = system.listFilesOfUser(user);
             return JsonParser.toJson(files);
         });
+        authorizedGet("/files/friends", (req, res) -> {
+            final User user = getUser(req).get();
+            final List<String[]> files = system.listFilesOfFriends(user);
+            return JsonParser.toJson(files);
+        });
 
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
