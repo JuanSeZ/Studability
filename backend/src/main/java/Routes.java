@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static json.JsonParser.fromJson;
 import static json.JsonParser.toJson;
 import static spark.Spark.*;
 
@@ -301,6 +302,13 @@ public class Routes {
             final User user = getUser(req).get();
             final List<String[]> files = system.listFilesOfUser(user);
             return JsonParser.toJson(files);
+        });
+
+        authorizedGet("/home", (req, res) -> {
+            final User user = getUser(req).get();
+            res.status(200);
+            res.body(JsonParser.toJson(UserDTO.fromModel(user)));
+            return res.body();
         });
 
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));

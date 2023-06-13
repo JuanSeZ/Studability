@@ -281,7 +281,7 @@ const Studability = {
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
-    uploadFile:  (formData, token, okCallback, errorCallback) => {
+    uploadFile: (formData, token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/files/upload`, {
             method: "POST",
             body: formData,
@@ -317,6 +317,21 @@ const Studability = {
                 errorCallback("Files cannot be listed")
             }
         })
-    }
+    },
+    getUser: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/home`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(user => okCallback(user))
+            } else {
+                errorCallback("Could not get name")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
 }
 export const useStudability = () => Studability

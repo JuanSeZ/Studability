@@ -6,7 +6,7 @@ import {useNavigate} from "react-router";
 import {useAuthProvider} from "../auth/auth";
 import {useStudability} from "../service/Studability";
 import {Link} from "react-router-dom";
-
+import '../styles/NavBarStyle.css';
 
 export default function MyNavbar() {
     const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -29,7 +29,7 @@ export default function MyNavbar() {
         <>
             <Navbar bg="light" expand="lg">
                 <Navbar.Brand href="/home">
-                    <img src={logo} height="50" alt="Logo" />
+                    <img src={logo} height="50" alt="Logo" className="logo"/>
                     Studability
                 </Navbar.Brand>
                 <Button variant="outline-primary" onClick={() => setShowOffcanvas(true)} className="ms-auto">

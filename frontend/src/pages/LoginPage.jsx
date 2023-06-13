@@ -23,7 +23,7 @@ export default function LoginPage() {
             credentials,
             (token) => {
                 setToken(token)
-                navigate("/home", {replace: true});
+                navigate("/home?name=true", {replace: true});
             },
             (msg) => {
                 setErrorMsg(msg)
