@@ -134,6 +134,20 @@ public class Routes {
             return res.body();
         });
 
+        authorizedGet("/sentRequests", (req, res) -> {
+            final User user = getUser(req).get();
+            system.listSentRequests(user).ifPresentOrElse(
+                    (sentRequests) -> {
+                        res.status(200);
+                        res.body(JsonParser.toJson(sentRequests));
+                    }, () -> {
+                        res.status(404);
+                    }
+            );
+            return res.body();
+        });
+
+
         authorizedPost("/acceptRequest", (req, res) -> {
             final User user = getUser(req).get();
             RequestForm requestForm = JsonParser.fromJson(req.body(), RequestForm.class);

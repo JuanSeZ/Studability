@@ -14,6 +14,7 @@ import persistence.Users;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -163,6 +164,13 @@ public class Studability {
     public Optional<Set<UserDTO>> listFriendsRequestsFromUser(User user){
         Set<User> users = runInTransaction(datasource -> user.getFriendsRequests());
         return Optional.of(users.stream().map(UserDTO::fromModel).collect(Collectors.toSet()));
+    }
+
+    public Optional<Set<UserDTO>> listSentRequests(User user){
+        return Optional.ofNullable(runInTransaction(datasource -> {
+            Users users = datasource.users();
+            return users.listSentRequests(user).stream().map(UserDTO::fromModel).collect(Collectors.toSet());
+        }));
     }
 
     public Optional<List<UserDTO>> listFriendsFromUser(User user){

@@ -97,11 +97,5 @@ public class User {
 
     public void removeFriendRequest(User friend) {
         friendsRequests.remove(friend);
-//        User[] friendRequests = friendsRequests.toArray(new User[friendsRequests.size()]);
-//        for (User friendRequest : friendRequests) {
-//            if (friend.equals(friend, friendRequest)) {
-//                friendsRequests.remove(friendRequest);
-//            }
-//        }
     }
 }

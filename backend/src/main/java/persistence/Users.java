@@ -55,6 +55,16 @@ public class Users {
                 .getResultList();
     }
 
+    public List<User> listSentRequests(User requester) {
+        String sqlQuery = "SELECT u.* FROM User u " +
+                "JOIN USER_USER uu ON uu.USER_EMAIL = u.email " +
+                "WHERE uu.FRIENDSREQUESTS_EMAIL = :requesterEmail";
+
+        return entityManager.createNativeQuery(sqlQuery, User.class)
+                .setParameter("requesterEmail", requester.getEmail())
+                .getResultList();
+    }
+
 
 
     public User addRequestToList(User requester, User requested) {

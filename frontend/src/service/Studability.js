@@ -215,6 +215,22 @@ const Studability = {
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
 
+    listSentRequests: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/sentRequests`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(sentRequests => okCallback(sentRequests))
+            } else {
+                errorCallback("The requests you sent cannot be listed")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
     listFriends: (token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/friends`, {
             method: "GET",
