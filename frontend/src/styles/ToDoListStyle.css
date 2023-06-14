@@ -7,8 +7,9 @@
     position: relative;
     padding: 30px 8px 30px;
     list-style-type: none;
-    font-size: 20px;
+    font-size: 18px;
     transition: 0.2s;
+    font-family: Helvetica, sans-serif;
 
     /* make the list items unselectable */
     -webkit-user-select: none;
@@ -30,7 +31,19 @@
 input {
     margin-right: 5px;
     border: none;
-    border-radius: 0;
-    width: 70%;
+    border-radius: 5px;
+    width: 65%;
     font-size: 16px;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+}
+
+.taskAdder {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.deleteButton {
+    margin-bottom: 2px;
 }

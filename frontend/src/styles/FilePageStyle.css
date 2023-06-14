@@ -1,0 +1,18 @@
+.file-upload-form-container {
+    width: 50%;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px auto 15px;
+}
+
+.header {
+    font-family: Helvetica, sans-serif;;
+    font-size: 35px;
+}
+
+.files {
+    font-size: 35px;
+    flex-direction: column;
+    align-items: center;
+    font-family: Helvetica, sans-serif;
+}

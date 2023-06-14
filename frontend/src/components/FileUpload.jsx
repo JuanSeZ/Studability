@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {useAuthProvider} from "../auth/auth";
 import {useStudability} from "../service/Studability";
-import "../styles/FileUploadStyle.css";
+import "../styles/FilePageStyle.css";
 
 export default function FileUpload ()  {
 

@@ -3,7 +3,6 @@ import {useStudability} from "../service/Studability";
 import {useEffect, useState} from "react";
 import {useAuthProvider} from "../auth/auth";
 import '../styles/ToDoListStyle.css';
-import {PencilSquare} from 'react-bootstrap-icons';
 import ToDoListItem from './ToDoListItem'
 
 export default function ToDoList() {
@@ -11,9 +10,7 @@ export default function ToDoList() {
     const studability = useStudability()
     const [list, setList] = useState([]);
     const [name, setName] = useState("");
-    const [newName, setNewName] = useState("");
     let token = useAuthProvider().getToken();
-    const [popup, setPopup] = useState(false)
 
     useEffect(() => {
         studability.listTasks(
@@ -73,38 +70,36 @@ export default function ToDoList() {
         <div class="container">
             <div>
                 <div class="header">
-                    <h4>To-Do List</h4>
-                    <input type="text"
-                           value={name} required={true}
-                           placeholder="Enter a To-Do Task"
-                           onChange={(e) => setName(e.target.value)}/>
-                    <button type="submit" className="btn btn-outline-primary" onClick={handleSubmit} disabled={name.length === 0}>Add Task</button>
-                    <ul className='to-do-list'>
-                        {list.map((task) => (
-                            <li id={task.id}>
-                                <div>
-                                    {/*<input className="form-check-input" type="checkbox" style={{marginTop:"12px"}}/>*/}
-                                    {/*<label className="form-check-label" style={{marginLeft: "10px"}}>*/}
-                                    {/*    {task.name + " "}*/}
-                                    {/*</label>*/}
-                                    {/*<button className="btn btn-outline-danger" onClick={() => deleteTask(task.id)} style={{marginLeft: "10px", marginTop:"5px"}}>&times;</button>*/}
-                                    {/*<form onSubmit={() => changeTaskName}>*/}
-                                    {/*    {popup && (*/}
-                                    {/*        <div className="changeNamePopUp">*/}
-                                    {/*            <input className="newTaskName"*/}
-                                    {/*                   placeholder="Task New Name" required={true}*/}
-                                    {/*                   value={newName}*/}
-                                    {/*                   name="task"*/}
-                                    {/*                   onChange={(task) => setNewName(task.target.value)}*/}
-                                    {/*            />*/}
-                                    {/*        </div>*/}
-                                    {/*    )}*/}
-                                    {/*</form>*/}
-                                    <ToDoListItem deleteTask={deleteTask} changeName={changeTaskName} task={task} ></ToDoListItem>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="todoList">
+                        <h4>To-Do List</h4>
+                        <form onSubmit={handleSubmit}>
+                            <div className="taskAdder">
+                                <input
+                                    type="text"
+                                    value={name}
+                                    required={true}
+                                    placeholder="Enter a To-Do Task"
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                                <button type="submit" className="btn btn-outline-primary" disabled={name.length === 0}>
+                                    Add Task
+                                </button>
+                            </div>
+                        </form>
+
+                        <div className="to-do-list-container">
+                            <ul className='to-do-list'>
+                                {list.map((task) => (
+                                    <li id={task.id}>
+                                        <div>
+                                            <ToDoListItem deleteTask={deleteTask} changeName={changeTaskName}
+                                                          task={task}></ToDoListItem>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -17,6 +17,7 @@ import javax.persistence.Persistence;
 import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -203,6 +204,16 @@ public class Studability {
     public List<String[]> listFilesOfUser(User user) {
         String[] userEmail = {user.getEmail()};
         List<String[]> files = FilesRepository.list(userEmail);
+        return files;
+    }
+
+    public List<String[]> listFilesOfFriends(User user) {
+        List<String[]> files = new ArrayList<>();
+        List<UserDTO> friends = listFriendsFromUser(user).get();
+        for (UserDTO friend : friends) {
+            String[] userEmail = {friend.getEmail()};
+            files.addAll(FilesRepository.list(userEmail));
+        }
         return files;
     }
 }

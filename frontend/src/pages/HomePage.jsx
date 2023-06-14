@@ -7,6 +7,9 @@ import {useAuthProvider} from "../auth/auth";
 import {useEffect, useState} from "react";
 import 'sweetalert2/src/sweetalert2.scss'
 import {useSearchParams} from "react-router-dom";
+import Feed from "../components/Feed";
+import "../styles/HomePageStyle.css"
+
 
 export default function HomePage() {
 
@@ -41,9 +44,19 @@ export default function HomePage() {
             <row>
                 <MyNavbar/>
             </row>
-            <column>
-                <ToDoList/>
-            </column>
+            <row>
+                <div class="todoListColumn">
+                    <ToDoList/>
+                </div>
+                <div class="feedColumn">
+                    <div style={{display: "flex", justifyContent: "center"}}>
+                        <h1 className="header">
+                            <header>Friend's Files</header>
+                        </h1>
+                    </div>
+                    <Feed/>
+                </div>
+            </row>
         </div>
     )
 }

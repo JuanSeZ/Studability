@@ -327,7 +327,22 @@ const Studability = {
         }).then(async resp => {
             if (resp.status === 200) {
                 let files = await resp.json()
-                console.log(files)
+                okCallback(files)
+            } else {
+                errorCallback("Files cannot be listed")
+            }
+        })
+    },
+    listFriendsFiles: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/files/friends`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            }
+        }).then(async resp => {
+            if (resp.status === 200) {
+                let files = await resp.json()
                 okCallback(files)
             } else {
                 errorCallback("Files cannot be listed")

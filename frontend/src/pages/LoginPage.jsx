@@ -95,9 +95,9 @@ export default function LoginPage() {
                     <div className="col-md-12 text-center">
                         <div style={{height: 60}}>
                             <Link to="/">
-                                <button type="button" className="btn btn-outline-secondary">Back</button>
+                                <button type="button" className="btn btn-outline-secondary" style={{marginRight:5}}>Back</button>
                             </Link>
-                            <button type="submit" className="btn btn-outline-primary">Log In</button>
+                            <button type="submit" className="btn btn-outline-primary" style={{marginLeft:5}}>Log In</button>
                         </div>
                     </div>
 
