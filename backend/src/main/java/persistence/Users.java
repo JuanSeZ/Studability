@@ -1,6 +1,8 @@
 package persistence;
 
+import entities.Event;
 import entities.User;
+import model.CreateEventForm;
 import model.RegistrationUserForm;
 
 import javax.persistence.EntityManager;
@@ -48,11 +50,21 @@ public class Users {
                 "   AND f.friends_email = u.email" +
                 ")";
 
-        return entityManager.createNativeQuery(sqlQuery, User.class)
+        List<User> users = entityManager.createNativeQuery(sqlQuery, User.class)
                 .setParameter("name", "%" + name + "%")
                 .setParameter("meName", me.getName())
                 .setParameter("meEmail", me.getEmail())
                 .getResultList();
+
+        List<User> requestsSent = entityManager.createQuery("SELECT u FROM User u JOIN u.friendsRequests r WHERE r.email = :meEmail", User.class)
+                .setParameter("meEmail", me.getEmail())
+                .getResultList();
+
+
+        users.removeAll(requestsSent);
+        return users;
+
+
     }
 
     public List<User> listSentRequests(User requester) {
@@ -64,7 +76,6 @@ public class Users {
                 .setParameter("requesterEmail", requester.getEmail())
                 .getResultList();
     }
-
 
 
     public User addRequestToList(User requester, User requested) {
@@ -88,5 +99,15 @@ public class Users {
         entityManager.merge(user2);
     }
 
+    public User editProfile(String email, RegistrationUserForm registrationUserForm) {
+        User user = entityManager.find(User.class, email);
+        user.modifyName(registrationUserForm.getName());
+        user.modifySurname(registrationUserForm.getSurname());
+        user.modifyEmail(registrationUserForm.getEmail());
+        user.modifyPassword(registrationUserForm.getPassword());
+        user.modifyCareer(registrationUserForm.getCareer());
+        entityManager.merge(user);
+        return user;
+    }
 }
 

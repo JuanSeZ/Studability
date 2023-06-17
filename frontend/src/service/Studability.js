@@ -37,6 +37,7 @@ const Studability = {
     logout: (token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/auth`, {
             method: 'DELETE',
+            body:"Hola",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token

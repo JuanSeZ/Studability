@@ -98,4 +98,24 @@ public class User {
     public void removeFriendRequest(User friend) {
         friendsRequests.remove(friend);
     }
+
+    public void modifyName(String newName){
+        this.name = newName;
+    }
+
+    public void modifySurname(String newSurname){
+        this.surname = newSurname;
+    }
+
+    public void modifyCareer(String newCareer){
+        this.career = newCareer;
+    }
+
+    public void modifyEmail(String newEmail){
+        this.email = newEmail;
+    }
+
+    public void modifyPassword(String newPassword){
+        this.password = newPassword;
+    }
 }

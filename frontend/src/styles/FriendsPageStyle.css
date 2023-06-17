@@ -5,7 +5,32 @@
 
 .column1 {
     float: left;
-    width: 50%;
+    width: 33%;
+}
+
+.columnRequestsSent {
+    float: none;
+    width: 33%;
+}
+
+.columnMutualFriends {
+    float: right;
+    width: 33%;
+}
+
+.requestsSentHeader {
+    margin-bottom: 7px;
+    font-size: 30px;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+    font-family: Helvetica, sans-serif;
+}
+
+.no-requests-sent {
+    margin-left: 20px;
 }
 
 .requests {

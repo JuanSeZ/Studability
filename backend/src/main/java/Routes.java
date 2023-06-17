@@ -84,7 +84,7 @@ public class Routes {
             return res.body();
         });
 
-        authorizedDelete(AUTH_ROUTE, (req, res) -> {
+        authorizedDelete(AUTH_ROUTE,  (req, res) -> {
             getToken(req)
                     .ifPresentOrElse(token -> {
                         emailByToken.invalidate(token);
@@ -93,7 +93,7 @@ public class Routes {
                         res.status(404);
                     });
 
-            return res.body();
+            return "delete";
         });
 
         authorizedGet("/listUser", (req, res) -> {
@@ -330,6 +330,21 @@ public class Routes {
             return res.body();
         });
 
+        authorizedPost("/editProfile/:id", (req, res) -> {
+            final String userId = req.params(":id");
+            final RegistrationUserForm registrationUserForm = JsonParser.fromJson(req.body(), RegistrationUserForm.class);
+            system.editProfile(userId, registrationUserForm).ifPresentOrElse(
+                    (user) -> {
+                        res.status(200);
+                        res.body(JsonParser.toJson(user));
+                    },
+                    () -> {
+                        res.status(409);
+                        res.body("User not modified");
+                    });
+            return res.body();
+        });
+
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         authorizedGet("/listUser", (req, res) -> getToken(req).map(JsonParser::toJson));
@@ -340,7 +355,7 @@ public class Routes {
     }
 
     private void authorizedDelete(final String path, final Route route) {
-        delete(path, (request, response) -> authorize(route, request, response));
+        delete(path, "*/*",(request, response) -> authorize(route, request, response));
     }
 
     private void authorizedPost(final String path, final Route route) {

@@ -28,6 +28,39 @@
     text-align: center;
 }
 
+.customizedTimer {
+    display: flex;
+    justify-content: center;
+}
+
+.timerPopup {
+    text-align: center;
+}
+
+.newWorkDuration {
+    font-family: Helvetica, sans-serif;
+    margin-top: 20px;
+}
+
+.newBreakDuration {
+    font-family: Helvetica, sans-serif;
+}
+
+.centered-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.customizedWork {
+    font-family: Helvetica, sans-serif;
+    text-align: left;
+}
+
+.customizedBreak {
+    font-family: Helvetica, sans-serif;
+    text-align: left;
+}
+
 .column {
     padding: 1px;
     height: 200px;

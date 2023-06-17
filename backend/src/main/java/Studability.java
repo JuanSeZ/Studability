@@ -30,6 +30,7 @@ import static json.JsonParser.fromJson;
 public class Studability {
 
     private final EntityManagerFactory factory;
+
     private Studability(EntityManagerFactory factory) {
         this.factory = factory;
     }
@@ -154,7 +155,7 @@ public class Studability {
     }
 
 
-    public Optional<User> addFriendRequest(User requester, RequestForm requestedForm){
+    public Optional<User> addFriendRequest(User requester, RequestForm requestedForm) {
         return Optional.ofNullable(runInTransaction(datasource -> {
             Users users = datasource.users();
             User requested = users.findByEmail(requestedForm.getEmailRequested()).get();
@@ -162,24 +163,24 @@ public class Studability {
         }));
     }
 
-    public Optional<Set<UserDTO>> listFriendsRequestsFromUser(User user){
+    public Optional<Set<UserDTO>> listFriendsRequestsFromUser(User user) {
         Set<User> users = runInTransaction(datasource -> user.getFriendsRequests());
         return Optional.of(users.stream().map(UserDTO::fromModel).collect(Collectors.toSet()));
     }
 
-    public Optional<Set<UserDTO>> listSentRequests(User user){
+    public Optional<Set<UserDTO>> listSentRequests(User user) {
         return Optional.ofNullable(runInTransaction(datasource -> {
             Users users = datasource.users();
             return users.listSentRequests(user).stream().map(UserDTO::fromModel).collect(Collectors.toSet());
         }));
     }
 
-    public Optional<List<UserDTO>> listFriendsFromUser(User user){
+    public Optional<List<UserDTO>> listFriendsFromUser(User user) {
         List<User> friends = runInTransaction(datasource -> user.getFriends());
         return Optional.of(friends.stream().map(UserDTO::fromModel).collect(Collectors.toList()));
     }
 
-    public Optional<Set<UserDTO>> addFriend(User user, String email){
+    public Optional<Set<UserDTO>> addFriend(User user, String email) {
         return runInTransaction(datasource -> {
             Users users = datasource.users();
             User newFriend = users.findByEmail(email).get();
@@ -189,15 +190,17 @@ public class Studability {
             return Optional.of(requests.stream().map(UserDTO::fromModel).collect(Collectors.toSet()));
         }); //returns new set of requests
     }
+
     public Optional<Set<User>> rejectRequest(User user, RequestForm email) {
         return Optional.ofNullable(runInTransaction(datasource -> {
             Users users = datasource.users();
-            Optional<User> toBeRejected =  findUserByEmail(email.getEmailRequested());
+            Optional<User> toBeRejected = findUserByEmail(email.getEmailRequested());
             User toBeRejectedUser = toBeRejected.get();
             return users.rejectRequest(user, toBeRejectedUser);
         }));
     }
-    public void uploadFile(String filename , String userEmail, InputStream fileInputStream) throws IOException {
+
+    public void uploadFile(String filename, String userEmail, InputStream fileInputStream) throws IOException {
         FilesRepository.store(filename, userEmail, fileInputStream);
     }
 
@@ -215,5 +218,12 @@ public class Studability {
             files.addAll(FilesRepository.list(userEmail));
         }
         return files;
+    }
+
+    public Optional<User> editProfile(String email, RegistrationUserForm registrationUserForm) {
+        return (runInTransaction(datasource -> {
+            Users users = datasource.users();
+            return users.exists(String.valueOf(email)) ? Optional.of(users.editProfile(email, registrationUserForm)) : Optional.empty();
+        }));
     }
 }
