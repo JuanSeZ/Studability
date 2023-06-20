@@ -1,5 +1,5 @@
 import {Navbar, Button, Offcanvas, NavLink} from 'react-bootstrap';
-import {Calendar, People, Folder, Clock, BoxArrowRight, List} from 'react-bootstrap-icons';
+import {Calendar, People, Folder, Clock, BoxArrowRight, List, Person} from 'react-bootstrap-icons';
 import logo from '../images/StudabilityLogo.png';
 import {useState} from "react";
 import {useNavigate} from "react-router";
@@ -64,6 +64,11 @@ export default function MyNavbar() {
                             <Link to="/home/study-time" className="nav-link" onClick={() => setShowOffcanvas(false)}>
                                 <Clock /> Study Time
                             </Link>
+                        </li>
+                        <li className="nav-item">
+                            <a href="/home/editProfile" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                                <Person /> My Profile
+                            </a>
                         </li>
                         <li className="nav-item">
                             <Link to="/login" className="nav-link text-danger"  onClick={() => {

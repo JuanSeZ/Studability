@@ -1,0 +1,21 @@
+.profile-header{
+    font-family: Helvetica, sans-serif;;
+    font-size: 35px;
+}
+.profile-description{
+    text-align: center;
+    font-size: 15px;
+    font-family: Helvetica, sans-serif;
+    margin-top: 20px;
+}
+
+.user-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swal2-popup {
+    font-family: Helvetica, sans-serif;
+    font-size: 15px;
+}

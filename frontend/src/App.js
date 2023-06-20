@@ -10,6 +10,8 @@ import CalendarPage from "./pages/CalendarPage";
 import PomodoroTimerPage from "./pages/PomodoroTimerPage";
 import FriendsPage from "./pages/FriendsPage";
 import FilesPage from "./pages/FilesPage";
+import EditProfile from "./components/EditProfile";
+import EditProfilePage from "./pages/EditProfilePage";
 
 export default function App() {
     return (
@@ -50,12 +52,18 @@ export default function App() {
                 />
 
                 <Route path="/home/files"
-                          element={
-                                <RequireAuth>
-                                    <FilesPage/>
-                                </RequireAuth>
-                            }
+                       element={
+                           <RequireAuth>
+                               <FilesPage/>
+                           </RequireAuth>
+                       }
                 />
+                <Route path="/home/editProfile"
+                       element={
+                           <RequireAuth>
+                               <EditProfilePage/>
+                           </RequireAuth>
+                       }/>
 
             </Routes></div>
         </BrowserRouter>

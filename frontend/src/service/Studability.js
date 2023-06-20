@@ -37,7 +37,7 @@ const Studability = {
     logout: (token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/auth`, {
             method: 'DELETE',
-            body:"Hola",
+            body: "Hola",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
@@ -298,6 +298,7 @@ const Studability = {
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
+
     uploadFile: (formData, token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/files/upload`, {
             method: "POST",
@@ -318,6 +319,7 @@ const Studability = {
                 errorCallback(error);
             });
     },
+
     listUploadedFiles: (token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/files`, {
             method: 'GET',
@@ -334,6 +336,7 @@ const Studability = {
             }
         })
     },
+
     listFriendsFiles: (token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/files/friends`, {
             method: 'GET',
@@ -350,6 +353,7 @@ const Studability = {
             }
         })
     },
+
     getUser: (token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/home`, {
             method: 'GET',
@@ -364,6 +368,39 @@ const Studability = {
                 errorCallback("Could not get name")
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
+    getUserIdByToken: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/editProfile`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(user => okCallback(user))
+            } else {
+                errorCallback("Could not get user ID")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
+
+    setUser: (userForm, userId, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/editProfile/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(userForm)
+        }).then(resp => {
+            if (resp.status === 200) {
+                okCallback()
+            } else {
+                errorCallback("Could not save changes")
+            }
+        })
     },
 }
 export const useStudability = () => Studability

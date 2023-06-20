@@ -330,16 +330,22 @@ public class Routes {
             return res.body();
         });
 
-        authorizedPost("/editProfile/:id", (req, res) -> {
-            final String userId = req.params(":id");
+        authorizedGet("/editProfile", (req, res) -> {
+            final User user = getUser(req).get();
+            res.status(200);
+            return JsonParser.toJson(UserDTO.fromModel(user).getEmail());
+        });
+
+        authorizedPost("/editProfile/:userId", (req, res) -> {
+            final String userId = req.params(":userId");
             final RegistrationUserForm registrationUserForm = JsonParser.fromJson(req.body(), RegistrationUserForm.class);
             system.editProfile(userId, registrationUserForm).ifPresentOrElse(
                     (user) -> {
                         res.status(200);
-                        res.body(JsonParser.toJson(user));
+                        res.body("User modified");
                     },
                     () -> {
-                        res.status(409);
+                        res.status(400);
                         res.body("User not modified");
                     });
             return res.body();

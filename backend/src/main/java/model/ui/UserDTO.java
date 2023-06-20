@@ -14,6 +14,8 @@ public class UserDTO {
 
     private String career;
 
+    private String password;
+
 
     public static UserDTO fromModel(User user) {
         UserDTO userDTO = new UserDTO();
@@ -22,6 +24,7 @@ public class UserDTO {
         userDTO.email = user.getEmail();
         userDTO.surname = user.getSurname();
         userDTO.name = user.getName();
+        userDTO.password = user.getPassword();
 
         return userDTO;
     }
