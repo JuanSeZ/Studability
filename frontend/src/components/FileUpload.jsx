@@ -12,11 +12,13 @@ export default function FileUpload ()  {
     const [isLoading, setIsLoading] = useState(false);
     const studability = useStudability();
     const auth = useAuthProvider();
+    // actual file selected
+    const [file, setFile] = useState(null);
 
     function handleFileUpload(event)  {
         setIsLoading(true);
         const formData = new FormData();
-        formData.append("file", event.target.files[0]);
+        formData.append("file", file.target.files[0]);
 
         studability.uploadFile(formData, auth.getToken(), () => {
             setIsLoading(false);
@@ -36,14 +38,15 @@ export default function FileUpload ()  {
                     <Form.Control
                         type={"file"}
                         id="file-upload-input"
-                        onChange={handleFileUpload}
                         label="Upload a file"
+                        onChange={setFile}
                     />
                     <div className="text-center">
                         <Button
                             className="mt-3"
                             type="submit"
                             variant="primary"
+                            onClick={handleFileUpload}
                             disabled={isLoading}
                         >
                             {isLoading ? (

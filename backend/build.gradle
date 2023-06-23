@@ -15,6 +15,9 @@ dependencies {
     implementation 'org.hibernate:hibernate-core:5.6.5.Final'
     implementation 'org.hsqldb:hsqldb:2.6.1'
     implementation 'com.sparkjava:spark-core:2.9.3'
+    implementation 'com.corundumstudio.socketio:netty-socketio:2.0.2'
+
+
 
     implementation 'org.slf4j:slf4j-simple:1.7.36'
     implementation 'com.google.code.gson:gson:2.9.0'
