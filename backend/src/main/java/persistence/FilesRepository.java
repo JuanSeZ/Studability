@@ -14,8 +14,8 @@ public class FilesRepository {
 
     private static final String storageFolder = "./resources/files/";
 
-    public static void  store(String filename,String emailUser, InputStream inputStream) throws IOException {
-        File dir = new File(storageFolder+"/"+emailUser);
+    public static void store(String filename,String emailUser, InputStream inputStream) throws IOException {
+        File dir = new File(storageFolder + "/" + emailUser);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -29,6 +29,14 @@ public class FilesRepository {
 
     public static byte[] load(String name,String email) throws IOException {
         return Files.readAllBytes(Path.of(storageFolder + "/" + email + "/" + name));
+    }
+
+    public static void delete(String filename, String userEmail) throws IOException {
+        Path filePath = filePath(userEmail, filename);
+        Files.deleteIfExists(filePath);
+    }
+    private static Path filePath(String userEmail, String filename) {
+        return Path.of(storageFolder, userEmail, filename);
     }
 
     private static Path filePath(String name) {
@@ -51,9 +59,6 @@ public class FilesRepository {
         }
         return files;
     }
-
-
-
 
     public static FilesRepository create(){
         return new FilesRepository();

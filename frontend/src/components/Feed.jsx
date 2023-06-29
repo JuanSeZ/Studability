@@ -3,7 +3,7 @@ import {Container, Row} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {useStudability} from "../service/Studability";
 import {useAuthProvider} from "../auth/auth";
-import FileCard from "./FileCard";
+import FriendsFileCard from "./FriendsFileCard";
 
 export default function Feed (){
 
@@ -18,10 +18,11 @@ export default function Feed (){
             (files) =>
                 setFiles(
                     files.length === 0 ? (
-                        <p style={{justifyContent: "center", textAlign:"center", fontSize:20, fontFamily: "sans-serif", marginTop:10, color:"gray"}}>No files uploaded by friends</p>
+                        <p style={{justifyContent: "center", textAlign:"center", fontSize:20, fontFamily: "sans-serif", marginTop:10, color:"gray"}}>
+                            No files uploaded by friends</p>
                     ) : (
                         files.map((file) => (
-                            <FileCard title={file[1]} author={file[0]} />
+                            <FriendsFileCard title={file[1]} author={file[0]} />
                         ))
                     )
                 ),

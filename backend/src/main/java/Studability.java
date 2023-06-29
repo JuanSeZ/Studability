@@ -204,6 +204,10 @@ public class Studability {
         FilesRepository.store(filename, userEmail, fileInputStream);
     }
 
+    public void deleteFile(String filename, String userEmail) throws IOException {
+        FilesRepository.delete(filename, userEmail);
+    }
+
     public List<String[]> listFilesOfUser(User user) {
         String[] userEmail = {user.getEmail()};
         List<String[]> files = FilesRepository.list(userEmail);

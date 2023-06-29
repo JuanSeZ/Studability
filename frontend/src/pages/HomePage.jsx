@@ -10,7 +10,6 @@ import {useSearchParams} from "react-router-dom";
 import Feed from "../components/Feed";
 import "../styles/HomePageStyle.css"
 
-
 export default function HomePage() {
 
     const studability = useStudability();
@@ -37,7 +36,6 @@ export default function HomePage() {
             confirmButtonColor: '#87CEFAFF'
         });
     }
-
 
     return (
         <div> {name && handleLogIn()}

@@ -307,17 +307,29 @@ const Studability = {
                 Authorization: 'Bearer ' + token,
                 filename: formData.get("filename"),
             },
-        })
-            .then((response) => {
-                if (response.ok) {
+        }).then((response) => {
+                if (response.status === 200) {
                     okCallback();
                 } else {
                     throw new Error("Upload failed");
                 }
-            })
-            .catch((error) => {
-                errorCallback(error);
-            });
+            }).catch((error) => errorCallback(error));
+    },
+
+    deleteFile: (filename, token, okCallback, errorCallback) => {
+        const formData = new FormData();
+        formData.append("filename", filename);
+
+        fetch(`${restApiEndpoint}/files/${filename}`, {
+            method: "DELETE",
+            body: formData,
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        }).then((response) => {
+            if (response.status === 200) okCallback();
+            else throw new Error("Delete failed");
+        }).catch((error) => errorCallback(error));
     },
 
     listUploadedFiles: (token, okCallback, errorCallback) => {
@@ -352,6 +364,53 @@ const Studability = {
                 errorCallback("Files cannot be listed")
             }
         })
+    },
+
+    handleDownloadSelectedFiles: (selectedFiles, token, zipName) => {
+        fetch(`${restApiEndpoint}/downloadZip`, {
+            method: "POST",
+            body: selectedFiles.join(","),
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            }
+        }).then((response) => {
+            if (response.ok) {
+                return response.blob(); // Get the response as a Blob
+            } else {
+                throw new Error('Error downloading the zip file');
+            }
+        })
+            .then((blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", `${zipName}.zip`);
+                link.click();
+            })
+            .catch((error) => {
+                console.log("Error downloading the zip file:", error);
+            });
+    },
+
+    deleteSelectedFiles: (selectedFiles, token) => {
+        fetch(`${restApiEndpoint}/deleteSelectedFiles`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            },
+            body: selectedFiles.join(",")
+        }).then((response) => {
+            if (response.ok) {
+                console.log('Files deleted successfully');
+            } else {
+                console.log('Files could not be deleted')
+            }
+        }).catch((error) => {
+            // Handle network or other errors
+            console.log('Error deleting files:', error);
+        });
     },
 
     getUser: (token, okCallback, errorCallback) => {

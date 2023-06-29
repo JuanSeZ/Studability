@@ -15,11 +15,15 @@ import spark.Response;
 import spark.Route;
 
 import javax.servlet.MultipartConfigElement;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static json.JsonParser.fromJson;
@@ -84,7 +88,7 @@ public class Routes {
             return res.body();
         });
 
-        authorizedDelete(AUTH_ROUTE,  (req, res) -> {
+        authorizedDelete(AUTH_ROUTE, (req, res) -> {
             getToken(req)
                     .ifPresentOrElse(token -> {
                         emailByToken.invalidate(token);
@@ -116,7 +120,9 @@ public class Routes {
                     (user) -> {
                         res.status(201);
                     },
-                    () -> {res.status(404);}
+                    () -> {
+                        res.status(404);
+                    }
             );
             return res.status();
         });
@@ -222,7 +228,7 @@ public class Routes {
         });
 
         authorizedPost("/modifyEvent/:id", (req, res) -> {
-            final Long eventId  = Long.parseLong(req.params(":id"));
+            final Long eventId = Long.parseLong(req.params(":id"));
             system.modifyEvent(eventId, req.body()).ifPresentOrElse(
                     event -> {
                         res.status(200);
@@ -286,42 +292,116 @@ public class Routes {
         });
 
         authorizedPost("/files/upload", (request, response) -> {
-
             request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
             InputStream input = request.raw().getPart("file").getInputStream();
             String fileName = request.raw().getPart("file").getSubmittedFileName();
             String userEmail = emailByToken.getIfPresent(getToken(request).get());
             try {
                 system.uploadFile(fileName, userEmail, input);
-                response.status(201);
+                response.status(200);
                 return "File uploaded";
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 response.status(409);
                 return "File already exists";
             }
-
         });
+
+        authorizedPost("/downloadZip", (req, res) -> {
+            String[] selectedFiles = req.body().split(","); // Assuming the selected files are sent as comma-separated values
+            String zipFileName = "download.zip";
+            User user = getUser(req).get();
+            final String fileDirectory = "resources/files/" + user.getEmail() + "/";
+            // Create a new zip file
+            try (ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFileName)))) {
+                // Iterate over the selected files and add them to the zip
+                for (String fileName : selectedFiles) {
+                    String filePath = fileDirectory + fileName;
+                    // Read the file data
+                    try (InputStream fileInputStream = new FileInputStream(filePath)) {
+                        // Create a zip entry for the file
+                        ZipEntry zipEntry = new ZipEntry(fileName);
+                        zipOutputStream.putNextEntry(zipEntry);
+
+                        // Write the file data to the zip
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                            zipOutputStream.write(buffer, 0, bytesRead);
+                        }
+                        // Close the current zip entry
+                        zipOutputStream.closeEntry();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                res.status(500);
+                return "Error creating the zip file";
+            }
+            // Set the response headers to indicate a file download
+            res.header("Content-Disposition", "attachment; filename=" + zipFileName);
+            res.type("application/zip");
+            // Stream the zip file to the response
+            try (BufferedInputStream zipFileInputStream = new BufferedInputStream(new FileInputStream(zipFileName))) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = zipFileInputStream.read(buffer)) != -1) {
+                    res.raw().getOutputStream().write(buffer, 0, bytesRead);
+                }
+            }
+            // Delete the temporary zip file
+            Files.deleteIfExists(Paths.get(zipFileName));
+            return res.status();
+        });
+
 
         get("file/:email/:name", (request, response) -> {
             String fileName = request.params(":name");
             String email = request.params(":email");
             String fileType = fileName.substring(fileName.indexOf('.') + 1);
-            if(fileType.equals("pdf")) fileType = "application/"+ fileType;
+            if (fileType.equals("pdf")) fileType = "application/" + fileType;
             response.type(fileType);
-            return FilesRepository.load(fileName,email);
+            return FilesRepository.load(fileName, email);
         });
+
 
         authorizedGet("/files", (req, res) -> {
             final User user = getUser(req).get();
             final List<String[]> files = system.listFilesOfUser(user);
             return JsonParser.toJson(files);
         });
+
         authorizedGet("/files/friends", (req, res) -> {
             final User user = getUser(req).get();
             final List<String[]> files = system.listFilesOfFriends(user);
             return JsonParser.toJson(files);
         });
+
+        authorizedDelete("/files/:filename", (req, res) -> {
+            final User user = getUser(req).get();
+            req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
+            String fileName = req.params(":filename");
+            try {
+                system.deleteFile(fileName, user.getEmail());
+                res.status(200);
+                return "File deleted";
+            } catch (Exception exception) {
+                res.status(409);
+                return "Conflict deleting file";
+            }
+        });
+
+        authorizedDelete("deleteSelectedFiles", (req, res) -> {
+            String[] selectedFiles = req.body().split(","); // Assuming the selected files are sent as comma-separated values
+            User user = getUser(req).get();
+            final String fileDirectory = "resources/files/" + user.getEmail() + "/";
+
+            for (String fileName : selectedFiles) {
+                java.nio.file.Files.deleteIfExists(java.nio.file.Paths.get(fileDirectory + fileName));
+            }
+
+            return "Files deleted successfully";
+        });
+
 
         authorizedGet("/home", (req, res) -> {
             final User user = getUser(req).get();
@@ -361,7 +441,7 @@ public class Routes {
     }
 
     private void authorizedDelete(final String path, final Route route) {
-        delete(path, "*/*",(request, response) -> authorize(route, request, response));
+        delete(path, "*/*", (request, response) -> authorize(route, request, response));
     }
 
     private void authorizedPost(final String path, final Route route) {
