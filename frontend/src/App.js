@@ -10,8 +10,8 @@ import CalendarPage from "./pages/CalendarPage";
 import PomodoroTimerPage from "./pages/PomodoroTimerPage";
 import FriendsPage from "./pages/FriendsPage";
 import FilesPage from "./pages/FilesPage";
-import EditProfile from "./components/EditProfile";
 import EditProfilePage from "./pages/EditProfilePage";
+import ChatPage from "./chat/components/ChatPage"
 
 export default function App() {
     return (
@@ -62,6 +62,13 @@ export default function App() {
                        element={
                            <RequireAuth>
                                <EditProfilePage/>
+                           </RequireAuth>
+                       }/>
+
+                <Route path="/home/chat"
+                       element={
+                           <RequireAuth>
+                               <ChatPage/>
                            </RequireAuth>
                        }/>
 

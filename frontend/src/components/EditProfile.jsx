@@ -5,6 +5,7 @@ import {useAuthProvider} from "../auth/auth";
 import "../styles/EditProfileStyle.css";
 import Swal from 'sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss'
+
 export default function EditProfile() {
 
     const studability = useStudability();
@@ -53,39 +54,52 @@ export default function EditProfile() {
     };
 
     function getUserId() {
-        studability.getUserIdByToken(token,
-            (userId) => setId(userId),
-            (msg) => console.log(msg));
+        return new Promise((resolve, reject) => {
+            studability.getUserIdByToken(
+                token,
+                (userId) => resolve(userId),
+                (msg) => reject(msg)
+            );
+        });
     }
 
-    function handleSubmit() {
+    async function handleSubmit() {
+        try {
+            const userId = await getUserId();
+            Swal.fire({
+                title: 'Do you want to save the changes?',
+                showDenyButton: true,
+                confirmButtonText: 'Save',
+                denyButtonText: 'Cancel',
+                reverseButtons: true,
+                confirmButtonColor: '#198754',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    studability.setUser(
+                        {
+                            name: name,
+                            surname: surname,
+                            email: userId,
+                            career: career,
+                            password: password,
+                        },
+                        userId,
+                        token,
+                        () => showSavedBanner(),
+                        () => setErrorMsg("There was a problem saving changes")
+                    );
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function showSavedBanner() {
         Swal.fire({
-            title: 'Do you want to save the changes?',
-            showDenyButton: true,
-            confirmButtonText: 'Save',
-            denyButtonText: `Cancel`,
-            reverseButtons: true,
-            confirmButtonColor: "#198754"
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                getUserId();
-                studability.setUser(
-                    {
-                        name: name,
-                        surname: surname,
-                        email: id,
-                        career: career,
-                        password: password
-                    },
-                    id,
-                    token,
-                    () => console.log("Ok"),
-                    () => setErrorMsg("There was a problem saving changes"))
-                Swal.fire({text: 'Saved!',
-                    icon: 'success',
-                    confirmButtonColor: "#87CEFAFF"})
-            }
+            title: 'Changes saved!',
+            icon: 'success',
+            confirmButtonColor: "#87CEFAFF"
         })
     }
 

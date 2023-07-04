@@ -10,6 +10,7 @@ import model.RegistrationUserForm;
 import model.RequestForm;
 import model.ui.UserDTO;
 import persistence.FilesRepository;
+import persistence.Users;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -18,10 +19,7 @@ import javax.servlet.MultipartConfigElement;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -429,6 +427,19 @@ public class Routes {
                         res.body("User not modified");
                     });
             return res.body();
+        });
+
+        authorizedGet("/listFriends", (req, res) -> {
+            User user = getUser(req).get();
+            String search = req.queryParams("search");
+            final List<UserDTO> users;
+            if (Objects.equals(search, "")) {
+                users = system.listFriendsFromUser(user).get();
+            } else {
+                final User me = getUser(req).get();
+                users = system.listFriendByName(search, me).stream().map(UserDTO::fromModel).toList();
+            }
+            return JsonParser.toJson(users);
         });
 
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));

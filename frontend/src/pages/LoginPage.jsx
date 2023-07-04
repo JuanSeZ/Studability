@@ -1,9 +1,11 @@
 import * as React from 'react'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Link, useSearchParams} from "react-router-dom";
 import {useNavigate} from "react-router";
 import {useStudability} from "../service/Studability";
 import StudabilityLogo from "../images/StudabilityLogo.png";
+import Swal from 'sweetalert2';
+import 'sweetalert2/src/sweetalert2.scss'
 
 function setToken(userToken) {
     sessionStorage.setItem('token', JSON.stringify(userToken));
@@ -17,6 +19,19 @@ export default function LoginPage() {
     const studability = useStudability()
     const [searchParams] = useSearchParams();
     const isOk = searchParams.get("ok")
+
+
+    useEffect(() => {
+        if (isOk) {
+            showSuccessAlert();
+        }
+    }, [isOk]);
+
+    useEffect(() => {
+        if (errorMsg) {
+            showErrorAlert();
+        }
+    }, [errorMsg]);
 
     function loginUser(credentials) {
         studability.login(
@@ -48,14 +63,32 @@ export default function LoginPage() {
         setPassword(event.target.value)
     }
 
+    const showSuccessAlert = () => {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'User created successfully',
+            showConfirmButton: false,
+            timer: 1500,
+        });
+    };
+
+    const showErrorAlert = () => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Mail or Password were wrong, please try again.',
+            confirmButtonColor: '#87CEFAFF',
+            allowEnterKey: true
+        });
+    };
+
     return (
         <div>
-            {isOk && <div className="alert alert-success" role="alert">User created successfully!</div>}
-            {errorMsg && <div className="alert alert-warning" role="alert">{errorMsg}</div>}
 
             <br/>
 
-            <div style={{display: 'flex', justifyContent:'center', alignContent:"center", height: '0vh'}}>
+            <div style={{display: 'flex', justifyContent:'center', alignContent:"center", height: '0vh', marginTop: 20}}>
                 <img style={{width: 200, height: 200}} src={StudabilityLogo} className="logo" alt=""/>
             </div>
 
@@ -79,7 +112,7 @@ export default function LoginPage() {
                                    placeholder="Enter email"/>
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group" style={{marginTop: 10}}>
                             <label htmlFor="exampleInputPassword1">Password</label>
                             <input type="password"
                                    value={password}
@@ -92,7 +125,7 @@ export default function LoginPage() {
 
                     <br/>
 
-                    <div className="col-md-12 text-center">
+                    <div className="col-md-12 text-center" style={{marginTop: 10}}>
                         <div style={{height: 60}}>
                             <Link to="/">
                                 <button type="button" className="btn btn-outline-secondary" style={{marginRight:5}}>Back</button>
@@ -101,7 +134,7 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    <div className="col-md-12 text-center">
+                    <div className="col-md-12 text-center" style={{marginTop: 10}}>
                         <h1 style={{fontSize: 14}}>
                             Don't have an account yet?
                         </h1>

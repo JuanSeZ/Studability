@@ -1,5 +1,5 @@
 import {Navbar, Button, Offcanvas, NavLink} from 'react-bootstrap';
-import {Calendar, People, Folder, Clock, BoxArrowRight, List, Person} from 'react-bootstrap-icons';
+import {Calendar, People, Folder, Clock, BoxArrowRight, List, Person, Chat, ChatDots} from 'react-bootstrap-icons';
 import logo from '../images/StudabilityLogo.png';
 import {useState} from "react";
 import {useNavigate} from "react-router";
@@ -27,9 +27,9 @@ export default function MyNavbar() {
 
     return (
         <>
-            <Navbar bg="light" expand="lg">
+            <Navbar bg="light" expand="lg" className="navbar">
                 <Navbar.Brand href="/home">
-                    <img src={logo} height="50" alt="Logo" className="logo"/>
+                    <img src={logo} height="50" alt="Logo" className="logo" />
                     Studability
                 </Navbar.Brand>
                 <Button variant="outline-primary" onClick={() => setShowOffcanvas(true)} className="ms-auto">
@@ -47,36 +47,44 @@ export default function MyNavbar() {
                     <ul className="nav flex-column">
                         <li className="nav-item">
                             <Link to="/home/calendar" className="nav-link" onClick={() => setShowOffcanvas(false)}>
-                                <Calendar /> Calendar
+                                <Calendar /> <span className="nav-link-text">Calendar</span>
                             </Link>
                         </li>
                         <li className="nav-item">
                             <Link to="/home/friends" className="nav-link" onClick={() => setShowOffcanvas(false)}>
-                                <People /> Friends
+                                <People /> <span className="nav-link-text">Friends</span>
                             </Link>
                         </li>
                         <li className="nav-item">
                             <a href="/home/files" className="nav-link" onClick={() => setShowOffcanvas(false)}>
-                                <Folder /> Files
+                                <Folder /> <span className="nav-link-text">Files</span>
                             </a>
                         </li>
                         <li className="nav-item">
                             <Link to="/home/study-time" className="nav-link" onClick={() => setShowOffcanvas(false)}>
-                                <Clock /> Study Time
+                                <Clock /> <span className="nav-link-text">Study Time</span>
                             </Link>
                         </li>
                         <li className="nav-item">
                             <a href="/home/editProfile" className="nav-link" onClick={() => setShowOffcanvas(false)}>
-                                <Person /> My Profile
+                                <Person /> <span className="nav-link-text">My Profile</span>
                             </a>
                         </li>
                         <li className="nav-item">
-                            <Link to="/login" className="nav-link text-danger"  onClick={() => {
-                                setShowOffcanvas(false);
-                                logout()
-                            }
-                            }>
-                                <BoxArrowRight /> Logout
+                            <a href="home/chat" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                                <ChatDots /> <span className="nav-link-text">Chats</span>
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <Link
+                                to="/login"
+                                className="nav-link text-danger"
+                                onClick={() => {
+                                    setShowOffcanvas(false);
+                                    logout();
+                                }}
+                            >
+                                <BoxArrowRight /> <span className="nav-link-text">Logout</span>
                             </Link>
                         </li>
                     </ul>

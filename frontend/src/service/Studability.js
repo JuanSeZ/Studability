@@ -461,5 +461,21 @@ const Studability = {
             }
         })
     },
+
+    listFriendByFullName: (fullName, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/listFriends?search=${fullName}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(users => okCallback(users))
+            } else {
+                errorCallback("Users with that name cannot be listed.")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
 }
 export const useStudability = () => Studability

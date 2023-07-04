@@ -5,3 +5,12 @@
 .ms-auto{
     margin-right: 10px;
 }
+
+.navbar{
+    position: sticky;
+    top: 0;
+}
+
+.nav-link:hover .nav-link-text {
+    font-size: 1.1em; /* Increase the font size on hover */
+}

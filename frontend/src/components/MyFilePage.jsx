@@ -83,16 +83,17 @@ export default function MyFilePage() {
         }).then((result) => {
             if (result.isConfirmed) {
                 studability.deleteSelectedFiles(selectedFiles, token);
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your files have been deleted',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => window.location.reload());
             }
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Your files have been deleted',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => window.location.reload())
-        })
-    }
+        });
+    };
+
 
     function showDeleteAndDownloadSelected() {
         return selectedFiles.length > 1;

@@ -4,7 +4,7 @@ import MyNavbar from "../components/MyNavbar";
 import Swal from 'sweetalert2';
 import {useStudability} from "../service/Studability";
 import {useAuthProvider} from "../auth/auth";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import 'sweetalert2/src/sweetalert2.scss'
 import {useSearchParams} from "react-router-dom";
 import Feed from "../components/Feed";
@@ -16,6 +16,7 @@ export default function HomePage() {
     let token = useAuthProvider().getToken();
     const [username, setUsername] = useState('');
     const [searchParams] = useSearchParams();
+    const [recentLog, setRecentLog] = useState(true)
 
     const name = searchParams.get("name")
 
@@ -24,17 +25,19 @@ export default function HomePage() {
             token,
             (user) => {
                 setUsername(user.name + " " + user.surname);
+                const names = (user.name + " " + user.surname).split(' ');
+                const capitalizedNames = names.map((name) => name.charAt(0).toUpperCase() + name.slice(1));
+                const capitalizedUsername = capitalizedNames.join(' ');
+
+                Swal.fire({
+                    title: `You are successfully logged in, ${capitalizedUsername}!`,
+                    icon: "success",
+                    timer: 1200,
+                    showConfirmButton: false
+                });
             },
-            () => "Error")
-
-        const names = username.split(' ');
-        const capitalizedNames = names.map((name) => name.charAt(0).toUpperCase() + name.slice(1));
-        const capitalizedUsername = capitalizedNames.join(' ');
-
-        Swal.fire({
-            text: `You are successfully logged in, ${capitalizedUsername}!`,
-            confirmButtonColor: '#87CEFAFF'
-        });
+            () => "Error"
+        );
     }
 
     return (

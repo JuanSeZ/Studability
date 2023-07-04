@@ -1,3 +1,14 @@
 .newEventName {
     border-color: black;
 }
+
+.modifyEventModal {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.modalTitle {
+    text-align: center;
+    font-weight: bold;
+}

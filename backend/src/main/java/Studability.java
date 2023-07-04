@@ -230,4 +230,11 @@ public class Studability {
             return users.exists(String.valueOf(email)) ? Optional.of(users.editProfile(email, registrationUserForm)) : Optional.empty();
         }));
     }
+
+    public List<User> listFriendByName(String name, User me) {
+        return runInTransaction(datasource -> {
+            Users users = datasource.users();
+            return users.listByName(name, me);
+        });
+    }
 }

@@ -48,14 +48,14 @@ function FileCard({title, author, onSelect}) {
                     () => console.log("ok"),
                     () => console.log("error")
                 )
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your file has been deleted',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => window.location.reload())
             }
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Your file has been deleted',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => window.location.reload())
         })
     }
 

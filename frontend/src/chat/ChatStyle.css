@@ -1,0 +1,19 @@
+.my-chats{
+    float: left;
+    width: 50%;
+}
+
+.new-chats{
+    float: right;
+    width: 50%;
+}
+
+.new-chats-header{
+    font-family: Helvetica, sans-serif;
+    font-size: 30px;
+}
+
+.my-chats-header{
+    font-family: Helvetica, sans-serif;
+    font-size: 30px;
+}
