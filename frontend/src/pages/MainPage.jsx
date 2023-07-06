@@ -16,7 +16,7 @@ export default function MainPage() {
             </div>
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh'}}>
                 <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    <Link to="/register"><button type="button" className="btn btn-outline-primary">Register</button></Link>
+                    <Link to="/register"><button type="button" className="btn btn-outline-primary" style={{marginRight: 10}}>Register</button></Link>
                     <Link to="/login"><button type="button" className="btn btn-outline-primary">Log In</button></Link>
                 </div>
             </div>
