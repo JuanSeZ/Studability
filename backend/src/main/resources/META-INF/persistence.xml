@@ -10,6 +10,7 @@
         <class>entities.Event</class>
         <class>entities.Task</class>
         <class>chat.ChatObject</class>
+        <class>chat.GroupChatObject</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbc.JDBCDriver"/>

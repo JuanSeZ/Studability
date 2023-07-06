@@ -8,7 +8,7 @@ export function RequireAuth({children}) {
 
     if (!token) {
         return <Navigate to="/login" />;
-    //     state={{from: location}} replace
+        // state={{from: location}} replace
     }
 
     return children;

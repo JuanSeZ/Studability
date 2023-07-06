@@ -474,7 +474,7 @@ public class Routes {
                 .flatMap(email -> system.findUserByEmail(email));
     }
 
-    private final Cache<String, String> emailByToken = CacheBuilder.newBuilder()
+    public static final Cache<String, String> emailByToken = CacheBuilder.newBuilder()
             .expireAfterAccess(30, MINUTES)
             .build();
 
@@ -506,4 +506,9 @@ public class Routes {
     private boolean isAuthenticated(String token) {
         return emailByToken.getIfPresent(token) != null;
     }
+    
+    public static Cache<String, String>  getEmailByToken(){
+        return emailByToken;
+    }
+    
 }

@@ -21,7 +21,6 @@ public class StudabilityService {
         port(4321);
         final Studability system = Studability.create("Studability");
         routes.create(system);
-        ChatLauncher.initSocketIO();
     }
 
     private void stopWebServer() {

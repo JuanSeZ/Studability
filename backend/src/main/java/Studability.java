@@ -1,3 +1,4 @@
+import chat.ChatLauncher;
 import entities.Event;
 import entities.User;
 import entities.Task;
@@ -37,6 +38,7 @@ public class Studability {
 
     public static Studability create(String persistenceUnitName) {
         final EntityManagerFactory factory = Persistence.createEntityManagerFactory(persistenceUnitName);
+        ChatLauncher.initSocketIO(factory);
         return new Studability(factory);
     }
 

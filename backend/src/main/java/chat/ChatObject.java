@@ -1,10 +1,5 @@
 package chat;
-
-import org.hibernate.annotations.Entity;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 
@@ -14,16 +9,20 @@ public class ChatObject {
 
 
         @Id
-        private String id;
+        @GeneratedValue(strategy = GenerationType.SEQUENCE)
+        private Long id;
 
         @Column()
         private String senderId;
         @Column()
         private String receiverId;
-        @Column()
+        @Column
         private Date date;
         @Column()
         private String message;
+
+        @Column()
+        private String groupId;
 
 
 
@@ -31,12 +30,21 @@ public class ChatObject {
         public ChatObject() {
         }
 
-        public ChatObject(String senderId, String receiverId, Date date, String message) {
-                this.senderId = senderId;
-                this.receiverId = receiverId;
-                this.date = date;
-                this.message = message;
+        public ChatObject(String senderId, String receiverId, Date date, String message, String groupId) {
+            this.senderId = senderId;
+            this.receiverId = receiverId;
+            this.date = date;
+            this.message = message;
+            this.groupId = groupId;
         }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
 
     public String getSenderId() {
         return senderId;
