@@ -11,7 +11,7 @@ import PomodoroTimerPage from "./pages/PomodoroTimerPage";
 import FriendsPage from "./pages/FriendsPage";
 import FilesPage from "./pages/FilesPage";
 import EditProfilePage from "./pages/EditProfilePage";
-import ChatPage from "./chat/components/ChatPage"
+import ChatPage from "./chat/components/ChatPage";
 
 export default function App() {
     return (
@@ -36,6 +36,7 @@ export default function App() {
                            </RequireAuth>
                        }
                 />
+
                 <Route path="/home/study-time"
                        element={
                            <RequireAuth>
@@ -43,6 +44,7 @@ export default function App() {
                            </RequireAuth>
                        }
                 />
+
                 <Route path="/home/friends"
                        element={
                            <RequireAuth>
@@ -58,6 +60,7 @@ export default function App() {
                            </RequireAuth>
                        }
                 />
+
                 <Route path="/home/editProfile"
                        element={
                            <RequireAuth>

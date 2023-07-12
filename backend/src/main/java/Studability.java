@@ -233,6 +233,17 @@ public class Studability {
         }));
     }
 
+    public Optional<User> deleteUser(User user){
+        return Optional.ofNullable(runInTransaction(datasource -> {
+            Users users = datasource.users();
+            if (user != null) {
+                users.deleteUser(user);
+                return user;
+            }
+            return null;
+        }));
+    }
+
     public List<User> listFriendByName(String name, User me) {
         return runInTransaction(datasource -> {
             Users users = datasource.users();

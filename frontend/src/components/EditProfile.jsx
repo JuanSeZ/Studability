@@ -5,6 +5,8 @@ import {useAuthProvider} from "../auth/auth";
 import "../styles/EditProfileStyle.css";
 import Swal from 'sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss'
+import {EyeSlashFill} from "react-bootstrap-icons";
+import {EyeFill} from "react-bootstrap-icons";
 
 export default function EditProfile() {
 
@@ -103,6 +105,39 @@ export default function EditProfile() {
         })
     }
 
+    function deleteAccount() {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            cancelButtonColor: "#adb5bd",
+            confirmButtonText: "Yes, delete it!",
+            reverseButtons: true,
+            allowEnterKey: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: "success",
+                    timer: 1200,
+                    title: "Account deleted",
+                    showConfirmButton: false,
+                });
+
+                setTimeout(() => {
+                    studability.deleteUser(
+                        token,
+                        () => (window.location.href = "http://localhost:3000"),
+                        (msg) => console.log(msg)
+                    );
+                }, 1200);
+            }
+        });
+    }
+
+
+
     return (
         <div>
             <div style={{justifyContent: "center", alignContent: "center", display: "flex", marginTop: 20}}>
@@ -151,9 +186,9 @@ export default function EditProfile() {
                                onChange={changeCareer}/>
                     </div>
 
-                    <div className="input-group mb-3">
+                    <div className="input-group mb-3" style={{width:334}}>
                         <span className="input-group-text" id="inputGroup-sizing-default">
-                          Password
+                            Password
                         </span>
                         <input
                             type={showPassword ? "text" : "password"}
@@ -169,9 +204,11 @@ export default function EditProfile() {
                             className="btn btn-outline-secondary"
                             onClick={togglePasswordVisibility}
                         >
-                            {showPassword ? "Hide" : "Show"}
+                            {showPassword ?  <EyeSlashFill/> : <EyeFill/>}
                         </button>
+
                     </div>
+
 
                     <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                         <button type="button"
@@ -180,8 +217,13 @@ export default function EditProfile() {
                             Save Changes
                         </button>
                     </div>
-
                 </form>
+            </div>
+
+            <div className="deleteUser">
+                <button className="btn btn-outline-danger"
+                        onClick={deleteAccount}>Delete Account
+                </button>
             </div>
         </div>
     )

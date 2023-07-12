@@ -308,12 +308,12 @@ const Studability = {
                 filename: formData.get("filename"),
             },
         }).then((response) => {
-                if (response.status === 200) {
-                    okCallback();
-                } else {
-                    throw new Error("Upload failed");
-                }
-            }).catch((error) => errorCallback(error));
+            if (response.status === 200) {
+                okCallback();
+            } else {
+                throw new Error("Upload failed");
+            }
+        }).catch((error) => errorCallback(error));
     },
 
     deleteFile: (filename, token, okCallback, errorCallback) => {
@@ -462,8 +462,23 @@ const Studability = {
         })
     },
 
+    deleteUser: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/deleteUser`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 202){
+                okCallback()
+            }
+            else errorCallback("Could not delete account")
+        })
+    },
+
     listFriendByFullName: (fullName, token, okCallback, errorCallback) => {
-        fetch(`${restApiEndpoint}/listFriends?search=${fullName}`, {
+        fetch(`${restApiEndpoint}/listChatFriends`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -477,5 +492,21 @@ const Studability = {
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
+    getConversation:(senderId, receiverId, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/listChatFriends`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(users => okCallback(users))
+            } else {
+                errorCallback("Users with that name cannot be listed.")
+            }
+        }).catch(e => errorCallback("Unable to connect to Studability API"))
+
+    }
 }
 export const useStudability = () => Studability

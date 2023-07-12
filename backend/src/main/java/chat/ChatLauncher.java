@@ -11,13 +11,11 @@ import javax.persistence.EntityManagerFactory;
 
 public class ChatLauncher {
 
-
-
-
     public static void initSocketIO(EntityManagerFactory factory) {
         Configuration config = new Configuration();
         config.setHostname("localhost");
         config.setPort(8080);
+        config.setOrigin("http://localhost:3000");
 
 
         final SocketIOServer server = new SocketIOServer(config);
@@ -32,7 +30,8 @@ public class ChatLauncher {
                 if (client.getHandshakeData().getHttpHeaders().get("Authorization") != null) {
                     client.set("userId", client.getHandshakeData().getHttpHeaders().get("userId"));
                     client.joinRoom(client.get("userId").toString());
-                    server.getRoomOperations(client.get("userId").toString()).sendEvent("loadConversation", chatService.listConversations(client.get("userId").toString()));
+//                    server.getRoomOperations(client.get("userId").toString()).sendEvent("loadConversation", chatService.listConversations(client.get("userId").toString()));
+                    System.out.println("a conncection has been established");
                 }
                 else {
                     client.disconnect();

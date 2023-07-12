@@ -4,6 +4,7 @@ import button from "bootstrap/js/src/button";
 import {useStudability} from "../service/Studability";
 import {useAuthProvider} from "../auth/auth";
 import SendRequestButton from "./SendRequestButton";
+import Swal from "sweetalert2";
 
 export default function MyFriendsPage() {
 
@@ -42,24 +43,32 @@ export default function MyFriendsPage() {
             token,
             (users) => {
                 setSearchResult(users)
-                setSearchedFriend('')
             },
             (msg) => console.log(msg))
     }
 
     function sendRequest(requested) {
-        return studability.sendRequest({
+        return studability.sendRequest(
+            {
                 emailRequester: currentUser,
                 emailRequested: requested
             },
             token,
             () => {
-                // setButtonChange("Request Sent");
-                const index = searchResult.indexOf(requested)
-                setSearchResult(searchResult.splice(index,1))
+                setSearchResult(prevResult =>
+                    prevResult.filter(user => user.email !== requested)
+                );
+                Swal.fire({
+                    icon: "success",
+                    title: "Request sent Successfully",
+                    timer: 1200,
+                    showConfirmButton: false
+                });
             },
-            (msg) => console.log(msg))
+            (msg) => console.log(msg)
+        );
     }
+
 
     function acceptRequest(email) {
         studability.acceptRequest({
@@ -68,16 +77,33 @@ export default function MyFriendsPage() {
             token,
             (requests) => setRequests(requests),
             (msg) => console.log(msg))
+        Swal.fire({
+            icon: "success",
+            timer: 1200,
+            title: "Friend added successfully",
+            showConfirmButton: false
+        })
     }
 
     function rejectRequest(email) {
-        studability.rejectRequest({
+        studability.rejectRequest(
+            {
                 emailRequested: email
             },
             token,
             (requests) => setRequests(requests),
-            (msg) => console.log(msg))
+            (msg) => console.log(msg)
+        );
+        Swal.fire({
+            icon: "success",
+            title: "Request deleted successfully",
+            showConfirmButton: false,
+            timer: 1200
+        }).then(() => {
+            window.location.reload();
+        });
     }
+
 
     const changeSearchedFullName = (searchedFriend) => {
         setSearchedFriend(searchedFriend.target.value)
@@ -96,123 +122,193 @@ export default function MyFriendsPage() {
             <div className="row">
                 <div className="column1">
                     <br/>
-                    <nav>
-                        <div className="searcher">
-                            <div className="d-flex">
-                                <input
-                                    className="form-control border-1 border-dark"
-                                    type="search"
-                                    placeholder="Search new friends..."
-                                    value={searchedFriend}
-                                    aria-label="Search"
-                                    onChange={changeSearchedFullName}
-                                />
-                                <button className="btn btn-outline-info" onClick={searchUser}>
-                                    Search
-                                </button>
-                            </div>
+                    {/*<nav>*/}
+                    {/*    <div className="searcher">*/}
+                    {/*        <div className="d-flex">*/}
+                    {/*            <input*/}
+                    {/*                className="form-control border-1 border-dark"*/}
+                    {/*                type="search"*/}
+                    {/*                placeholder="Search new friends..."*/}
+                    {/*                value={searchedFriend}*/}
+                    {/*                aria-label="Search"*/}
+                    {/*                onChange={changeSearchedFullName}*/}
+                    {/*            />*/}
+                    {/*            <button className="btn btn-outline-info" onClick={searchUser}>*/}
+                    {/*                Search*/}
+                    {/*            </button>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*</nav>*/}
+                    {/*<ul className="results">*/}
+                    {/*    {searchResult.map((user) => (*/}
+                    {/*        <ul id={user.email} key={user.email}>*/}
+                    {/*            <div className="results-names">*/}
+                    {/*                {user.name} {user.surname}*/}
+                    {/*                <SendRequestButton sendRequest={sendRequest} email={user.email}/>*/}
+                    {/*            </div>*/}
+                    {/*        </ul>*/}
+                    {/*    ))}*/}
+                    {/*</ul>*/}
+                    <div className="searcher">
+                        <div className="d-flex">
+                            <input
+                                className="searcher"
+                                placeholder="Search User..."
+                                value={searchedFriend}
+                                onChange={(e) => {
+                                    searchUser();
+                                    setSearchedFriend(e.target.value);
+                                }}
+                                style={{
+                                    height: 43,
+                                    width: 315,
+                                    marginTop: 1,
+                                    marginLeft: 5,
+                                    border: '1px solid black'
+                                }}
+                            />
+                            <button className="btn btn-outline-info" onClick={searchUser}>
+                                Search
+                            </button>
                         </div>
-                    </nav>
-                    <ul className="results">
-                        {searchResult.map((user) => (
-                            <ul id={user.email} key={user.email}>
-                                <div className="results-names">
-                                    {user.name} {user.surname}
-                                    <SendRequestButton sendRequest={sendRequest} email={user.email}/>
-                                </div>
-                            </ul>
-                        ))}
-                    </ul>
-                    <div>
-                        <h3 className="requests-header">Friends Requests</h3>
-                        {requests.length === 0 ? (
-                            <div className="no-requests" style={{
-                                justifyContent: "center",
-                                textAlign: "center",
-                                fontSize: 20,
-                                fontFamily: "sans-serif",
-                                marginTop: 10,
-                                color: "gray"
-                            }}>No new friend requests</div>
-                        ) : (
-                            requests.map((request) => (
-                                <ul key={request.email} id={request.email} className="requests">
-                                    <div>
-                                        {request.name + " " + request.surname + " "}
-                                        <button
-                                            className="btn btn-outline-success"
-                                            onClick={() => acceptRequest(request.email)}
-                                        >
-                                            ✔
-                                        </button>
-                                        {" "}
-                                        <button
-                                            className="btn btn-outline-danger"
-                                            onClick={() => rejectRequest(request.email)}
-                                        >
-                                            X
-                                        </button>
-                                    </div>
-                                </ul>
-                            ))
-                        )}
                     </div>
+
+                    <ul className="results" style={{overflowY: "auto", height: 480}}>
+                        {searchedFriend.length > 0 ? (
+                            searchResult.length > 0 ? (
+                                searchResult
+                                    .filter(user => user.name.toLowerCase().startsWith(searchedFriend.toLowerCase()))
+                                    .map((user) => (
+                                        <ul id={user.email} key={user.email}>
+                                            <div className="text-center" style={{marginRight: 60}}>
+                                                <text className="results-names">
+                                                    {user.name} {user.surname}
+                                                    <SendRequestButton sendRequest={sendRequest} email={user.email}/>
+                                                </text>
+                                            </div>
+                                        </ul>
+                                    ))
+                            ) : (
+                                <text style={{
+                                    marginRight: 40,
+                                    justifyContent: "center",
+                                    textAlign: "center",
+                                    fontSize: 18,
+                                    fontFamily: "sans-serif",
+                                    marginTop: 3,
+                                    color: "gray"
+                                }}>No users found with that name</text>
+                            )
+                        ) : <text style={{
+                            marginRight: 60,
+                            justifyContent: "center",
+                            textAlign: "center",
+                            fontSize: 18,
+                            fontFamily: "sans-serif",
+                            marginTop: 3,
+                            color: "gray"
+                        }}>Find new friends</text>}
+                    </ul>
                 </div>
 
-                <div className="columnRequestsSent">
-                    <br/>
+                <div className="columnRequests">
+                    <div style={{marginLeft: 18}}>
+                        <h3 className="requests-header" style={{marginTop: 27}}>Friends Requests</h3>
+                        <div style={{height: 230, overflowY: "auto"}}>
+                            {requests.length === 0 ? (
+                                <div className="no-requests" style={{
+                                    justifyContent: "center",
+                                    textAlign: "center",
+                                    fontSize: 20,
+                                    fontFamily: "sans-serif",
+                                    marginTop: 5,
+                                    color: "gray"
+                                }}>No new friend requests</div>
+                            ) : (
+                                requests.map((request) => (
+                                    <ul key={request.email}
+                                        id={request.email}
+                                        className="requests">
+                                        <div>
+                                            {request.name + " " + request.surname + " "}
+                                            <button
+                                                className="btn btn-outline-success"
+                                                onClick={() => acceptRequest(request.email)}
+                                            >
+                                                ✔
+                                            </button>
+                                            {" "}
+                                            <button
+                                                className="btn btn-outline-danger"
+                                                onClick={() => rejectRequest(request.email)}
+                                            >
+                                                X
+                                            </button>
+                                        </div>
+                                    </ul>
+                                ))
+                            )}
+                        </div>
+                    </div>
+
+
                     <h3 className="requestsSentHeader">Requests Sent</h3>
-                    {sentRequests.length === 0 ? (
-                        <div
-                            className="no-requests-sent"
-                            style={{
+                    <div style={{height: 240, overflowY: "auto"}}>
+                        {sentRequests.length === 0 ? (
+                            <div style={{
                                 justifyContent: "center",
                                 textAlign: "center",
                                 fontSize: 20,
                                 fontFamily: "sans-serif",
-                                marginTop: 10,
-                                color: "gray"
+                                color: "gray",
+                                marginLeft: 20
                             }}
-                        >
-                            No requests sent
-                        </div>
-                    ) : (
-                        sentRequests
-                            .sort((a, b) => a.name.localeCompare(b.name)) // Sort the array alphabetically by the "name" property
-                            .map((sentRequest) => (
-                                <ul key={sentRequest.email} id={sentRequest.email} className="requests">
-                                    <div>
-                                        {sentRequest.name + " " + sentRequest.surname + " "}
-                                    </div>
-                                </ul>
-                            ))
-                    )}
-
+                            >
+                                No requests sent
+                            </div>
+                        ) : (
+                            sentRequests
+                                .sort((a, b) => a.name.localeCompare(b.name))
+                                .sort((a, b) => a.surname.localeCompare(b.surname))
+                                .map((sentRequest) => (
+                                    <ul key={sentRequest.email} id={sentRequest.email} className="requests">
+                                        <div>
+                                            {sentRequest.name + " " + sentRequest.surname + " "}
+                                        </div>
+                                    </ul>
+                                ))
+                        )}
+                    </div>
                 </div>
 
                 <div className="columnMutualFriends">
                     <br/>
                     <h3 className="mutualFriendsHeader">Mutual Friends</h3>
-                    {friends.length === 0 ? (
-                        <div className="no-friends" style={{
-                            justifyContent: "center",
-                            textAlign: "center",
-                            fontSize: 20,
-                            fontFamily: "sans-serif",
-                            marginTop: 10,
-                            color: "gray"
-                        }}>No mutual friends</div>
-                    ) : (
-                        <ul className="mutualFriends">
-                            {friends.map((friend) => (
-                                <ul key={friend.email}>
-                                    <div>
-                                        {friend.name} {friend.surname}
-                                    </div>
-                                </ul>
-                            ))}
-                        </ul>
-                    )}
+                    <div style={{height: 530, overflowY: "auto"}}>
+                        {friends.length === 0 ? (
+                            <div style={{
+                                justifyContent: "center",
+                                textAlign: "center",
+                                fontSize: 20,
+                                fontFamily: "sans-serif",
+                                marginTop: 5,
+                                color: "gray"
+                            }}>No mutual friends</div>
+                        ) : (
+                            <ul className="mutualFriends">
+                                {friends
+                                    .sort((a, b) => a.name.localeCompare(b.name))
+                                    .sort((a, b) => a.surname.localeCompare(b.surname))
+                                    .map((friend) => (
+                                        <ul key={friend.email}>
+                                            <div style={{marginTop: 12, fontFamily: "sans-serif"}}>
+                                                {friend.name} {friend.surname}
+                                            </div>
+                                        </ul>
+                                    ))}
+                            </ul>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

@@ -88,15 +88,20 @@ export default function ToDoList() {
                         </form>
 
                         <div className="to-do-list-container">
-                            <ul className='to-do-list'>
-                                {list.map((task) => (
+                            <ul className='to-do-list' style={{maxHeight: 550, overflowY: "auto"}}>
+                                {list.length > 0 ? list.map((task) => (
                                     <li id={task.id}>
                                         <div>
                                             <ToDoListItem deleteTask={deleteTask} changeName={changeTaskName}
                                                           task={task}></ToDoListItem>
                                         </div>
                                     </li>
-                                ))}
+                                )) : <text style={{
+                                    fontFamily: "sans-serif",
+                                    color: "white",
+                                    fontSize: 18,
+                                    marginRight: 15
+                                }}>No tasks to be done</text>}
                             </ul>
                         </div>
                     </div>

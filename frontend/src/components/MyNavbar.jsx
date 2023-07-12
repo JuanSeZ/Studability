@@ -66,13 +66,13 @@ export default function MyNavbar() {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <a href="/home/editProfile" className="nav-link" onClick={() => setShowOffcanvas(false)}>
-                                <Person /> <span className="nav-link-text">My Profile</span>
+                            <a href="/home/chat" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                                <ChatDots /> <span className="nav-link-text">Chats</span>
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a href="home/chat" className="nav-link" onClick={() => setShowOffcanvas(false)}>
-                                <ChatDots /> <span className="nav-link-text">Chats</span>
+                            <a href="/home/editProfile" className="nav-link" onClick={() => setShowOffcanvas(false)}>
+                                <Person /> <span className="nav-link-text">My Profile</span>
                             </a>
                         </li>
                         <li className="nav-item">

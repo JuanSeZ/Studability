@@ -1,0 +1,7 @@
+.sideBar{
+    height: 100%;
+}
+
+.chatResults {
+    text-transform: capitalize;
+}

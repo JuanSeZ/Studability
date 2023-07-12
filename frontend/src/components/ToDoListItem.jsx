@@ -32,7 +32,7 @@ export default function ToDoListItem(props) {
         deleteTask(id)
     }
 
-    function showConfirmDeleteAlert(){
+    function showConfirmDeleteAlert() {
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -46,20 +46,20 @@ export default function ToDoListItem(props) {
         }).then((result) => {
             if (result.isConfirmed) {
                 deleteTaskFn(task.id)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your task has been deleted',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             }
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Your task has been deleted',
-                showConfirmButton: false,
-                timer: 1500
-            })
         })
     }
 
     return (
         <>
-            <input className="form-check-input" type="checkbox" style={{marginTop: 11, width:16, height:16}}/>
+            <input className="form-check-input" type="checkbox" style={{marginTop: 11, width: 16, height: 16}}/>
             <label className="form-check-label text-capitalize" style={{marginLeft: "10px"}}>
                 {task.name + " "}
             </label>

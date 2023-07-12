@@ -429,6 +429,21 @@ public class Routes {
             return res.body();
         });
 
+        authorizedDelete("/deleteUser", (req, res) -> {
+            User user = getUser(req).get();
+            system.deleteUser(user).ifPresentOrElse(
+                    (user1) -> {
+                        res.status(202);
+                        res.body("User deleted");
+                    },
+                    () -> {
+                        res.status(400);
+                        res.body("Could not delete user");
+                    }
+            );
+            return res.status();
+        });
+
         authorizedGet("/listFriends", (req, res) -> {
             User user = getUser(req).get();
             String search = req.queryParams("search");
@@ -439,6 +454,12 @@ public class Routes {
                 final User me = getUser(req).get();
                 users = system.listFriendByName(search, me).stream().map(UserDTO::fromModel).toList();
             }
+            return JsonParser.toJson(users);
+        });
+
+        authorizedGet("/listChatFriends", (req, res) -> {
+            User user = getUser(req).get();
+            final List<UserDTO> users = system.listFriendsFromUser(user).get();
             return JsonParser.toJson(users);
         });
 

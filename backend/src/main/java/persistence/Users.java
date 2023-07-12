@@ -1,8 +1,6 @@
 package persistence;
 
-import entities.Event;
 import entities.User;
-import model.CreateEventForm;
 import model.RegistrationUserForm;
 
 import javax.persistence.EntityManager;
@@ -108,6 +106,11 @@ public class Users {
         user.modifyCareer(registrationUserForm.getCareer());
         entityManager.merge(user);
         return user;
+    }
+
+    public void deleteUser(User user){
+        User mergedUser = entityManager.merge(user);
+        entityManager.remove(mergedUser);
     }
 }
 

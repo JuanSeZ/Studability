@@ -1,0 +1,12 @@
+.sideBarColumn{
+    float: left;
+    width: 20%;
+}
+
+.actualChatColumn{
+    width: 80%;
+    float: right;
+}
+
+/*@tailwind components;*/
+/*@tailwind utilities;*/

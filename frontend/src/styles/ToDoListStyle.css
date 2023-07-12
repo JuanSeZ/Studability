@@ -5,7 +5,7 @@
 }
 .to-do-list{
     position: relative;
-    padding: 30px 8px 30px;
+    padding: 20px 8px;
     list-style-type: none;
     font-size: 18px;
     transition: 0.2s;

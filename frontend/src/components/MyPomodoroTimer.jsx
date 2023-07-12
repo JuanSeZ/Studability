@@ -192,15 +192,15 @@ class MyPomodoroTimer extends Component {
                                 />
                             </div>
                             <div>
-                                <button className="btn btn-outline-success"
-                                        onClick={this.handleCustomizeTimer}
-                                        style={{marginRight: 5}}>
-                                    Save
-                                </button>
                                 <button className="btn btn-outline-danger"
                                         onClick={this.closePopup}
-                                        style={{marginLeft: 5}}>
+                                        style={{marginRight: 5}}>
                                     Cancel
+                                </button>
+                                <button className="btn btn-outline-success"
+                                        onClick={this.handleCustomizeTimer}
+                                        style={{marginLeft: 5}}>
+                                    Save
                                 </button>
                             </div>
                         </div>

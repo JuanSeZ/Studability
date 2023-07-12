@@ -23,3 +23,10 @@
 .input-group-text{
     width: 85px;
 }
+
+.deleteUser{
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    margin-top: 15px;
+}
