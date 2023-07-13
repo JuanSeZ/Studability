@@ -5,6 +5,7 @@
 import {useState, useEffect} from 'react'
 import {Send} from "react-bootstrap-icons"
 import {GlobalSocket} from "./SocketManager";
+import {ActualChatStyle} from "../style/ActualChatStyle.css"
 
 
 function ActualChat({actualFriend: actualFriend,userId: userId}) {

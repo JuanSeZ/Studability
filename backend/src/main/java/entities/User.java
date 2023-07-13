@@ -26,12 +26,13 @@ public class User {
     @Column()
     private String career;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<User> friendsRequests = new HashSet<>(); // instead of a list, this eliminates duplicate values
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "FRIENDSHIP")
     private List<User> friends = new ArrayList<>();
+
 
     public List<User> getFriends() {
         return friends;

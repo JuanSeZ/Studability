@@ -225,7 +225,10 @@ export default function MyFriendsPage() {
                                     color: "gray"
                                 }}>No new friend requests</div>
                             ) : (
-                                requests.map((request) => (
+                                requests
+                                    .sort((a, b) => a.name.localeCompare(b.name))
+                                    .sort((a, b) => a.surname.localeCompare(b.surname))
+                                    .map((request) => (
                                     <ul key={request.email}
                                         id={request.email}
                                         className="requests">
@@ -271,7 +274,7 @@ export default function MyFriendsPage() {
                                 .sort((a, b) => a.name.localeCompare(b.name))
                                 .sort((a, b) => a.surname.localeCompare(b.surname))
                                 .map((sentRequest) => (
-                                    <ul key={sentRequest.email} id={sentRequest.email} className="requests">
+                                    <ul key={sentRequest.email} id={sentRequest.email} className="requestsSent">
                                         <div>
                                             {sentRequest.name + " " + sentRequest.surname + " "}
                                         </div>
@@ -301,7 +304,7 @@ export default function MyFriendsPage() {
                                     .sort((a, b) => a.surname.localeCompare(b.surname))
                                     .map((friend) => (
                                         <ul key={friend.email}>
-                                            <div style={{marginTop: 12, fontFamily: "sans-serif"}}>
+                                            <div style={{marginTop: 5, fontFamily: "sans-serif"}}>
                                                 {friend.name} {friend.surname}
                                             </div>
                                         </ul>

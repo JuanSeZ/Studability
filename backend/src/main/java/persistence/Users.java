@@ -112,5 +112,9 @@ public class Users {
         User mergedUser = entityManager.merge(user);
         entityManager.remove(mergedUser);
     }
+
+    public void updateUser(User user){
+        entityManager.merge(user);
+    }
 }
 

@@ -233,16 +233,32 @@ public class Studability {
         }));
     }
 
-    public Optional<User> deleteUser(User user){
+    public Optional<User> deleteUser(User user) {
         return Optional.ofNullable(runInTransaction(datasource -> {
             Users users = datasource.users();
             if (user != null) {
+                // Remove the user from the friends lists of other users
+                for (User friend : user.getFriends()) {
+                    friend.getFriends().remove(user);
+                    users.updateUser(friend); // Update the friend's changes
+                }
+
+                for (User usersRequested : users.listSentRequests(user)) {
+                    usersRequested.getFriendsRequests().remove(user);
+                    users.updateUser(usersRequested); // Update the usersRequested changes
+                }
+
+                user.getFriends().clear();
+                user.getFriendsRequests().clear();
+
                 users.deleteUser(user);
                 return user;
             }
             return null;
         }));
     }
+
+
 
     public List<User> listFriendByName(String name, User me) {
         return runInTransaction(datasource -> {
