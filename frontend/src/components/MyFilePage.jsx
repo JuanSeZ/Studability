@@ -15,6 +15,7 @@ export default function MyFilePage() {
     const studability = useStudability();
     const auth = useAuthProvider()
     const token = auth.getToken();
+    const [fileCards, setFileCards] = useState([]);
 
     useEffect((children, func) => {
         studability.listUploadedFiles(token,
@@ -22,7 +23,6 @@ export default function MyFilePage() {
             (msg) => console.log(msg));
     }, []);
 
-    const [fileCards, setFileCards] = useState([]);
 
     useEffect(() => {
         setFileCards(
@@ -108,29 +108,50 @@ export default function MyFilePage() {
                 </h1>
             </div>
             <FileUpload/>
-            {showDeleteAndDownloadSelected() && (
-                <Col style={{alignItems: "center", display: "flex", justifyContent: "center"}}>
-                    <Button
-                        className="mt-3 mr-2"
-                        type="button"
-                        variant="outline-primary"
-                        onClick={handleDownloadSelected}>
-                        Download Selected
-                    </Button>
-                    <Button
-                        className="mt-3 ml-2"
-                        type="button"
-                        variant="outline-danger"
-                        onClick={handleDeleteSelected}
-                    >
-                        Delete Selected
-                    </Button>
-                </Col>
-            )}
-            <Row>
-                <div className="files">
-                    {fileCards}
-                </div>
-            </Row>
-        </>);
+            <div>
+                {showDeleteAndDownloadSelected() && (
+                    <div style={{display: "flex", justifyContent: "center", marginBottom: 5}}>
+                        <Button
+                            className="mr-2"
+                            type="button"
+                            variant="outline-primary"
+                            onClick={handleDownloadSelected}
+                        >
+                            Download Selected
+                        </Button>
+                        <Button
+                            className="ml-2"
+                            type="button"
+                            variant="outline-danger"
+                            onClick={handleDeleteSelected}
+                        >
+                            Delete Selected
+                        </Button>
+                    </div>
+                )}
+            </div>
+            <div>
+                {fileCards.length > 0 ? (
+                    <div className="files" style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        height: selectedFiles.length > 1 ? 350 : 400,
+                        overflowY: "auto"
+                    }}>
+                        {fileCards}
+                    </div>) : (<text style={{
+                    justifyContent: "center",
+                    textAlign: "center",
+                    display: "flex",
+                    fontSize: 20,
+                    fontFamily: "sans-serif",
+                    marginTop: 10,
+                    color: "gray"
+                }}>No files uploaded</text>)}
+            </div>
+        </>
+
+    );
+
 };

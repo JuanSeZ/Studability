@@ -1,8 +1,8 @@
 .file-card {
     width: 300px; /* Adjust the width as needed */
-    height: 250px; /* Adjust the height as needed */
+    height: 270px; /* Adjust the height as needed */
     display: inline-block;
-    margin: 25px;
+    margin: 10px;
     border: 2px solid #ccc;
     border-radius: 10px;
 }
@@ -17,7 +17,7 @@
 .button-container {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 .delete-button {
     margin-left: 10px;

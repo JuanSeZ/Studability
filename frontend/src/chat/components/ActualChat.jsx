@@ -2,19 +2,16 @@
 // id, senderId, date, message, groupId/receiverId
 // input (donde ponés el mensaje y lo enviás)
 
-// React component that renders the chat page using socket.io
-// to send and receive messages in real time.
-
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import {Send} from "react-bootstrap-icons"
 import {ActualChatStyle} from "../style/ActualChatStyle.css"
 
 
-
-function ActualChat({actualFriend: actualFriend,userId: userId, conversation: conversation, newMessage, isGroup}) {
+function ActualChat({actualFriend: actualFriend, userId: userId, conversation: conversation, newMessage, isGroup}) {
 
     const [message, setMessage] = useState('')
     const [chat, setChat] = useState([])
+    const containerRef = useRef(null);
 
     useEffect(() => {
 
@@ -26,6 +23,13 @@ function ActualChat({actualFriend: actualFriend,userId: userId, conversation: co
 
         setChat(messages);
     }, [conversation])
+
+
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+    }, [chat]);
 
 
     const handleSubmit = (e) => {
@@ -55,7 +59,7 @@ function ActualChat({actualFriend: actualFriend,userId: userId, conversation: co
                                     borderRadius: 8,
                                     display: 'table',
                                     fontFamily: "sans-serif",
-                                    backgroundColor: message.from === userId ? 'white' : '#ADD8E6',
+                                    backgroundColor: message.from === userId ? 'white' : '#0275d8',
                                     marginLeft: message.from === userId ? 'auto' : 'initial',
                                     textAlign: message.from === userId ? 'right' : 'initial',
                                     width: 'auto',
@@ -81,7 +85,7 @@ function ActualChat({actualFriend: actualFriend,userId: userId, conversation: co
                         style={{width: 1000, height: 38, border: 2, marginTop: 10, fontFamily: "sans-serif"}}
                         placeholder="Type a message"
                     />
-                    <button className="btn btn-outline-primary"  style={{marginTop: 10}}>
+                    <button className="btn btn-outline-secondary" style={{marginTop: 10}}>
                         <Send/>
                     </button>
                 </div>

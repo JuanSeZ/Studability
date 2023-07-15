@@ -259,6 +259,22 @@ public class Studability {
                     users.updateUser(usersRequested); // Update the usersRequested changes
                 }
 
+                for (Task task : listTaskOfUser(user)) {
+                    deleteToDoTask(task.getId());
+                }
+
+                for (Event event : listEventsOfUser(user)) {
+                    deleteEvent(event.getId());
+                }
+
+                for (String[] file : listFilesOfUser(user)){
+                    try {
+                        FilesRepository.delete(file[1], file[0]);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
                 user.getFriends().clear();
                 user.getFriendsRequests().clear();
 
@@ -268,7 +284,6 @@ public class Studability {
             return null;
         }));
     }
-
 
 
     public List<User> listFriendByName(String name, User me) {

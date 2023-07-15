@@ -40,7 +40,7 @@ export default function CalendarEvent(props) {
         <tr key={event.dateValue}>
             <td align="center">{event.date}</td>
             <td align="center">{event.title}</td>
-            <td align="center">{event.description}</td>
+            <td align="center">{event.description.length > 0 ? event.description : "-"}</td>
             <td align="center" style={{ width: "auto" }}>
                 <button
                     className="modifyButton mb-2"

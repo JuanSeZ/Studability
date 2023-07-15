@@ -2,29 +2,40 @@
 //columna con chats recientes.
 
 import SideBarStyle from "../style/SideBarStyle.css"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useStudability} from "../../service/Studability";
 import {useAuthProvider} from "../../auth/auth";
 import * as React from "react";
-import {end} from "@popperjs/core";
+import Swal from "sweetalert2";
+import {map} from "react-bootstrap/ElementChildren";
 
 function SideBar({chooseActualFriend}) {
 
     const [friend, setFriend] = useState('');
-    const [recentChats, setRecentChats] = useState([]);
     const [selectedFriends, setSelectedFriends] = useState([]);
     const studability = useStudability();
     let token = useAuthProvider().getToken();
     const [searchResult, setSearchResult] = useState([]);
+    const [groups, setGroups] = useState(["pp", "aaa", "fiuba", "hola", "aaa", "fiuba", "hola", "aaa", "fiuba"]);
+    const [groupName, setGroupName] = useState('');
 
-    const handleCheckboxChange = (name, surname, isSelected) => {
-        const friendObj = {name, surname};
+    useEffect(() => {
+        studability.listGroups(
+            token,
+            (groups) => {
+                setSearchResult(groups);
+            },
+            (msg) => console.log(msg)
+        );
+    });
+
+
+    const handleCheckboxChange = (friendId, isSelected) => {
         if (isSelected) {
-            setSelectedFriends((prevFriendsSelected) => [...prevFriendsSelected, friendObj]);
-            console.log(selectedFriends)
+            setSelectedFriends((prevFriendsSelected) => [...prevFriendsSelected, friendId]);
         } else {
             setSelectedFriends((prevFriendSelected) =>
-                prevFriendSelected.filter((friend) => friend.name !== name || friend.surname !== surname)
+                prevFriendSelected.filter((friend) => friend !== friendId)
             );
         }
     };
@@ -40,8 +51,35 @@ function SideBar({chooseActualFriend}) {
         );
     }
 
+
+    const createGroupName = () => {
+        Swal.fire({
+            title: "Enter Group Name",
+            input: "text",
+            inputPlaceholder: "Enter group name",
+            showCancelButton: true,
+            confirmButtonText: "Create",
+            cancelButtonText: "Cancel",
+            reverseButtons: true,
+            confirmButtonColor: "#14A44D",
+            inputValidator: (value) => {
+                if (!value) {
+                    return "Please enter a valid group name";
+                }
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const groupName = result.value;
+                //hacer el group conversation
+            }
+        });
+    };
+
     return (
         <div className="sideBar">
+            <div className="sideBarHeader">
+                <text style={{marginLeft: 5, fontFamily: "sans-serif"}}>Select 2 or more friends to start a group chat</text>
+            </div>
             <div>
                 <input
                     className="friendSearcher"
@@ -63,32 +101,24 @@ function SideBar({chooseActualFriend}) {
                     <button
                         className="btn btn-outline-primary"
                         style={{marginLeft: 55, marginTop: 5}}
+                        onClick={createGroupName}
                     >
                         Start Group Conversation
                     </button>
                 ) : null}
-                <ul className="chatResults">
-                    {friend.length > 0 &&
+                <ul className="chatResults" style={{height: 168, overflowY: "auto"}}>
+                    {friend.length > 0 ? (
                         searchResult
-                            .filter((user) =>
-                                user.name.toLowerCase().startsWith(friend.toLowerCase())
-                            )
+                            .filter((user) => user.name.toLowerCase().startsWith(friend.toLowerCase()))
                             .map((user) => (
-                                <text id={user.email} key={user.email}>
+                                <label id={user.email} key={user.email}>
                                     <div style={{marginTop: 10}}>
                                         <input
                                             className="form-check-input"
                                             type="checkbox"
-                                            checked={selectedFriends.some(
-                                                (friend) =>
-                                                    friend.name === user.name && friend.surname === user.surname
-                                            )}
-                                            onChange={(e) =>
-                                                handleCheckboxChange(
-                                                    user.name,
-                                                    user.surname,
-                                                    e.target.checked
-                                                )
+                                            checked={selectedFriends.includes(user.email)}
+                                            onChange={() =>
+                                                handleCheckboxChange(user.email, !selectedFriends.includes(user.email))
                                             }
                                             style={{marginTop: 9, width: 16, height: 16}}
                                         />
@@ -99,19 +129,42 @@ function SideBar({chooseActualFriend}) {
                                                 onClick={() => {
                                                     chooseActualFriend(user);
                                                 }}
-                                                style={{marginLeft: 5, textAlign: "right"}}
+                                                style={{marginLeft: 5, textAlign: 'right'}}
                                             >
                                                 Chat
                                             </button>
                                         </text>
                                     </div>
-                                </text>
-                            ))}
+                                </label>
+                            ))) : (
+                        <text style={{
+                            justifyContent: "center",
+                            textAlign: "center",
+                            marginLeft: 45,
+                            fontSize: 15,
+                            fontFamily: "sans-serif",
+                            color: "gray",
+                        }}> Find friends to chat </text>)}
                 </ul>
             </div>
-            <div>{/* Render recent chats here */}</div>
+            <div>
+                <text style={{fontFamily: "sans-serif", fontSize: 25, marginLeft: 5}}>Groups</text>
+
+                <div style={{height: selectedFriends.length > 1 ? 255 : 305, overflowY: "auto", marginLeft: 10, textTransform: "capitalize"}}>
+                    <text>
+                        {groups.map((group) => (
+                            <div style={{marginTop: 9}}>
+                                {group}
+                                <button className="btn btn-outline-primary">Chat</button>
+                            </div>
+                        ))}
+                    </text>
+                </div>
+            </div>
         </div>
-    );
+
+    )
+        ;
 
 }
 

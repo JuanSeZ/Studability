@@ -18,7 +18,7 @@ export default function Feed (){
             (files) =>
                 setFiles(
                     files.length === 0 ? (
-                        <p style={{justifyContent: "center", textAlign:"center", fontSize:20, fontFamily: "sans-serif", marginTop:10, color:"gray"}}>
+                        <p style={{justifyContent: "center", textAlign:"center", fontSize:20, fontFamily: "sans-serif", marginTop:10, color:"gray", marginRight: 25}}>
                             No files uploaded by friends</p>
                     ) : (
                         files.map((file) => (
@@ -31,9 +31,9 @@ export default function Feed (){
     }, []);
 
     return (
-        <Row>
+        <div>
             {files}
-        </Row>
+        </div>
     );
 
 }

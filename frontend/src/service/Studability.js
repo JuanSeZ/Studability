@@ -366,6 +366,23 @@ const Studability = {
         })
     },
 
+    // getAuthFile: (token, okCallback, errorCallback) => {
+    //     fetch(`${restApiEndpoint}/files/getAuth`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Authorization: 'Bearer ' + token,
+    //         }
+    //     }).then(async res => {
+    //         if(res.status === 200) {
+    //             let file = await res.json()
+    //             okCallback(file)
+    //         } else{
+    //             errorCallback("Unauthorized, you cannot access this file")
+    //         }
+    //     })
+    // },
+
     handleDownloadSelectedFiles: (selectedFiles, token, zipName) => {
         fetch(`${restApiEndpoint}/downloadZip`, {
             method: "POST",
@@ -492,6 +509,7 @@ const Studability = {
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
     },
+
     getConversation:(senderId, receiverId, token, okCallback, errorCallback) => {
         fetch(`${restApiEndpoint}/listChatFriends`, {
             method: 'GET',
@@ -506,7 +524,22 @@ const Studability = {
                 errorCallback("Users with that name cannot be listed.")
             }
         }).catch(e => errorCallback("Unable to connect to Studability API"))
+    },
 
+    listGroups: (token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/listGroups`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(groups => okCallback(groups))
+            } else {
+                errorCallback("Groups cannot be listed.")
+            }
+        })
     }
 }
 export const useStudability = () => Studability

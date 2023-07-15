@@ -23,18 +23,7 @@ export default function HomePage() {
     function handleLogIn() {
         studability.getUser(
             token,
-            (user) => {
-                setUsername(user.name + " " + user.surname);
-                const names = (user.name + " " + user.surname).split(' ');
-                const capitalizedNames = names.map((name) => name.charAt(0).toUpperCase() + name.slice(1));
-                const capitalizedUsername = capitalizedNames.join(' ');
-
-                Swal.fire({
-                    title: `You are successfully logged in, ${capitalizedUsername}!`,
-                    icon: "success",
-                    timer: 1200,
-                    showConfirmButton: false
-                });
+            () => {searchParams.get("ok")
             },
             () => "Error"
         );
@@ -49,13 +38,15 @@ export default function HomePage() {
                 <div class="todoListColumn">
                     <ToDoList/>
                 </div>
-                <div class="feedColumn">
+                <div className="feedColumn">
                     <div style={{display: "flex", justifyContent: "center"}}>
                         <h1 className="header">
                             <header>Friend's Files</header>
                         </h1>
                     </div>
-                    <Feed/>
+                    <div style={{height: 600, width: 1100, overflowY: "scroll"}}>
+                        <Feed/>
+                    </div>
                 </div>
             </row>
         </div>

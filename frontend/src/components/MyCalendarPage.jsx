@@ -199,14 +199,9 @@ export default function MyCalendarPage() {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label className="mt-3">Pick event's date:</Form.Label>
-                                <text> </text>
+                                <text></text>
                                 <DatePicker onChange={setDate} value={dateValue} required/>
                             </Form.Group>
-                            {/*{errorMsg && (*/}
-                            {/*    <div className="alert alert-danger" role="alert">*/}
-                            {/*        {errorMsg}*/}
-                            {/*    </div>*/}
-                            {/*)}*/}
                             <div className="text-center mt-4">
                                 <Button variant="danger" onClick={() => setShowModal(false)} className="mr-2">
                                     Close
@@ -222,41 +217,50 @@ export default function MyCalendarPage() {
 
             <br/>
 
-            {Array.isArray(events) && events.length > 0 ? (
-                <table className="table" name="table" className="center">
-                    <thead>
-                    <tr>
-                        <th scope="row" className="text-center">
-                            Date
-                        </th>
-                        <th scope="row" className="text-center">
-                            Event
-                        </th>
-                        <th scope="row" className="text-center">
-                            Description
-                        </th>
-                        <th scope="row" className="text-center">
-                            Edit
-                        </th>
-                        <th scope="row" className="text-center">
-                            Delete
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {events.map((event) => (
-                        <CalendarEvent
-                            modifyEvent={modifyEvent}
-                            event={event}
-                            parser={parseDate}
-                            deleteEvent={deleteEvent}
-                        ></CalendarEvent>
-                    ))}
-                    </tbody>
-                </table>
-            ) : (
-                <p style={{justifyContent: "center", textAlign:"center", fontSize:20, fontFamily: "sans-serif", marginTop:10, color:"gray"}}>No events upcoming.</p>
-            )}
+            <div style={{height: 510, overflowY: "auto"}}>
+                {Array.isArray(events) && events.length > 0 ? (
+                    <table className="table" name="table" className="center">
+                        <thead>
+                        <tr>
+                            <th scope="row" className="text-center">
+                                Date
+                            </th>
+                            <th scope="row" className="text-center">
+                                Event
+                            </th>
+                            <th scope="row" className="text-center">
+                                Description
+                            </th>
+                            <th scope="row" className="text-center">
+                                Edit
+                            </th>
+                            <th scope="row" className="text-center">
+                                Delete
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {events.map((event) => (
+                            <CalendarEvent
+                                modifyEvent={modifyEvent}
+                                event={event}
+                                parser={parseDate}
+                                deleteEvent={deleteEvent}
+                            ></CalendarEvent>
+                        ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p style={{
+                        justifyContent: "center",
+                        textAlign: "center",
+                        fontSize: 20,
+                        fontFamily: "sans-serif",
+                        marginTop: 10,
+                        color: "gray"
+                    }}>No upcoming events.</p>
+                )}
+            </div>
         </div>
     );
 }
