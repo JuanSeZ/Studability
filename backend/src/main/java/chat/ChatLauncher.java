@@ -15,35 +15,23 @@ public class ChatLauncher {
         Configuration config = new Configuration();
         config.setHostname("localhost");
         config.setPort(8080);
-        config.setOrigin("http://localhost:3000");
-
 
         final SocketIOServer server = new SocketIOServer(config);
         final ChatService chatService = new ChatService(factory);
 
 
         server.addConnectListener(new ConnectListener() {
-
             @Override
             public void onConnect(SocketIOClient client) {
-                // TODO: verify the user
-                if (client.getHandshakeData().getHttpHeaders().get("Authorization") != null) {
-                    client.set("userId", client.getHandshakeData().getHttpHeaders().get("userId"));
-                    client.joinRoom(client.get("userId").toString());
-//                    server.getRoomOperations(client.get("userId").toString()).sendEvent("loadConversation", chatService.listConversations(client.get("userId").toString()));
-                    System.out.println("a conncection has been established");
-                }
-                else {
-                    client.disconnect();
-                }
+                System.out.println("a conncection has been established");
             }
-
         });
 
         server.addEventListener("joinChat" , null, new DataListener<GroupChatObject>() {
             @Override
             public void onData(SocketIOClient client, GroupChatObject data, AckRequest ackRequest) {
-                server.getRoomOperations(client.get("userId").toString()).sendEvent("loadConversation", chatService.listConversations(data.getId()));
+                client.joinRoom(data.getId());
+                server.getRoomOperations(data.getUserId()).sendEvent("loadConversation", chatService.getConversation(data.getId(), data.getUserId()));
             }
         });
 
@@ -59,7 +47,8 @@ public class ChatLauncher {
         server.addEventListener("joinRoom", GroupChatObject.class, new DataListener<GroupChatObject>() {
             @Override
             public void onData(SocketIOClient client, GroupChatObject data, AckRequest ackRequest) {
-                server.getRoomOperations(data.getId()).sendEvent("loadConversation", chatService.getConversation(data.getId(), data.getUserId()));
+                client.joinRoom(data.getUserId());
+                server.getRoomOperations(data.getUserId()).sendEvent("loadConversation", chatService.getConversation(data.getId(), data.getUserId()));
             }
         });
 

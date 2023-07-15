@@ -56,6 +56,7 @@ public class Routes {
             return "ok";
         });
 
+
         post(REGISTER_ROUTE, (req, res) -> {
             final RegistrationUserForm form = RegistrationUserForm.createFromJson(req.body());
 
@@ -96,6 +97,11 @@ public class Routes {
                     });
 
             return "delete";
+        });
+        authorizedGet("/listGroups", (req, res) -> {
+            final User me = getUser(req).get();
+            final Optional<List<String>> groups = system.findGroupChat(me.getEmail());
+            return JsonParser.toJson(groups);
         });
 
         authorizedGet("/listUser", (req, res) -> {
@@ -498,6 +504,7 @@ public class Routes {
     public static final Cache<String, String> emailByToken = CacheBuilder.newBuilder()
             .expireAfterAccess(30, MINUTES)
             .build();
+
 
     private Optional<String> authenticate(AuthRequest req) {
         return system.findUserByEmail(req.getEmail()).flatMap(foundUser -> {

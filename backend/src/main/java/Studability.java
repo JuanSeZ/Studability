@@ -1,4 +1,5 @@
 import chat.ChatLauncher;
+import chat.GroupChatObject;
 import entities.Event;
 import entities.User;
 import entities.Task;
@@ -47,6 +48,16 @@ public class Studability {
             final Users users = datasource.users();
             return users.exists(form.getEmail()) ? Optional.empty() : Optional.of(users.createUser(form));
         });
+    }
+
+    public Optional<List<String>> findGroupChat(String userId) {
+        EntityManager em = factory.createEntityManager();
+        List<GroupChatObject> groupChat = em.createQuery("SELECT g FROM GroupChatObject g WHERE g.userId = :userId", GroupChatObject.class)
+                .setParameter("userId", userId)
+                .getResultList();
+        em.close();
+        List<String> groupIds = groupChat.stream().map(GroupChatObject::getId).collect(Collectors.toList());
+        return Optional.ofNullable(groupIds);
     }
 
     private <E> E runInTransaction(Function<StudabilityRepository, E> closure) {

@@ -13,7 +13,9 @@ import FilesPage from "./pages/FilesPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import ChatPage from "./chat/components/ChatPage";
 
+
 export default function App() {
+
     return (
         <BrowserRouter>
             <div><Routes>

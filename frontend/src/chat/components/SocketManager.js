@@ -23,10 +23,10 @@ return (
 }
 
 export const GlobalSocket = io('http://localhost:8080', {
+
     query: {
         "Authorization" : tokenString,
         "userId" : userId
     },
     autoConnect: false,
-    transports: ['websocket']
 });

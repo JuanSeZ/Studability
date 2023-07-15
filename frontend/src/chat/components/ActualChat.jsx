@@ -2,80 +2,38 @@
 // id, senderId, date, message, groupId/receiverId
 // input (donde ponés el mensaje y lo enviás)
 
+// React component that renders the chat page using socket.io
+// to send and receive messages in real time.
+
 import {useState, useEffect} from 'react'
 import {Send} from "react-bootstrap-icons"
-import {GlobalSocket} from "./SocketManager";
 import {ActualChatStyle} from "../style/ActualChatStyle.css"
 
 
-function ActualChat({actualFriend: actualFriend,userId: userId}) {
+
+function ActualChat({actualFriend: actualFriend,userId: userId, conversation: conversation, newMessage, isGroup}) {
 
     const [message, setMessage] = useState('')
-    const [messages, setMessages] = useState([])
-    const socket = GlobalSocket
+    const [chat, setChat] = useState([])
 
     useEffect(() => {
-        socket.connect()
 
-        return () => {
-            socket.disconnect()
-        };
-    });
+        const messages = conversation.map(obj => ({
+            id: obj.groupId,
+            from: obj.senderId,
+            body: obj.message
+        }));
 
-    useEffect( ()=> {
-        const loadMessage = (chats) => {
-            const newMessages = chats.map(obj => ({
-                from: obj.senderId,
-                body: obj.message
-            }))
-            setMessages(newMessages)
-        }
-        socket.on("loadConversation", (chats) => loadMessage(chats))
-        // socket.on("message", function (chat) {
-        //     const newMessage = chat.map(obj => ({
-        //         from: obj.senderId,
-        //         body: obj.message
-        //     }))
-        //     setMessages([...messages, newMessage])
-        // })
-
-        return () => {
-            socket.off("loadConversation", loadMessage);
-            // socket.off("messages")
-        }
-
-    }, [])
-
-
-    useEffect(() => {
-            const receiveMessage = (message) => {
-                setMessages((prevMessages) => [...prevMessages, message]);
-            }
-            socket.on("message", receiveMessage);
-            return () => {
-                socket.off("message", receiveMessage);
-            }
-        },
-        [])
-
-    useEffect(() => {
-        socket.emit("joinRoom",{id: "",
-            userId:actualFriend.email})
-        },
-        [actualFriend])
+        setChat(messages);
+    }, [conversation])
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
         if (message !== "") {
-            socket.emit('message', {
-                senderId: userId,
-                receiverId: actualFriend.email,
-                message: message,
-                groupId: ""
-            })
-            const newMessage = {body: message, from: userId}
-            setMessages([...messages, newMessage])
+            const newMessages = {body: message, from: userId}
+            setChat([...chat, newMessages])
+            newMessage(newMessages);
             setMessage('')
         }
     }
@@ -89,7 +47,7 @@ function ActualChat({actualFriend: actualFriend,userId: userId}) {
                 <div style={{height: 500, overflowY: "auto"}}>
                     <div>
                         <ul style={{paddingBottom: 1, paddingTop: 10}}>
-                            {messages.map((message, index) => (
+                            {chat.map((message, index) => (
                                 <li style={{
                                     marginTop: 2,
                                     padding: 2,
@@ -106,7 +64,8 @@ function ActualChat({actualFriend: actualFriend,userId: userId}) {
                                 }}
                                     key={index}>
                                     <p>
-                                        {message.from}: {message.body}
+                                        {isGroup && <span>{message.from}: </span>}
+                                        {message.body}
                                     </p>
                                 </li>
                             ))}
@@ -122,7 +81,7 @@ function ActualChat({actualFriend: actualFriend,userId: userId}) {
                         style={{width: 1000, height: 38, border: 2, marginTop: 10, fontFamily: "sans-serif"}}
                         placeholder="Type a message"
                     />
-                    <button className="btn btn-outline-primary" style={{marginTop: 10}}>
+                    <button className="btn btn-outline-primary"  style={{marginTop: 10}}>
                         <Send/>
                     </button>
                 </div>
