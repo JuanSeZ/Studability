@@ -82,7 +82,7 @@ function ActualChat({actualFriend: actualFriend,userId: userId}) {
 
     return (
         <div>
-            <form onSubmit={handleSubmit} style={{background: '#87CEEB', height: 600, borderRadius: 10}}>
+            <form onSubmit={handleSubmit} style={{background: 'lightskyblue', height: 600, borderRadius: 10}}>
                 <div className="friendChatName">
                     {actualFriend.name} {actualFriend.surname}
                 </div>
