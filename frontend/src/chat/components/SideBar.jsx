@@ -9,7 +9,7 @@ import * as React from "react";
 import Swal from "sweetalert2";
 import {map} from "react-bootstrap/ElementChildren";
 
-function SideBar({chooseActualFriend, handleGroupCreation}) {
+function SideBar({chooseActualFriend, handleGroupCreation, handleRoomJoin}) {
 
     const [friend, setFriend] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
@@ -72,7 +72,7 @@ function SideBar({chooseActualFriend, handleGroupCreation}) {
             if (result.isConfirmed) {
                 const groupName = result.value;
                 handleGroupCreation(groupName, selectedFriends);
-                handleGroupListing();
+                setGroups((prevGroups) => [...prevGroups, groupName]);
             }
         });
     };
@@ -157,7 +157,10 @@ function SideBar({chooseActualFriend, handleGroupCreation}) {
                         {groups.map((group) => (
                             <div style={{marginTop: 9}}>
                                 {group}
-                                <button className="btn btn-outline-primary">Chat</button>
+                                <button className="btn btn-outline-primary"
+                                        onClick={() => handleRoomJoin(group)}>
+                                    Chat
+                                </button>
                             </div>
                         ))}
                     </text>

@@ -7,7 +7,7 @@ import {Send} from "react-bootstrap-icons"
 import {ActualChatStyle} from "../style/ActualChatStyle.css"
 
 
-function ActualChat({actualFriend: actualFriend, userId: userId, conversation: conversation, newMessage, isGroup}) {
+function ActualChat({actualFriend: actualFriend, userId: userId, conversation: conversation, newMessage, isGroup, actualGroup}) {
 
     const [message, setMessage] = useState('')
     const [chat, setChat] = useState([])
@@ -46,7 +46,7 @@ function ActualChat({actualFriend: actualFriend, userId: userId, conversation: c
         <div>
             <form onSubmit={handleSubmit} style={{background: 'lightskyblue', height: 600, borderRadius: 10}}>
                 <div className="friendChatName">
-                    {actualFriend.name} {actualFriend.surname}
+                    {isGroup ? actualGroup.name : actualFriend.name + " " + actualFriend.surname}
                 </div>
                 <div style={{height: 500, overflowY: "auto"}}>
                     <div>

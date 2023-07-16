@@ -49,7 +49,7 @@ public class ChatLauncher {
             @Override
             public void onData(SocketIOClient client, GroupChatObject data, AckRequest ackRequest) {
                 client.joinRoom(data.getId());
-                server.getRoomOperations(client.get("userId").toString()).sendEvent("chatevent", chatService.getGroupChat(data.getId()));
+                server.getRoomOperations(data.getId()).sendEvent("loadConversation", chatService.getGroupChat(data.getId()));
             }
 
         });
@@ -57,9 +57,11 @@ public class ChatLauncher {
         server.addEventListener("createGroupChat", GroupChatCreateDTO.class, new DataListener<GroupChatCreateDTO>() {
             @Override
             public void onData(SocketIOClient client, GroupChatCreateDTO data, AckRequest ackRequest) {
+                client.joinRoom(data.getId());
                 chatService.createGroupChat(data.getId(), data.getUsersId());
             }
         });
+
 
 
         server.addEventListener("message", ChatDTO.class, new DataListener<ChatDTO>() {
@@ -69,6 +71,15 @@ public class ChatLauncher {
                 server.getRoomOperations(data.getReceiverId()).sendEvent("loadConversation", chatService.getConversation(data.getSenderId(), data.getReceiverId()));
             }
         });
+
+        server.addEventListener("groupMessage", ChatDTO.class, new DataListener<ChatDTO>() {
+            @Override
+            public void onData(SocketIOClient client, ChatDTO data, AckRequest ackRequest) {
+                chatService.createChat(data.getSenderId(), data.getReceiverId(), data.getMessage(), data.getGroupId());
+                server.getRoomOperations(data.getGroupId()).sendEvent("loadConversation", chatService.getGroupChat(data.getGroupId()));
+            }
+        });
+
 
         server.start();
     }
