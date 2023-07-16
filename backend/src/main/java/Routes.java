@@ -98,10 +98,13 @@ public class Routes {
 
             return "delete";
         });
+
         authorizedGet("/listGroups", (req, res) -> {
             final User me = getUser(req).get();
             final Optional<List<String>> groups = system.findGroupChat(me.getEmail());
-            return JsonParser.toJson(groups);
+            groups.ifPresent(list -> res.body(JsonParser.toJson(list)));
+            res.status(200);
+            return res.body();
         });
 
         authorizedGet("/listUser", (req, res) -> {

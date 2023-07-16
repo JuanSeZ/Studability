@@ -1,22 +1,35 @@
 package chat;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "GroupChat")
 public class CreateGroupChatObject {
-    private String id;
-    private String[] usersId;
+    @Id
+@GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+    @Column()
+    private String name;
 
-    public CreateGroupChatObject() {
+    @Column()
+    private String userId;
+
+    public CreateGroupChatObject() {}
+
+    public CreateGroupChatObject(String name, String userId) {
+        this.name = name;
+        this.userId = userId;
     }
 
-    public CreateGroupChatObject(String id, String[] usersId) {
-        this.id = id;
-        this.usersId = usersId;
+    public String getName() {
+        return name;
     }
 
-    public String getId() {
+    public String getUserId() {
+        return userId;
+    }
+
+    public Long getId() {
         return id;
-    }
-
-    public String[] getUsersId() {
-        return usersId;
     }
 }

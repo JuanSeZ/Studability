@@ -9,25 +9,26 @@ import * as React from "react";
 import Swal from "sweetalert2";
 import {map} from "react-bootstrap/ElementChildren";
 
-function SideBar({chooseActualFriend}) {
+function SideBar({chooseActualFriend, handleGroupCreation}) {
 
     const [friend, setFriend] = useState('');
     const [selectedFriends, setSelectedFriends] = useState([]);
     const studability = useStudability();
     let token = useAuthProvider().getToken();
     const [searchResult, setSearchResult] = useState([]);
-    const [groups, setGroups] = useState(["pp", "aaa", "fiuba", "hola", "aaa", "fiuba", "hola", "aaa", "fiuba"]);
+    const [groups, setGroups] = useState([]);
     const [groupName, setGroupName] = useState('');
 
+    const handleGroupListing = () =>   studability.listGroups(
+        token,
+        (groups) => {
+            setGroups(groups);
+        },
+        (msg) => console.log(msg)
+    );
     useEffect(() => {
-        studability.listGroups(
-            token,
-            (groups) => {
-                setSearchResult(groups);
-            },
-            (msg) => console.log(msg)
-        );
-    });
+        handleGroupListing();
+    }, []);
 
 
     const handleCheckboxChange = (friendId, isSelected) => {
@@ -70,7 +71,8 @@ function SideBar({chooseActualFriend}) {
         }).then((result) => {
             if (result.isConfirmed) {
                 const groupName = result.value;
-                //hacer el group conversation
+                handleGroupCreation(groupName, selectedFriends);
+                handleGroupListing();
             }
         });
     };

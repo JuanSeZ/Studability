@@ -25,9 +25,8 @@ public class ChatService {
     }
 
     public void createGroupChat(String id, String[] userId) {
-        for (int i = 0; i < userId.length; i++) {
-            GroupChatObject groupChat = new GroupChatObject(id, userId[i]);
-            repository.createGroupChat(groupChat);
+        for (int i = 0; i < userId.length ; i++) {
+            repository.createGroupChat(new CreateGroupChatObject(id,userId[i]));
         }
     }
 

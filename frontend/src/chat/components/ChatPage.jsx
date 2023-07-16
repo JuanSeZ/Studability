@@ -26,12 +26,8 @@ export default function ChatPage() {
         socket.on("loadConversation", (conversation) => {
             setConversations(conversation)
         })
-        socket.on("message", (message) => {
-            if(!isGroup)setConversations((prevConversation) => [...prevConversation, message])
-        })
 
         return () => {
-            socket.off("message");
             socket.off("loadConversation");
             socket.disconnect();
         }
@@ -70,6 +66,13 @@ export default function ChatPage() {
         setNewMessage(message);
     }
 
+    const handleGroupCreation = (id,selectedFriends) => {
+        setIsGroup(true);
+        selectedFriends.push(userId);
+        socket.emit("createGroupChat", {id: id , usersId: selectedFriends});
+        setActualFriend({name: id, surname: "", email: id})
+    }
+
 
 
 
@@ -85,7 +88,7 @@ export default function ChatPage() {
             </row>
             <row>
                 <div className="sideBarColumn">
-                    <SideBar chooseActualFriend={chooseActualFriend}/>
+                    <SideBar chooseActualFriend={chooseActualFriend} handleGroupCreation={handleGroupCreation} />
                 </div>
                 <div className="actualChatColumn">
                     <ActualChat actualFriend={actualFriend} userId = {userId} conversation ={conversation} newMessage={newMessageHandler} />

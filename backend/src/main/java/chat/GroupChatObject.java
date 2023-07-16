@@ -6,14 +6,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-@Entity
-@Table(name = "GROUPCHAT")
+
 public class GroupChatObject {
 
-    @Id
+
     private String id;
 
-    @Column()
+
     private String userId;
 
     public void setId(String id) {

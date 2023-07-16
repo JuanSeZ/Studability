@@ -29,7 +29,7 @@ public class ChatRepository {
     }
 
 
-    public void createGroupChat(GroupChatObject groupChat) {
+    public void createGroupChat(CreateGroupChatObject groupChat) {
         EntityManager em = factory.createEntityManager();
 
         try {
@@ -68,14 +68,6 @@ public class ChatRepository {
     }
 
 //    Find group chat by userId
-    public Optional<List<GroupChatObject>> findGroupChat(String userId) {
-        EntityManager em = factory.createEntityManager();
-        List<GroupChatObject> groupChat = em.createQuery("SELECT g FROM GroupChatObject g WHERE g.userId = :userId", GroupChatObject.class)
-                .setParameter("userId", userId)
-                .getResultList();
-        em.close();
-        return Optional.ofNullable(groupChat);
-    }
 
     public Optional<List<ChatObject>> findChatByGroupId(String groupId) {
         EntityManager em = factory.createEntityManager();
