@@ -466,6 +466,22 @@ public class Routes {
             return JsonParser.toJson(users);
         });
 
+        authorizedDelete("/deleteFriend/:userId", (req, res) -> {
+            final String userId = req.params(":userId");
+            final User user = getUser(req).get();
+            system.deleteFriend(user, userId).ifPresentOrElse(
+                    (userFriends) -> {
+                        res.status(202);
+                        res.body(JsonParser.toJson(userFriends));
+                    },
+                    () -> {
+                        res.status(400);
+                        res.body("Could not delete friend");
+                    }
+            );
+            return res.body();
+        });
+
         authorizedGet("/listChatFriends", (req, res) -> {
             User user = getUser(req).get();
             final List<UserDTO> users = system.listFriendsFromUser(user).get();

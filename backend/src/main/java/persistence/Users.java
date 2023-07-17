@@ -116,5 +116,12 @@ public class Users {
     public void updateUser(User user){
         entityManager.merge(user);
     }
+
+    public void deleteFriend(User user, User friend){
+        user.getFriends().remove(friend);
+        entityManager.merge(user);
+        friend.getFriends().remove(user);
+        entityManager.merge(friend);
+    }
 }
 

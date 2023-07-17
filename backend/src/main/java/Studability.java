@@ -300,4 +300,13 @@ public class Studability {
             return users.findByEmail(id);
         });
     }
+
+    public Optional<List<User>> deleteFriend(User user, String email) {
+        return runInTransaction(datasource -> {
+            Users users = datasource.users();
+            User friend = users.findByEmail(email).get();
+            users.deleteFriend(user, friend);
+            return Optional.of(user.getFriends());
+        });
+    }
 }

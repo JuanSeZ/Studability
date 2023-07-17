@@ -104,6 +104,33 @@ export default function MyFriendsPage() {
         });
     }
 
+    function deleteFriend(email) {
+        Swal.fire({
+            icon: "warning",
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            showCancelButton: true, confirmButtonText: "Delete Friend",
+            cancelButtonText: "Cancel!",
+            reverseButtons: true,
+            confirmButtonColor: "#dc3545",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                studability.deleteFriend(
+                    email,
+                    token,
+                    (updatedFriends) => setFriends(updatedFriends),
+                    (msg) => console.log(msg)
+                );
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Your friend has been deleted",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => {window.location.reload()});
+            }
+        });
+    }
 
     const changeSearchedFullName = (searchedFriend) => {
         setSearchedFriend(searchedFriend.target.value)
@@ -183,7 +210,8 @@ export default function MyFriendsPage() {
                                             <div className="text-center" style={{marginRight: 60}}>
                                                 <text className="results-names">
                                                     {user.name} {user.surname}
-                                                    <SendRequestButton sendRequest={sendRequest} email={user.email}/>
+                                                    <SendRequestButton sendRequest={sendRequest}
+                                                                       email={user.email}/>
                                                 </text>
                                             </div>
                                         </ul>
@@ -229,27 +257,27 @@ export default function MyFriendsPage() {
                                     .sort((a, b) => a.name.localeCompare(b.name))
                                     .sort((a, b) => a.surname.localeCompare(b.surname))
                                     .map((request) => (
-                                    <ul key={request.email}
-                                        id={request.email}
-                                        className="requests">
-                                        <div>
-                                            {request.name + " " + request.surname + " "}
-                                            <button
-                                                className="btn btn-outline-success"
-                                                onClick={() => acceptRequest(request.email)}
-                                            >
-                                                ✔
-                                            </button>
-                                            {" "}
-                                            <button
-                                                className="btn btn-outline-danger"
-                                                onClick={() => rejectRequest(request.email)}
-                                            >
-                                                X
-                                            </button>
-                                        </div>
-                                    </ul>
-                                ))
+                                        <ul key={request.email}
+                                            id={request.email}
+                                            className="requests">
+                                            <div>
+                                                {request.name + " " + request.surname + " "}
+                                                <button
+                                                    className="btn btn-outline-success"
+                                                    onClick={() => acceptRequest(request.email)}
+                                                >
+                                                    ✔
+                                                </button>
+                                                {" "}
+                                                <button
+                                                    className="btn btn-outline-danger"
+                                                    onClick={() => rejectRequest(request.email)}
+                                                >
+                                                    X
+                                                </button>
+                                            </div>
+                                        </ul>
+                                    ))
                             )}
                         </div>
                     </div>
@@ -306,6 +334,11 @@ export default function MyFriendsPage() {
                                         <ul key={friend.email}>
                                             <div style={{marginTop: 5, fontFamily: "sans-serif"}}>
                                                 {friend.name} {friend.surname}
+                                                <button className="btn btn-outline-danger"
+                                                        style={{marginLeft: 5}}
+                                                        onClick={() => deleteFriend(friend.email)}>
+                                                    Delete
+                                                </button>
                                             </div>
                                         </ul>
                                     ))}

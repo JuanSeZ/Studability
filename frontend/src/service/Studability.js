@@ -556,6 +556,21 @@ const Studability = {
                 errorCallback("Could not get user")
             }
         })
+    },
+
+    deleteFriend: (friendId, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/deleteFriend/${friendId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 202){
+                resp.json().then(friends => okCallback(friends))
+            }
+            else errorCallback("Could not delete friend")
+        })
     }
 }
 export const useStudability = () => Studability
