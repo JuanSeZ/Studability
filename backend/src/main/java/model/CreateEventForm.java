@@ -8,4 +8,5 @@ public class CreateEventForm {
     public String title;
 
     public String description;
+    public String time;
 }

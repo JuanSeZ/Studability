@@ -101,7 +101,7 @@ export default function ChatPage() {
                     <SideBar chooseActualFriend={chooseActualFriend} handleGroupCreation={handleGroupCreation} handleRoomJoin={handleRoomJoin} />
                 </div>
                 <div className="actualChatColumn">
-                    <ActualChat actualFriend={actualFriend} userId = {userId} conversation ={conversation} isGroup={isGroup} newMessage={newMessageHandler} actualGroup={actualGroup} />
+                    <ActualChat actualFriend={actualFriend} userId = {userId} conversation ={conversation} isGroup={isGroup} newMessage={newMessageHandler} actualGroup={actualGroup}/>
                 </div>
             </row>
         </div>

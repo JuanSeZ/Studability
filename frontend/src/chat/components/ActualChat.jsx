@@ -5,6 +5,9 @@
 import {useState, useEffect, useRef} from 'react'
 import {Send} from "react-bootstrap-icons"
 import {ActualChatStyle} from "../style/ActualChatStyle.css"
+import * as React from "react";
+import {useAuthProvider} from "../../auth/auth";
+import {useStudability} from "../../service/Studability";
 
 
 function ActualChat({actualFriend: actualFriend, userId: userId, conversation: conversation, newMessage, isGroup, actualGroup}) {
@@ -12,24 +15,66 @@ function ActualChat({actualFriend: actualFriend, userId: userId, conversation: c
     const [message, setMessage] = useState('')
     const [chat, setChat] = useState([])
     const containerRef = useRef(null);
+    const studability = useStudability();
+    const token = useAuthProvider().getToken();
+    const [usernames, setUsernames] = useState({});
+    const [usernamesFetched, setUsernamesFetched] = useState(false);
 
     useEffect(() => {
+        const fetchUsernames = async () => {
+            const promises = conversation.map((obj) =>
+                fetchUsernameById(obj.senderId, token)
+            );
+            await Promise.all(promises);
+            setUsernamesFetched(true);
+        };
 
-        const messages = conversation.map(obj => ({
-            id: obj.groupId,
-            from: obj.senderId,
-            body: obj.message
-        }));
+        fetchUsernames();
+    }, [conversation, token]);
 
-        setChat(messages);
-    }, [conversation])
+    useEffect(() => {
+        if (usernamesFetched) {
+            const messages = conversation.map((obj) => {
+                const username = usernames[obj.senderId] || "";
+                return {
+                    id: obj.groupId,
+                    from: obj.senderId,
+                    body: obj.message,
+                    username: username,
+                };
+            });
 
+            setChat(messages);
+        }
+    }, [conversation, usernames, usernamesFetched]);
 
     useEffect(() => {
         if (containerRef.current) {
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
         }
     }, [chat]);
+
+
+
+    function fetchUsernameById(id, token) {
+        return new Promise((resolve, reject) => {
+            studability.getUserNameById(
+                id,
+                token,
+                (userName) => {
+                    setUsernames((prevUsernames) => ({
+                        ...prevUsernames,
+                        [id]: userName,
+                    }));
+                    resolve();
+                },
+                (msg) => {
+                    console.log(msg);
+                    reject();
+                }
+            );
+        });
+    }
 
 
     const handleSubmit = (e) => {
@@ -48,8 +93,9 @@ function ActualChat({actualFriend: actualFriend, userId: userId, conversation: c
                 <div className="friendChatName">
                     {isGroup ? actualGroup.name : actualFriend.name + " " + actualFriend.surname}
                 </div>
-                <div style={{height: 500, overflowY: "auto"}}>
+                <div ref={containerRef} style={{height: 500, overflowY: "auto"}}>
                     <div>
+                        {actualFriend.name !== "" || actualGroup.name !== "" ? (
                         <ul style={{paddingBottom: 1, paddingTop: 10}}>
                             {chat.map((message, index) => (
                                 <li style={{
@@ -60,20 +106,23 @@ function ActualChat({actualFriend: actualFriend, userId: userId, conversation: c
                                     display: 'table',
                                     fontFamily: "sans-serif",
                                     backgroundColor: message.from === userId ? 'white' : '#0275d8',
-                                    marginLeft: message.from === userId ? 'auto' : 'initial',
+                                    marginLeft: message.from === userId ? 'auto' : 30,
                                     textAlign: message.from === userId ? 'right' : 'initial',
                                     width: 'auto',
                                     height: 'auto',
                                     marginRight: message.from === userId ? '70px' : 'initial',
                                 }}
                                     key={index}>
-                                    <p>
-                                        {isGroup && <span>{message.from}: </span>}
+                                    <div>
+                                        {isGroup}
+                                        <span style={{textTransform: "capitalize", fontWeight: "bold"}}>{message.username}</span>
+                                        <br />
                                         {message.body}
-                                    </p>
+                                    </div>
+
                                 </li>
                             ))}
-                        </ul>
+                        </ul>) : <text style={{display: "flex", justifyContent: "center", alignItems: "center", fontFamily: "sans-serif", marginTop: 250}}>Select two or more friends to start a group conversation</text>}
                     </div>
                 </div>
                 <div className="messageSender"
@@ -91,7 +140,6 @@ function ActualChat({actualFriend: actualFriend, userId: userId, conversation: c
                 </div>
             </form>
         </div>
-
     )
 }
 

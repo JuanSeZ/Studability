@@ -79,9 +79,6 @@ function SideBar({chooseActualFriend, handleGroupCreation, handleRoomJoin}) {
 
     return (
         <div className="sideBar">
-            <div className="sideBarHeader">
-                <text style={{marginLeft: 5, fontFamily: "sans-serif"}}>Select 2 or more friends to start a group chat</text>
-            </div>
             <div>
                 <input
                     className="friendSearcher"
@@ -158,7 +155,8 @@ function SideBar({chooseActualFriend, handleGroupCreation, handleRoomJoin}) {
                             <div style={{marginTop: 9}}>
                                 {group}
                                 <button className="btn btn-outline-primary"
-                                        onClick={() => handleRoomJoin(group)}>
+                                        onClick={() => handleRoomJoin(group)}
+                                        style={{marginLeft: 5}}>
                                     Chat
                                 </button>
                             </div>

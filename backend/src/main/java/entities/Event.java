@@ -26,19 +26,23 @@ private String title;
 @Column
 private String description;
 
+@Column
+private String time;
 
-    public Event(String date, String title, String userId, String description) {
+
+    public Event(String date, String title, String userId, String description, String time) {
         this.date = date;
         this.title = title;
         this.userId = userId;
         this.description = description;
+        this.time = time;
     }
 
     public Event() {
 
     }
-    public static Event create(String date, String title, String userId, String description){
-        return new Event(date, title, userId, description);
+    public static Event create(String date, String title, String userId, String description, String time){
+        return new Event(date, title, userId, description, time);
     }
 
     public String getDate() {
@@ -59,6 +63,8 @@ private String description;
 
     public String getDescription(){return description;}
 
+    public String getTime(){return time;}
+
     public void modifyEventsName(String newEventsName){
         title = newEventsName;
     }
@@ -67,5 +73,8 @@ private String description;
     }
     public void modifyEventsDescription(String newEventsDescription){
         description = newEventsDescription;
+    }
+    public void modifyEventsTime(String newEventsTime){
+        time = newEventsTime;
     }
 }

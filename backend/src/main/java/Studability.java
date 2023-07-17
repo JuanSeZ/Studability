@@ -101,7 +101,7 @@ public class Studability {
             Events events = datasource.events();
             final CreateEventForm createEventForm = fromJson(body, CreateEventForm.class);
 
-            Event event = new Event(createEventForm.dateValue, createEventForm.title, user.getEmail(), createEventForm.description);
+            Event event = new Event(createEventForm.dateValue, createEventForm.title, user.getEmail(), createEventForm.description, createEventForm.time);
             return Optional.of(events.addEvent(event));
         });
     }
@@ -291,6 +291,13 @@ public class Studability {
         return runInTransaction(datasource -> {
             Users users = datasource.users();
             return users.listByName(name, me);
+        });
+    }
+
+    public Optional<User> getUserById(String id) {
+        return runInTransaction(datasource -> {
+            Users users = datasource.users();
+            return users.findByEmail(id);
         });
     }
 }

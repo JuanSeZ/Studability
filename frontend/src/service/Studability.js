@@ -540,6 +540,22 @@ const Studability = {
                 errorCallback("Groups cannot be listed.")
             }
         })
+    },
+
+    getUserNameById: (userId, token, okCallback, errorCallback) => {
+        fetch(`${restApiEndpoint}/getUserNameById/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(resp => {
+            if (resp.status === 200) {
+                resp.json().then(userName => okCallback(userName))
+            } else {
+                errorCallback("Could not get user")
+            }
+        })
     }
 }
 export const useStudability = () => Studability

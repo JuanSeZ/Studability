@@ -472,6 +472,12 @@ public class Routes {
             return JsonParser.toJson(users);
         });
 
+        authorizedGet("/getUserNameById/:userId", (req, res) -> {
+            String userId = req.params(":userId");
+            final User user = system.getUserById(userId).get();
+            return JsonParser.toJson(UserDTO.fromModel(user).getName() + " " + UserDTO.fromModel(user).getSurname());
+        });
+
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         authorizedGet(USER_ROUTE, (req, res) -> getToken(req).map(JsonParser::toJson));
         authorizedGet("/listUser", (req, res) -> getToken(req).map(JsonParser::toJson));

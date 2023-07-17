@@ -40,6 +40,7 @@ private final EntityManager entityManager;
         event.modifyEventsName(eventForm.title);
         event.modifyEventsDescription(eventForm.description);
         event.modifyEventsDate(eventForm.dateValue);
+        event.modifyEventsTime(eventForm.time);
         entityManager.merge(event);
         return event;
     }
