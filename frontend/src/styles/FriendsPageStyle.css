@@ -3,6 +3,10 @@
     font-size: 35px;
 }
 
+.row{
+    width: 100%;
+}
+
 .column1 {
     float: left;
     width: 33%;

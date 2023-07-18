@@ -110,7 +110,7 @@ export default function MyFriendsPage() {
             title: "Are you sure?",
             text: "You won't be able to revert this!",
             showCancelButton: true, confirmButtonText: "Delete Friend",
-            cancelButtonText: "Cancel!",
+            cancelButtonText: "Cancel",
             reverseButtons: true,
             confirmButtonColor: "#dc3545",
         }).then((result) => {
@@ -146,7 +146,7 @@ export default function MyFriendsPage() {
                 </h1>
             </div>
 
-            <div className="row">
+            <div className="row" >
                 <div className="column1">
                     <br/>
                     {/*<nav>*/}
@@ -200,46 +200,60 @@ export default function MyFriendsPage() {
                         </div>
                     </div>
 
-                    <ul className="results" style={{overflowY: "auto", height: 480}}>
+                    <ul className="results" style={{ overflowY: "auto", height: 480 }}>
                         {searchedFriend.length > 0 ? (
                             searchResult.length > 0 ? (
                                 searchResult
-                                    .filter(user => user.name.toLowerCase().startsWith(searchedFriend.toLowerCase()))
-                                    .map((user) => (
+                                    .filter(user =>
+                                        user.name.toLowerCase().includes(searchedFriend.toLowerCase())
+                                    )
+                                    .map(user => (
                                         <ul id={user.email} key={user.email}>
-                                            <div className="text-center" style={{marginRight: 60}}>
+                                            <div className="text-center" style={{ marginRight: 60 }}>
                                                 <text className="results-names">
                                                     {user.name} {user.surname}
-                                                    <SendRequestButton sendRequest={sendRequest}
-                                                                       email={user.email}/>
+                                                    <SendRequestButton
+                                                        sendRequest={sendRequest}
+                                                        email={user.email}
+                                                    />
                                                 </text>
                                             </div>
                                         </ul>
                                     ))
                             ) : (
-                                <text style={{
-                                    marginRight: 40,
+                                <text
+                                    style={{
+                                        marginRight: 40,
+                                        justifyContent: "center",
+                                        textAlign: "center",
+                                        fontSize: 18,
+                                        fontFamily: "sans-serif",
+                                        marginTop: 3,
+                                        color: "gray"
+                                    }}
+                                >
+                                    No users found with that name
+                                </text>
+                            )
+                        ) : (
+                            <text
+                                style={{
+                                    marginRight: 60,
                                     justifyContent: "center",
                                     textAlign: "center",
                                     fontSize: 18,
                                     fontFamily: "sans-serif",
                                     marginTop: 3,
                                     color: "gray"
-                                }}>No users found with that name</text>
-                            )
-                        ) : <text style={{
-                            marginRight: 60,
-                            justifyContent: "center",
-                            textAlign: "center",
-                            fontSize: 18,
-                            fontFamily: "sans-serif",
-                            marginTop: 3,
-                            color: "gray"
-                        }}>Find new friends</text>}
+                                }}
+                            >
+                                Find new friends
+                            </text>
+                        )}
                     </ul>
                 </div>
 
-                <div className="columnRequests">
+                    <div className="columnRequests">
                     <div style={{marginLeft: 18}}>
                         <h3 className="requests-header" style={{marginTop: 27}}>Friends Requests</h3>
                         <div style={{height: 230, overflowY: "auto"}}>

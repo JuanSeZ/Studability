@@ -115,14 +115,27 @@ function ActualChat({actualFriend: actualFriend, userId: userId, conversation: c
                                     key={index}>
                                     <div>
                                         {isGroup}
-                                        <span style={{textTransform: "capitalize", fontWeight: "bold"}}>{message.username}</span>
+                                        <span style={{textTransform: "capitalize", fontWeight: "bold"}}>{message.username !== "" ? message.username : message.from}</span>
                                         <br />
                                         {message.body}
                                     </div>
 
                                 </li>
                             ))}
-                        </ul>) : <text style={{display: "flex", justifyContent: "center", alignItems: "center", fontFamily: "sans-serif", marginTop: 250}}>Select two or more friends to start a group conversation</text>}
+                        </ul>) : (<div>
+                            <p style={{display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                fontFamily: "sans-serif",
+                                marginTop: 230
+                            }}>Select a friend to have a one to one conversation</p>
+                            <p style={{display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontFamily: "sans-serif",
+                            }}>Select two or more friends to start a group conversation</p>
+
+                        </div>)}
                     </div>
                 </div>
                 <div className="messageSender"

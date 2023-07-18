@@ -147,11 +147,12 @@ function SideBar({chooseActualFriend, handleGroupCreation, handleRoomJoin}) {
                 </ul>
             </div>
             <div>
-                <text style={{fontFamily: "sans-serif", fontSize: 25, marginLeft: 5}}>Groups</text>
+                <text style={{fontFamily: "sans-serif", fontSize: 25, marginLeft: 7}}>Groups</text>
 
-                <div style={{height: selectedFriends.length > 1 ? 255 : 305, overflowY: "auto", marginLeft: 10, textTransform: "capitalize"}}>
+                <div style={{height: selectedFriends.length > 1 ? 255 : 305,
+                    overflowY: "auto", marginLeft: 10, textTransform: "capitalize"}}>
                     <text>
-                        {groups.map((group) => (
+                        {groups.length > 0 ? groups.map((group) => (
                             <div style={{marginTop: 9}}>
                                 {group}
                                 <button className="btn btn-outline-primary"
@@ -160,14 +161,16 @@ function SideBar({chooseActualFriend, handleGroupCreation, handleRoomJoin}) {
                                     Chat
                                 </button>
                             </div>
-                        ))}
+                        )) : <text style={{
+                            fontSize: 15,
+                            fontFamily: "sans-serif",
+                            color: "gray", textTransform: "none"}}>No groups yet</text>}
                     </text>
                 </div>
             </div>
         </div>
 
-    )
-        ;
+    );
 
 }
 

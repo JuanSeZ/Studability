@@ -101,7 +101,8 @@ export default function EditProfile() {
         Swal.fire({
             title: 'Changes saved!',
             icon: 'success',
-            confirmButtonColor: "#87CEFAFF"
+            timer: 1200,
+            showConfirmButton: false,
         })
     }
 

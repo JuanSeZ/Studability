@@ -211,7 +211,7 @@ export default function MyCalendarPage() {
             <br />
 
             <div id="addEventButton">
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginLeft: 10 }}>
                     <button className="btn btn-primary" onClick={() => setShowModal(true)}>
                         + Add Event
                     </button>
@@ -324,6 +324,7 @@ export default function MyCalendarPage() {
                             fontFamily: "sans-serif",
                             marginTop: 10,
                             color: "gray",
+                            marginLeft: 10
                         }}
                     >
                         No upcoming events.
