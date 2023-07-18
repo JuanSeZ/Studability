@@ -10,7 +10,14 @@ import {useAuthProvider} from "../../auth/auth";
 import {useStudability} from "../../service/Studability";
 
 
-function ActualChat({actualFriend: actualFriend, userId: userId, conversation: conversation, newMessage, isGroup, actualGroup}) {
+function ActualChat({
+                        actualFriend: actualFriend,
+                        userId: userId,
+                        conversation: conversation,
+                        newMessage,
+                        isGroup,
+                        actualGroup
+                    }) {
 
     const [message, setMessage] = useState('')
     const [chat, setChat] = useState([])
@@ -55,7 +62,6 @@ function ActualChat({actualFriend: actualFriend, userId: userId, conversation: c
     }, [chat]);
 
 
-
     function fetchUsernameById(id, token) {
         return new Promise((resolve, reject) => {
             studability.getUserNameById(
@@ -96,43 +102,44 @@ function ActualChat({actualFriend: actualFriend, userId: userId, conversation: c
                 <div ref={containerRef} style={{height: 500, overflowY: "auto"}}>
                     <div>
                         {actualFriend.name !== "" || actualGroup.name !== "" ? (
-                        <ul style={{paddingBottom: 1, paddingTop: 10}}>
-                            {chat.map((message, index) => (
-                                <li style={{
-                                    marginTop: 2,
-                                    padding: 2,
-                                    fontSize: 18,
-                                    borderRadius: 8,
-                                    display: 'table',
-                                    fontFamily: "sans-serif",
-                                    backgroundColor: message.from === userId ? 'white' : '#0275d8',
-                                    marginLeft: message.from === userId ? 'auto' : 30,
-                                    textAlign: message.from === userId ? 'right' : 'initial',
-                                    width: 'auto',
-                                    height: 'auto',
-                                    marginRight: message.from === userId ? '70px' : 'initial',
-                                }}
-                                    key={index}>
-                                    <div>
-                                        {isGroup}
-                                        <span style={{textTransform: "capitalize", fontWeight: "bold"}}>{message.username !== "" ? message.username : message.from}</span>
-                                        <br />
+                            <ul style={{paddingBottom: 1, paddingTop: 10}}>
+                                {chat.map((message, index) => (
+                                    <li style={{
+                                        marginTop: 2,
+                                        padding: 2,
+                                        fontSize: 18,
+                                        borderRadius: 8,
+                                        display: 'table',
+                                        fontFamily: "sans-serif",
+                                        backgroundColor: message.from === userId ? 'white' : '#0275d8',
+                                        marginLeft: message.from === userId ? 'auto' : 30,
+                                        textAlign: message.from === userId ? 'right' : 'initial',
+                                        width: 'auto',
+                                        height: 'auto',
+                                        marginRight: message.from === userId ? '70px' : 'initial',
+                                    }}
+                                        key={index}>
+                                        {isGroup ? (<text style={{
+                                                textTransform: "capitalize",
+                                                fontWeight: "bold"
+                                            }}>{message.username !== "" ? message.username : message.from}<br/></text>)
+                                            : null}
                                         {message.body}
-                                    </div>
-
-                                </li>
-                            ))}
-                        </ul>) : (<div>
-                            <p style={{display: "flex",
+                                    </li>
+                                ))}
+                            </ul>) : (<div>
+                            <p style={{
+                                display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
                                 fontFamily: "sans-serif",
                                 marginTop: 230
                             }}>Select a friend to have a one to one conversation</p>
-                            <p style={{display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            fontFamily: "sans-serif",
+                            <p style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                fontFamily: "sans-serif",
                             }}>Select two or more friends to start a group conversation</p>
 
                         </div>)}

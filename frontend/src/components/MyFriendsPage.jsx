@@ -127,7 +127,9 @@ export default function MyFriendsPage() {
                     title: "Your friend has been deleted",
                     showConfirmButton: false,
                     timer: 1500,
-                }).then(() => {window.location.reload()});
+                }).then(() => {
+                    window.location.reload()
+                });
             }
         });
     }
@@ -146,7 +148,7 @@ export default function MyFriendsPage() {
                 </h1>
             </div>
 
-            <div className="row" >
+            <div className="row">
                 <div className="column1">
                     <br/>
                     {/*<nav>*/}
@@ -200,7 +202,7 @@ export default function MyFriendsPage() {
                         </div>
                     </div>
 
-                    <ul className="results" style={{ overflowY: "auto", height: 480 }}>
+                    <ul className="results" style={{overflowY: "auto", height: 480}}>
                         {searchedFriend.length > 0 ? (
                             searchResult.length > 0 ? (
                                 searchResult
@@ -209,7 +211,7 @@ export default function MyFriendsPage() {
                                     )
                                     .map(user => (
                                         <ul id={user.email} key={user.email}>
-                                            <div className="text-center" style={{ marginRight: 60 }}>
+                                            <div className="text-center" style={{marginRight: 60}}>
                                                 <text className="results-names">
                                                     {user.name} {user.surname}
                                                     <SendRequestButton
@@ -253,8 +255,8 @@ export default function MyFriendsPage() {
                     </ul>
                 </div>
 
-                    <div className="columnRequests">
-                    <div style={{marginLeft: 18}}>
+                <div className="columnRequests">
+                    <div style={{marginLeft: 40}}>
                         <h3 className="requests-header" style={{marginTop: 27}}>Friends Requests</h3>
                         <div style={{height: 230, overflowY: "auto"}}>
                             {requests.length === 0 ? (
@@ -296,33 +298,34 @@ export default function MyFriendsPage() {
                         </div>
                     </div>
 
-
-                    <h3 className="requestsSentHeader">Requests Sent</h3>
-                    <div style={{height: 240, overflowY: "auto"}}>
-                        {sentRequests.length === 0 ? (
-                            <div style={{
-                                justifyContent: "center",
-                                textAlign: "center",
-                                fontSize: 20,
-                                fontFamily: "sans-serif",
-                                color: "gray",
-                                marginLeft: 20
-                            }}
-                            >
-                                No requests sent
-                            </div>
-                        ) : (
-                            sentRequests
-                                .sort((a, b) => a.name.localeCompare(b.name))
-                                .sort((a, b) => a.surname.localeCompare(b.surname))
-                                .map((sentRequest) => (
-                                    <ul key={sentRequest.email} id={sentRequest.email} className="requestsSent">
-                                        <div>
-                                            {sentRequest.name + " " + sentRequest.surname + " "}
-                                        </div>
-                                    </ul>
-                                ))
-                        )}
+                    <div style={{marginLeft: 40}}>
+                        <h3 className="requestsSentHeader">Requests Sent</h3>
+                        <div style={{height: 240, overflowY: "auto"}}>
+                            {sentRequests.length === 0 ? (
+                                <div style={{
+                                    justifyContent: "center",
+                                    textAlign: "center",
+                                    fontSize: 20,
+                                    fontFamily: "sans-serif",
+                                    color: "gray",
+                                    marginLeft: 20
+                                }}
+                                >
+                                    No requests sent
+                                </div>
+                            ) : (
+                                sentRequests
+                                    .sort((a, b) => a.name.localeCompare(b.name))
+                                    .sort((a, b) => a.surname.localeCompare(b.surname))
+                                    .map((sentRequest) => (
+                                        <ul key={sentRequest.email} id={sentRequest.email} className="requestsSent">
+                                            <div>
+                                                {sentRequest.name + " " + sentRequest.surname + " "}
+                                            </div>
+                                        </ul>
+                                    ))
+                            )}
+                        </div>
                     </div>
                 </div>
 
