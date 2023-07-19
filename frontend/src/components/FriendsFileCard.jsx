@@ -17,7 +17,7 @@ function FriendsFileCard({title, author, onToggle}) {
 
 
     const handleDownload = () => {
-        fetch(`http://localhost:4321/file/${author}/${title}`)
+        fetch(`http://localhost:4321/file/${author}/${title}/${auth.getToken()}`)
             .then((response) => response.blob())
             .then((blob) => {
                 const url = window.URL.createObjectURL(new Blob([blob]));
@@ -46,7 +46,7 @@ function FriendsFileCard({title, author, onToggle}) {
                     <Button
                         variant="primary"
                         className="mr-2"
-                        href={`http://localhost:4321/file/${author}/${title}`}
+                        href={`http://localhost:4321/file/${author}/${title}/${auth.getToken()}`}
                         target="_blank"
                     >View
                     </Button>

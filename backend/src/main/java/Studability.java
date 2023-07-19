@@ -309,4 +309,14 @@ public class Studability {
             return Optional.of(user.getFriends());
         });
     }
+
+    public boolean isFriend(String requesterEmail, String email) {
+        return runInTransaction(datasource -> {
+            Users users = datasource.users();
+            User requester = users.findByEmail(requesterEmail).get();
+            User requested = users.findByEmail(email).get();
+            Optional<List<UserDTO>> friends = this.listFriendsFromUser(requester);
+                return friends.get().contains(UserDTO.fromModel(requested));
+        });
+    }
 }

@@ -11,7 +11,6 @@ import model.RegistrationUserForm;
 import model.RequestForm;
 import model.ui.UserDTO;
 import persistence.FilesRepository;
-import persistence.Users;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -405,9 +404,23 @@ public class Routes {
         });
 
 
-        get("file/:email/:name", (request, response) -> {
+        get("file/:email/:name/:access_token", (request, response) -> {
             String fileName = request.params(":name");
             String email = request.params(":email");
+            String token = request.params(":access_token");
+            if (getEmailByToken().getIfPresent(token) == null) {
+                response.status(401);
+                return "Unauthorized";
+            }
+            else {
+                String RequesterEmail = getEmailByToken().getIfPresent(token);
+                if (!RequesterEmail.equals(email)) {
+                    if (!system.isFriend(RequesterEmail, email)) {
+                        response.status(401);
+                        return "Unauthorized";
+                    }
+                }
+            }
             String fileType = fileName.substring(fileName.indexOf('.') + 1);
             if (fileType.equals("pdf")) fileType = "application/" + fileType;
             response.type(fileType);
