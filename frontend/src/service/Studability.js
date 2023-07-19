@@ -410,6 +410,34 @@ const Studability = {
             });
     },
 
+    handleDownloadSelectedFilesFriend: (selectedFiles, token, zipName) => {
+        const selectedFilesArray = selectedFiles.map((file) => [file.author, file.title]);
+        fetch(`${restApiEndpoint}/downloadZipFriend`, {
+            method: "POST",
+            body: JSON.stringify(selectedFilesArray),
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            }
+        }).then((response) => {
+            if (response.ok) {
+                return response.blob(); // Get the response as a Blob
+            } else {
+                throw new Error('Error downloading the zip file');
+            }
+        })
+            .then((blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", `${zipName}.zip`);
+                link.click();
+            })
+            .catch((error) => {
+                console.log("Error downloading the zip file:", error);
+            });
+    },
+
     deleteSelectedFiles: (selectedFiles, token) => {
         fetch(`${restApiEndpoint}/deleteSelectedFiles`, {
             method: "DELETE",

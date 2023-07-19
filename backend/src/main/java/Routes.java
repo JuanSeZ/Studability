@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import entities.Event;
@@ -356,6 +357,49 @@ public class Routes {
                 }
             }
             // Delete the temporary zip file
+            Files.deleteIfExists(Paths.get(zipFileName));
+            return res.status();
+        });
+
+
+        authorizedPost("/downloadZipFriend", (req, res) -> {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String[][] selectedFiles = objectMapper.readValue(req.body(), String[][].class);
+            String zipFileName = "download.zip";
+
+            try (ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFileName)))) {
+                for (String[] file : selectedFiles) {
+                    String filePath = "resources/files/" + file[0] + "/" + file[1];
+                    try (InputStream fileInputStream = new FileInputStream(filePath)) {
+                        ZipEntry zipEntry = new ZipEntry(file[1]);
+                        zipOutputStream.putNextEntry(zipEntry);
+
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                            zipOutputStream.write(buffer, 0, bytesRead);
+                        }
+                        zipOutputStream.closeEntry();
+                    }
+                }
+
+        } catch (IOException e) {
+                e.printStackTrace();
+                res.status(500);
+                return "Error creating the zip file";
+            }
+
+            res.header("Content-Disposition", "attachment; filename=" + zipFileName);
+            res.type("application/zip");
+
+            try (BufferedInputStream zipFileInputStream = new BufferedInputStream(new FileInputStream(zipFileName))) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = zipFileInputStream.read(buffer)) != -1) {
+                    res.raw().getOutputStream().write(buffer, 0, bytesRead);
+                }
+            }
+
             Files.deleteIfExists(Paths.get(zipFileName));
             return res.status();
         });

@@ -44,7 +44,7 @@ export default function HomePage() {
                             <header>Friend's Files</header>
                         </h1>
                     </div>
-                    <div style={{height: 600, width: 1100, overflowY: "scroll"}}>
+                    <div>
                         <Feed/>
                     </div>
                 </div>
